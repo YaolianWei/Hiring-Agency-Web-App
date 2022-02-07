@@ -1,3 +1,4 @@
+import DataTables.SecurityQuestionBankTable;
 import DataTables.SecurityQuestionsTable;
 
 import java.sql.*;
@@ -73,7 +74,7 @@ public class DatabaseConnection {
         return true;
     }
 
-    public ResultSet getQuestions(int intUserId){
+    public ResultSet getUserQuestions(int intUserId){
         String getQuestionsSQL = "SELECT " + SecurityQuestionsTable.CN_QUESTION_ID + ", " +
                 SecurityQuestionsTable.CN_QUESTION + ", " +
                 SecurityQuestionsTable.CN_ANSWER + "," +
@@ -83,6 +84,30 @@ public class DatabaseConnection {
                 " WHERE " +
                 SecurityQuestionsTable.CN_USER_ID + " = " + intUserId;
 
+        try {
+            PreparedStatement statement = connection.prepareStatement(getQuestionsSQL);
+            ResultSet set = statement.executeQuery();
+            disconnect();
+            return set;
+        } catch (SQLException e) {
+            try {
+                disconnect();
+            } catch (SQLException ex) {
+                return null;
+            }
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @return all security question options from the security question bank table
+     */
+    public ResultSet getAllQuestionsFromBank(){
+        String getQuestionsSQL = "SELECT " +
+                SecurityQuestionsTable.CN_QUESTION +
+                " FROM " +
+                SecurityQuestionBankTable.T_NAME;
         try {
             PreparedStatement statement = connection.prepareStatement(getQuestionsSQL);
             ResultSet set = statement.executeQuery();

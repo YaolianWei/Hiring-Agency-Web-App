@@ -1,6 +1,5 @@
 import DataTables.SecurityQuestionsTable;
 
-import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -127,10 +126,10 @@ public class User {
      */
     public ArrayList<SecurityQuestion> getSecurityQuestions(){
         DatabaseConnection connection = new DatabaseConnection();
-        ResultSet questionsSet = connection.getQuestions(this.intUserID);
+        ResultSet questionsSet = connection.getUserQuestions(this.intUserID);
 
         try {
-            ArrayList<SecurityQuestion> returnList = null;
+            ArrayList<SecurityQuestion> returnList = new ArrayList<SecurityQuestion>();
             while(questionsSet.next()) {
                 returnList.add(new SecurityQuestion(
                         questionsSet.getString(SecurityQuestionsTable.CN_QUESTION),
@@ -140,6 +139,7 @@ public class User {
                 ));
             }
 
+            if(returnList.isEmpty()) return null;
             return returnList;
         } catch (SQLException e) {
             return null;
