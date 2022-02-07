@@ -1,0 +1,10 @@
+
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:sqlite:/Users/wylllll/Documents/Agency.db
+    username:
+    password:
+    driver-class-name: org.sqlite.JDBC
