@@ -9,14 +9,39 @@
         <result property="firstName" column="FirstName" />
         <result property="lastName" column="LastName" />
         <result property="username" column="Username" />
-        <result property="password" column="Password" />
+        <result property="password" column="Password"/>
+        <result property="postalAddress" column="PostalAddress" />
+        <result property="phoneNumber" column="PhoneNumber" />
+        <result property="email" column="Email" />
     </resultMap>
 
     <!-- log in -->
     <select id = "login" resultType = "com.example.hiringagency.domain.entity.Users">
         select *
         from Users
-        where username = #{userName} and password = #{password}
+        where username = #{username} and password = #{password}
+    </select>
+
+    <select id="selectFirstLoginByName" resultType="boolean" >
+        select FirstLogin
+        from Users
+        where username = #{userName}
+    </select>
+
+    <select id="selectAllQuestions" resultType="com.example.hiringagency.domain.entity.SecurityQuestionBank">
+        select *
+        from SecurityQuestionBank
+    </select>
+
+    <insert id="setQuestions" parameterType="com.example.hiringagency.domain.entity.SecurityQuestions">
+        insert into SecurityQuestions(`Question`, `Answer`, `UserID`)
+        values (#{Question}, #{Answer}, #{UserID})
+    </insert>
+
+    <select id="selectQuestionById" resultType="com.example.hiringagency.domain.entity.SecurityQuestions">
+        select *
+        from SecurityQuestions
+        where UserID = #{UserID}
     </select>
 
 </mapper>

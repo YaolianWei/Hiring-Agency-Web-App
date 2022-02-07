@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 /**
  * @Description  
  * @Author Yaolian
- * @Date 2022-02-06 
+ * @Date 2022-02-07 
  */
 
 @Data
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Table ( name ="Users" )
 public class Users  implements Serializable {
 
-	private static final long serialVersionUID =  3181338348511001349L;
+	private static final long serialVersionUID =  6541199138585318327L;
 
    	@Column(name = "UserID" )
 	private Long userId;
@@ -33,6 +33,18 @@ public class Users  implements Serializable {
 
    	@Column(name = "Password" )
 	private String password;
+
+   	@Column(name = "FirstLogin" )
+	private Boolean firstLogin;
+
+   	@Column(name = "PostalAddress" )
+	private String postalAddress;
+
+   	@Column(name = "PhoneNumber" )
+	private Long phoneNumber;
+
+   	@Column(name = "Email" )
+	private String email;
 
 	public Long getUserId() {
 		return this.userId;
@@ -72,6 +84,38 @@ public class Users  implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Boolean getFirstLogin() {
+		return this.firstLogin;
+	}
+
+	public void setFirstLogin(Boolean firstLogin) {
+		this.firstLogin = firstLogin;
+	}
+
+	public String getPostalAddress() {
+		return this.postalAddress;
+	}
+
+	public void setPostalAddress(String postalAddress) {
+		this.postalAddress = postalAddress;
+	}
+
+	public Long getPhoneNumber() {
+		return this.phoneNumber;
+	}
+
+	public void setPhoneNumber(Long phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

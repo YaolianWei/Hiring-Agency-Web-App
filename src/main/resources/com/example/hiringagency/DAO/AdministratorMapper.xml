@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.example.hiringagency.DAO.AdministratorMapper">
+
+    <insert id="addStaff" parameterType="com.example.hiringagency.domain.entity.Users">
+        insert into Users(`FirstName`, `LastName`, `UserName`, `Password`, `PostalAddress`,`PhoneNumber`,`Email`)
+        values (#{FirstName}, #{LastName}, #{Username}, #{Password}, #{PostalAddress}, #{PhoneNumber}, #{Email})
+    </insert>
+
+    <select id="sumUserNum" resultType="java.lang.Long" >
+        select count(*)
+        from Users
+    </select>
+</mapper>

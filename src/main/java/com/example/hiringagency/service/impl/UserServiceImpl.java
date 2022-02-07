@@ -1,12 +1,16 @@
 package com.example.hiringagency.service.impl;
 
 import com.example.hiringagency.DAO.UserMapper;
+import com.example.hiringagency.domain.entity.SecurityQuestionBank;
+import com.example.hiringagency.domain.entity.SecurityQuestions;
 import com.example.hiringagency.domain.entity.Users;
 import com.example.hiringagency.service.UserService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -17,20 +21,16 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     /**
-     * user login
-     * @param userName
-     * @param password
-     * @return
+     * first login
      */
     @Override
-    public Users login(@Param("userName") String userName, @Param("password") String password){
+    public Users login(@Param("username") String username, @Param("password") String password){
         String pwd = getSalt(password);
-        Users user = userMapper.login(userName, pwd);
+        Users user = userMapper.login(username, pwd);
         if (user != null){
             return user;
         }
         return null;
-
     }
 
     /**
@@ -43,4 +43,20 @@ public class UserServiceImpl implements UserService {
         return DigestUtils.md5DigestAsHex(md5.getBytes());
     }
 
+    public boolean FirstLogin(@Param("userName") String userName){
+        boolean hasLogin = userMapper.selectFirstLoginByName(userName);
+        return hasLogin;
+    }
+
+    public List<SecurityQuestionBank> questionBankList(){
+        return userMapper.selectAllQuestions();
+    }
+
+    public void setQuestions(SecurityQuestions securityQuestions){
+        userMapper.setQuestions(securityQuestions);
+    }
+
+    public List<SecurityQuestions> questionsList(@Param("UserID") String UserID){
+        return userMapper.selectQuestionById(UserID);
+    }
 }
