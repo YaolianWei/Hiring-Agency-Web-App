@@ -19,7 +19,7 @@ public class AdminController {
     public Map<String,String> addStaff(String FirstName, String LastName, String PostalAddress, String PhoneNumber, String Email){
         Map<String, String> ret = new HashMap<String, String>();
         if(FirstName == null){
-            ret.put("type", "error");
+            ret.put("code", "400");
             ret.put("msg", "Please enter correct information.");
             return ret;
         }
@@ -35,7 +35,7 @@ public class AdminController {
         String Password = pwd;
         adminService.addStaff(FirstName, LastName, Username, Password, PostalAddress, PhoneNumber, Email);
 
-        ret.put("type", "success");
+        ret.put("code", "200");
         ret.put("msg", "Staff inserts success.");
         return ret;
     }

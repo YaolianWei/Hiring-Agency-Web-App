@@ -26,22 +26,22 @@ public class UserController {
      * @param password
      * @return
      */
-    @PostMapping("/login")
+    @GetMapping("/login")
     public Map<String,String> login(@Param("username") String username, @Param("password") String password){
         Map<String, String> ret = new HashMap<String, String>();
         Users user = userService.login(username, password);
         if(user != null){
             Boolean hasFirst = userService.FirstLogin(username);
             if(!hasFirst){
-                ret.put("type", "success");
-                ret.put("msg", "It is the first login.");
+                ret.put("code", "200");
+                ret.put("isFirst", "true");
                 return ret;
             }
-            ret.put("type", "success");
-            ret.put("msg", "It is not the first login.");
+            ret.put("code", "200");
+            ret.put("isFirst", "false");
             return ret;
         }
-        ret.put("type", "error");
+        ret.put("code", "400");
         ret.put("msg", "Please enter correct username and password.");
         return ret;
     }
@@ -56,7 +56,7 @@ public class UserController {
         Map<String, String> ret = new HashMap<String, String>();
         userService.setQuestions(securityQuestions);
 
-        ret.put("type", "success");
+        ret.put("code", "200");
         ret.put("msg", "Set questions success.");
         return ret;
     }
