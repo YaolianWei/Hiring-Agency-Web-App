@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Database/Database.iml" filepath="$PROJECT_DIR$/Database/Database.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DatabaseLayer/DatabaseLayer.iml" filepath="$PROJECT_DIR$/DatabaseLayer/DatabaseLayer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Entities/Entities.iml" filepath="$PROJECT_DIR$/Entities/Entities.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Hiring-Agency-Web-App.iml" filepath="$PROJECT_DIR$/.idea/Hiring-Agency-Web-App.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DatabaseLayer/Users.iml" filepath="$PROJECT_DIR$/DatabaseLayer/Users.iml" />
     </modules>
   </component>
 </project>
