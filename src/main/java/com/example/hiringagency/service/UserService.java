@@ -28,4 +28,6 @@ public interface UserService {
     List<SecurityQuestions> questionsList(@Param("UserID") Long UserID);
 
     Users selectUserInfo(@Param("userName")String userName);
+
+    void updateFirstLogin(@Param("username") String username);
 }

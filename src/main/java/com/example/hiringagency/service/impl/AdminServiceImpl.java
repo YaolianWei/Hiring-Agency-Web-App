@@ -6,6 +6,7 @@ import com.example.hiringagency.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -20,6 +21,10 @@ public class AdminServiceImpl implements AdminService {
 
     public Long sumUserNum(){
         return adminMapper.sumUserNum();
+    }
+
+    public List<Users> StaffList(){
+        return adminMapper.selectAllStaff();
     }
 
 

@@ -33,6 +33,7 @@ public class UserController {
         if(user != null){
             Boolean hasFirst = userService.FirstLogin(username);
             if(!hasFirst){
+                userService.updateFirstLogin(username);
                 ret.put("code", "200");
                 ret.put("isFirst", "true");
                 return ret;

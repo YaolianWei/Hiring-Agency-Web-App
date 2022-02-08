@@ -5,12 +5,18 @@
 <mapper namespace = "com.example.hiringagency.DAO.AdministratorMapper">
 
     <insert id="addStaff" parameterType="com.example.hiringagency.domain.entity.Users">
-        insert into Users(`FirstName`, `LastName`, `UserName`, `Password`, `PostalAddress`,`PhoneNumber`,`Email`)
-        values (#{FirstName}, #{LastName}, #{Username}, #{Password}, #{PostalAddress}, #{PhoneNumber}, #{Email})
+        insert into Users(`FirstName`, `LastName`, `UserName`, `Password`, `PostalAddress`,`PhoneNumber`,`Email`, `Type`)
+        values (#{FirstName}, #{LastName}, #{Username}, #{Password}, #{PostalAddress}, #{PhoneNumber}, #{Email}, 2)
     </insert>
 
     <select id="sumUserNum" resultType="java.lang.Long" >
         select count(*)
         from Users
+    </select>
+
+    <select id="selectAllStaff" resultType="com.example.hiringagency.domain.entity.Users">
+        select *
+        from Users
+        where Type = 2
     </select>
 </mapper>

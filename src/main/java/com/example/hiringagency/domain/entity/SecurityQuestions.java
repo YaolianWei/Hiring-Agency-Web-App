@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 /**
  * @Description  
  * @Author Yaolian
- * @Date 2022-02-07 
+ * @Date 2022-02-06
  */
 
 @Data
@@ -17,50 +17,50 @@ import lombok.NoArgsConstructor;
 @Table ( name ="SecurityQuestions" )
 public class SecurityQuestions  implements Serializable {
 
-	private static final long serialVersionUID =  5685392052734455560L;
+	private static final long serialVersionUID =  1294529902645851971L;
 
    	@Column(name = "QuestionID" )
-	private Long QuestionID;
+	private Long questionId;
 
    	@Column(name = "Question" )
-	private String Question;
+	private String question;
 
    	@Column(name = "Answer" )
-	private String Answer;
+	private String answer;
 
    	@Column(name = "UserID" )
-	private Long UserID;
+	private Long userId;
 
 	public Long getQuestionId() {
-		return this.QuestionID;
+		return this.questionId;
 	}
 
 	public void setQuestionId(Long questionId) {
-		this.QuestionID = questionId;
+		this.questionId = questionId;
 	}
 
 	public String getQuestion() {
-		return this.Question;
+		return this.question;
 	}
 
 	public void setQuestion(String question) {
-		this.Question = question;
+		this.question = question;
 	}
 
 	public String getAnswer() {
-		return this.Answer;
+		return this.answer;
 	}
 
 	public void setAnswer(String answer) {
-		this.Answer = answer;
+		this.answer = answer;
 	}
 
-	public Long getUserID() {
-		return this.UserID;
+	public Long getUserId() {
+		return this.userId;
 	}
 
-	public void setUserID(Long userID) {
-		this.UserID = userID;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 }

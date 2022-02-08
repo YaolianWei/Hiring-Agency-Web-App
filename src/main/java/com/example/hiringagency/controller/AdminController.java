@@ -1,11 +1,13 @@
 package com.example.hiringagency.controller;
 
+import com.example.hiringagency.domain.entity.Users;
 import com.example.hiringagency.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -14,6 +16,11 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+
+    @GetMapping("/staffList")
+    public List<Users> getStaffList(){
+        return adminService.StaffList();
+    }
 
     @GetMapping("/addStaff")
     public Map<String,String> addStaff(String FirstName, String LastName, String PostalAddress, String PhoneNumber, String Email){

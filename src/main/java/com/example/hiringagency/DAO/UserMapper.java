@@ -31,4 +31,6 @@ public interface UserMapper {
 
     Users selectUserInfoByUserName(@Param("userName")String userName);
 
+    void updateFirstLogin(@Param("username") String username);
+
 }

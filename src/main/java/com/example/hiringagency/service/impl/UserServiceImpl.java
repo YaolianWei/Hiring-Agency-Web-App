@@ -63,4 +63,8 @@ public class UserServiceImpl implements UserService {
     public Users selectUserInfo(@Param("userName") String userName){
         return userMapper.selectUserInfoByUserName(userName);
     }
+
+    public void updateFirstLogin(@Param("username") String username){
+        userMapper.updateFirstLogin(username);
+    }
 }

@@ -35,8 +35,8 @@
     </select>
 
     <insert id="setQuestions" parameterType="com.example.hiringagency.domain.entity.SecurityQuestions">
-        insert into SecurityQuestions(`Question`, `Answer`, `UserID`)
-        values (#{Question}, #{Answer}, #{UserID})
+        insert into SecurityQuestions(`question`, `answer`, `userId`)
+        values (#{question}, #{answer}, #{userId})
     </insert>
 
     <select id="selectQuestionById" resultType="com.example.hiringagency.domain.entity.SecurityQuestions">
@@ -50,5 +50,13 @@
         from Users
         where username = #{userName}
     </select>
+    
+    <update id="updateFirstLogin" parameterType="com.example.hiringagency.domain.entity.Users" >
+        update Users
+        <trim prefix="SET" suffixOverrides=",">
+            FirstLogin = TRUE
+        </trim>
+        where username = #{username}
+    </update>
 
 </mapper>
