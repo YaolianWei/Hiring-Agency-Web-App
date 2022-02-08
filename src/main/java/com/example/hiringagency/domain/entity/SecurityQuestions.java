@@ -29,7 +29,7 @@ public class SecurityQuestions  implements Serializable {
 	private String Answer;
 
    	@Column(name = "UserID" )
-	private String UserID;
+	private Long UserID;
 
 	public Long getQuestionId() {
 		return this.QuestionID;
@@ -55,11 +55,11 @@ public class SecurityQuestions  implements Serializable {
 		this.Answer = answer;
 	}
 
-	public String getUserID() {
+	public Long getUserID() {
 		return this.UserID;
 	}
 
-	public void setUserID(String userID) {
+	public void setUserID(Long userID) {
 		this.UserID = userID;
 	}
 

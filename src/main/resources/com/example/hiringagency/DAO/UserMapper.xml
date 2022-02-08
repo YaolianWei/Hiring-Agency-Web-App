@@ -10,6 +10,7 @@
         <result property="lastName" column="LastName" />
         <result property="username" column="Username" />
         <result property="password" column="Password"/>
+        <result property="firstLogin" column="FirstLogin" />
         <result property="postalAddress" column="PostalAddress" />
         <result property="phoneNumber" column="PhoneNumber" />
         <result property="email" column="Email" />
@@ -42,6 +43,12 @@
         select *
         from SecurityQuestions
         where UserID = #{UserID}
+    </select>
+
+    <select id="selectUserInfoByUserName" resultMap="UserResult" >
+        select *
+        from Users
+        where username = #{userName}
     </select>
 
 </mapper>

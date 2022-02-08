@@ -61,8 +61,13 @@ public class UserController {
         return ret;
     }
 
-    @PostMapping("/getQuestions")
-    public List<SecurityQuestions> questionsList(@Param("UserID") String UserID){
+    @GetMapping("/getQuestions")
+    public List<SecurityQuestions> questionsList(@Param("UserID") Long UserID){
         return userService.questionsList(UserID);
+    }
+
+    @GetMapping("/getUserInfo")
+    public Users getUserInfo(@Param("userName") String userName){
+        return userService.selectUserInfo(userName);
     }
 }

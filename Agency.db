@@ -1,0 +1,50 @@
+create table SecurityQuestionBank
+(
+    BankQuestionID INTEGER not null
+        primary key autoincrement,
+    Question       VARCHAR(150) default ""
+);
+
+create table Users
+(
+    UserID        INTEGER not null
+        primary key autoincrement
+        unique,
+    FirstName     VARCHAR(35)  default "",
+    LastName      VARCHAR(35)  default "",
+    Username      VARCHAR(35)  default "",
+    Password      VARCHAR(100) default "",
+    FirstLogin    boolean      default FALSE not null,
+    PostalAddress varchar(255),
+    PhoneNumber   INTEGER,
+    Email         varchar(255),
+    Type          INTEGER not null
+);
+
+create table SecurityQuestions
+(
+    QuestionID INTEGER not null
+        primary key autoincrement
+        unique,
+    Question   VARCHAR(150) default "" not null,
+    Answer     VARCHAR(100) default "" not null,
+    UserID
+        references Users
+);
+
+create table sqlite_master
+(
+    type     text,
+    name     text,
+    tbl_name text,
+    rootpage int,
+    sql      text
+);
+
+create table sqlite_sequence
+(
+    name,
+    seq
+);
+
+

@@ -56,7 +56,11 @@ public class UserServiceImpl implements UserService {
         userMapper.setQuestions(securityQuestions);
     }
 
-    public List<SecurityQuestions> questionsList(@Param("UserID") String UserID){
+    public List<SecurityQuestions> questionsList(@Param("UserID") Long UserID){
         return userMapper.selectQuestionById(UserID);
+    }
+
+    public Users selectUserInfo(@Param("userName") String userName){
+        return userMapper.selectUserInfoByUserName(userName);
     }
 }

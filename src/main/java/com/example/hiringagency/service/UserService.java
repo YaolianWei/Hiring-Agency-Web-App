@@ -25,5 +25,7 @@ public interface UserService {
 
     void setQuestions(SecurityQuestions securityQuestions);
 
-    List<SecurityQuestions> questionsList(@Param("UserID") String UserID);
+    List<SecurityQuestions> questionsList(@Param("UserID") Long UserID);
+
+    Users selectUserInfo(@Param("userName")String userName);
 }

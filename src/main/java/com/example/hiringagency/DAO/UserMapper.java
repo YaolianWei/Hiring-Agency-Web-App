@@ -27,6 +27,8 @@ public interface UserMapper {
 
     void setQuestions(SecurityQuestions securityQuestions);
 
-    List<SecurityQuestions> selectQuestionById(@Param("UserID") String UserID);
+    List<SecurityQuestions> selectQuestionById(@Param("UserID") Long UserID);
+
+    Users selectUserInfoByUserName(@Param("userName")String userName);
 
 }
