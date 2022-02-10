@@ -34,9 +34,9 @@ public class AdminController {
         String Username = null;
         Long no = adminService.sumUserNum();
         if(no < 10){
-            Username = FirstName + '0' + no;
+            Username = LastName + '0' + no;
         }
-        else Username = FirstName + no;
+        else Username = LastName + no;
 
         String pwd = randomPassword();
         String Password = pwd;

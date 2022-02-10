@@ -1,10 +1,16 @@
 
 server:
   port: 8080
+  servlet:
+    context-path: /
+    #session:
+      #timeout: 0
 
 spring:
   datasource:
     url: jdbc:sqlite:/Users/wylllll/Documents/Agency.db
+    # url: jdbc:sqlite:C:/Users/wei5927/Desktop/Agency.db
     username:
     password:
     driver-class-name: org.sqlite.JDBC
+

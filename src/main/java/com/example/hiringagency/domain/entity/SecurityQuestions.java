@@ -1,8 +1,6 @@
 package com.example.hiringagency.domain.entity;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,21 +12,21 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Table ( name ="SecurityQuestions" )
+//@Table ( name ="SecurityQuestions" )
 public class SecurityQuestions  implements Serializable {
 
 	private static final long serialVersionUID =  1294529902645851971L;
 
-   	@Column(name = "QuestionID" )
+//   	@Column(name = "QuestionID" )
 	private Long questionId;
 
-   	@Column(name = "Question" )
+//   	@Column(name = "Question" )
 	private String question;
 
-   	@Column(name = "Answer" )
+//   	@Column(name = "Answer" )
 	private String answer;
 
-   	@Column(name = "UserID" )
+//   	@Column(name = "UserID" )
 	private Long userId;
 
 	public Long getQuestionId() {
