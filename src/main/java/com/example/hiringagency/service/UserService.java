@@ -3,6 +3,7 @@ package com.example.hiringagency.service;
 import com.example.hiringagency.domain.entity.SecurityQuestionBank;
 import com.example.hiringagency.domain.entity.SecurityQuestions;
 import com.example.hiringagency.domain.entity.Users;
+import com.example.hiringagency.domain.model.UserQuestions;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -25,9 +26,27 @@ public interface UserService {
 
     void setQuestions(SecurityQuestions securityQuestions);
 
-    List<SecurityQuestions> questionsList(@Param("UserID") Long UserID);
+    List<UserQuestions> questionsList(@Param("UserID") Long UserID);
 
     Users selectUserInfo(@Param("userName")String userName);
 
     void updateFirstLogin(@Param("username") String username);
+
+    void changePassword(@Param("userName") String userName, @Param("password") String password);
+
+    boolean isCorrectPwFormat(String password);
+
+    boolean isCorrectNumFormat(String password);
+
+    boolean isCorrectEmaFormat(String password);
+
+    void deleteSecurityQuestion(@Param("bankQuestionID") Long bankQuestionID, @Param("userID") int userID);
+
+    void sendEmail(@Param("userName") String userName, @Param("email") String email, @Param("password") String password);
+
+    void deleteUser(@Param("userName") String userName);
+
+    void activateUser(@Param("userName") String userName);
+
+    void deactivateUser(@Param("userName") String userName);
 }

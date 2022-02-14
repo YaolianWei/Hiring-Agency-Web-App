@@ -35,13 +35,13 @@
     </select>
 
     <insert id="setQuestions" parameterType="com.example.hiringagency.domain.entity.SecurityQuestions">
-        insert into SecurityQuestions(`question`, `answer`, `userId`)
-        values (#{question}, #{answer}, #{userId})
+        insert into SecurityQuestions(`bankQuestionID`, `answer`, `userId`)
+        values (#{bankQuestionID}, #{answer}, #{userId})
     </insert>
 
-    <select id="selectQuestionById" resultType="com.example.hiringagency.domain.entity.SecurityQuestions">
+    <select id="selectQuestionById" resultType="com.example.hiringagency.domain.model.UserQuestions">
         select *
-        from SecurityQuestions
+        from SecurityQuestions sq left join SecurityQuestionBank sqb on sq.bankQuestionID = sqb.bankQuestionID
         where UserID = #{UserID}
     </select>
 
@@ -59,4 +59,37 @@
         where username = #{username}
     </update>
 
+    <update id="changePassword" parameterType="com.example.hiringagency.domain.entity.Users">
+        update Users
+        set password = #{password}
+        where username = #{userName}
+    </update>
+
+    <delete id="deleteSecurityQuestion" parameterType="com.example.hiringagency.domain.entity.SecurityQuestions">
+        delete from SecurityQuestions
+        where bankQuestionID = #{bankQuestionID} and userID = #{userID}
+    </delete>
+
+    <select id="sendEmail" resultMap="UserResult" >
+        select username, email, password
+        from Users
+        where username = #{userName}
+    </select>
+
+    <delete id="deleteUser" parameterType="com.example.hiringagency.domain.entity.Users">
+        delete from Users
+        where username = #{userName}
+    </delete>
+
+    <update id="activateUser" parameterType="com.example.hiringagency.domain.entity.Users">
+        update Users
+        set isActive = 1
+        where username = #{userName}
+    </update>
+
+    <update id="deactivateUser" parameterType="com.example.hiringagency.domain.entity.Users">
+        update Users
+        set isActive = 0
+        where username = #{userName}
+    </update>
 </mapper>

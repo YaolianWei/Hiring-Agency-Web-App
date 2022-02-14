@@ -7,10 +7,23 @@ server:
       #timeout: 0
 
 spring:
+  mail:
+    host: smtp.gmail.com
+    username: geshi6746@gmail.com
+    password: wjrdtaeoubgpaabp
+    protocol: smtp
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.port: 465
+    properties.mail.display.sendmail: Javen
+    properties.mail.display.sendname: Spring Boot Guide Email
+    properties.mail.smtp.starttls.enable: true
+    properties.mail.smtp.starttls.required: true
+    properties.mail.smtp.ssl.enable: true
+    from: geshi6746@gmail.com
+    default-encoding: utf-8
   datasource:
-    url: jdbc:sqlite:/Users/wylllll/Documents/Agency.db
+    url: jdbc:sqlite:C:/Users/dell/Downloads/Agency.db
     # url: jdbc:sqlite:C:/Users/wei5927/Desktop/Agency.db
     username:
     password:
     driver-class-name: org.sqlite.JDBC
-
