@@ -22,6 +22,8 @@ public interface UserMapper {
 
     // Users notFirstLogin(@Param("userName") String userName, @Param("password") String password);
 
+    Boolean selectIsBlockedByName(@Param("username") String username);
+
     Boolean selectFirstLoginByName(@Param("userName")String userName);
 
     List<SecurityQuestionBank> selectAllQuestions();
@@ -37,8 +39,6 @@ public interface UserMapper {
     void changePassword(@Param("userName") String userName, @Param("password") String password);
 
     void deleteSecurityQuestion(@Param("bankQuestionID") Long bankQuestionID, @Param("userID") int userID);
-
-    void sendEmail(@Param("userName") String userName, @Param("email") String email, @Param("password") String password);
 
     void deleteUser(@Param("userName") String userName);
 

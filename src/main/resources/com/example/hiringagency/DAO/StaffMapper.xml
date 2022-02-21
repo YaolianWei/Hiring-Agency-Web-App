@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.example.hiringagency.DAO.StaffMapper">
+
+    <insert id="setAd" parameterType="com.example.hiringagency.domain.entity.JobAdvertisements">
+        insert into JobAdvertisements(`serviceType`, `educationRequirement`, `experience`,`photoLink`)
+        values (#{serviceType}, #{educationRequirement}, #{experience}, #{photoLink})
+    </insert>
+
+    <select id="selectAllAds" resultType="com.example.hiringagency.domain.entity.JobAdvertisements">
+        select *
+        from JobAdvertisements
+    </select>
+
+    <delete id="deleteAd" parameterType="com.example.hiringagency.domain.entity.JobAdvertisements">
+        delete from JobAdvertisements
+        where jobAdvertisementID = #{jobAdvertisementID}
+    </delete>
+
+    <!-- 接下来4个都是为了hire HP-->
+    <insert id="addHPAccount" parameterType="com.example.hiringagency.domain.entity.Users">
+        insert into Users(`firstName`, `lastName`,`username`, `password`, `firstLogin`, `postalAddress`, `phoneNumber`,`email`,`type`, `isBlocked`)
+        values (#{firstName}, #{lastName}, #{username}, #{password}, 0, #{postalAddress}, #{phoneNumber}, #{email}, 3, 0)
+    </insert>
+
+    <select id="selectInfoById" resultType="com.example.hiringagency.domain.model.HPInfo">
+        select firstName, lastName, postalAddress, phoneNumber, email
+        from HealthcareJobApplication
+        where healthcareJobApplicationId = #{healthcareJobApplicationId}
+    </select>
+
+    <select id="selectMaxId" resultType="java.lang.Long">
+        select MAX(userId)
+        from Users
+    </select>
+
+    <update id="updateUserId">
+        update HealthcareJobApplication
+        set userId = #{userId}
+        where healthcareJobApplicationId = #{healthcareJobApplicationId}
+    </update>
+
+</mapper>

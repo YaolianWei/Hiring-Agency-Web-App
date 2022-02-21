@@ -12,7 +12,7 @@ public interface AdministratorMapper {
 
     void addStaff(String FirstName, String LastName, String Username, String Password, String PostalAddress, String PhoneNumber, String Email);
 
-    Long sumUserNum();
+    Integer selectMaxId();
 
     List<Users> selectAllStaff();
 }

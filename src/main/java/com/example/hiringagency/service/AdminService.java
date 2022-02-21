@@ -7,7 +7,7 @@ import java.util.List;
 public interface AdminService {
     void addStaff(String FirstName, String LastName, String Username, String Password, String PostalAddress, String PhoneNumber, String Email);
 
-    Long sumUserNum();
+    Integer maxId();
 
     List<Users> StaffList();
 

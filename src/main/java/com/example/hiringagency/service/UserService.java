@@ -18,7 +18,7 @@ public interface UserService {
      */
     Users login(@Param("username") String username, @Param("password") String password);
 
-    // Users notFirstLogin(@Param("userName") String userName, @Param("password") String password);
+    boolean IsBlocked(@Param("username") String username);
 
     boolean FirstLogin(@Param("userName") String userName);
 
@@ -36,13 +36,7 @@ public interface UserService {
 
     boolean isCorrectPwFormat(String password);
 
-    boolean isCorrectNumFormat(String password);
-
-    boolean isCorrectEmaFormat(String password);
-
     void deleteSecurityQuestion(@Param("bankQuestionID") Long bankQuestionID, @Param("userID") int userID);
-
-    void sendEmail(@Param("userName") String userName, @Param("email") String email, @Param("password") String password);
 
     void deleteUser(@Param("userName") String userName);
 

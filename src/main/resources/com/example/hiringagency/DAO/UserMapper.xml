@@ -14,6 +14,8 @@
         <result property="postalAddress" column="PostalAddress" />
         <result property="phoneNumber" column="PhoneNumber" />
         <result property="email" column="Email" />
+        <result property="type" column="Type" />
+        <result property="isBlocked" column="IsBlocked" />
     </resultMap>
 
     <!-- log in -->
@@ -21,6 +23,12 @@
         select *
         from Users
         where username = #{username} and password = #{password}
+    </select>
+
+    <select id="selectIsBlockedByName" resultType="boolean" >
+        select isBlocked
+        from Users
+        where username = #{username}
     </select>
 
     <select id="selectFirstLoginByName" resultType="boolean" >
@@ -35,8 +43,8 @@
     </select>
 
     <insert id="setQuestions" parameterType="com.example.hiringagency.domain.entity.SecurityQuestions">
-        insert into SecurityQuestions(`bankQuestionID`, `answer`, `userId`)
-        values (#{bankQuestionID}, #{answer}, #{userId})
+        insert into SecurityQuestions(`bankQuestionId`, `answer`, `userId`)
+        values (#{bankQuestionId}, #{answer}, #{userId})
     </insert>
 
     <select id="selectQuestionById" resultType="com.example.hiringagency.domain.model.UserQuestions">
@@ -70,11 +78,6 @@
         where bankQuestionID = #{bankQuestionID} and userID = #{userID}
     </delete>
 
-    <select id="sendEmail" resultMap="UserResult" >
-        select username, email, password
-        from Users
-        where username = #{userName}
-    </select>
 
     <delete id="deleteUser" parameterType="com.example.hiringagency.domain.entity.Users">
         delete from Users
@@ -83,13 +86,13 @@
 
     <update id="activateUser" parameterType="com.example.hiringagency.domain.entity.Users">
         update Users
-        set isActive = 1
+        set isBlocked = 1
         where username = #{userName}
     </update>
 
     <update id="deactivateUser" parameterType="com.example.hiringagency.domain.entity.Users">
         update Users
-        set isActive = 0
+        set isBlocked= 0
         where username = #{userName}
     </update>
 </mapper>

@@ -44,6 +44,10 @@ public class Users  implements Serializable {
 //   	@Column(name = "Email" )
 	private String email;
 
+	private Long type;
+
+	private Boolean isBlocked;
+
 	public Long getUserId() {
 		return this.userId;
 	}
@@ -114,6 +118,14 @@ public class Users  implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Boolean getIsBlocked(){
+		return this.isBlocked;
+	}
+
+	public void setIsBlocked(Boolean isBlocked){
+		this.isBlocked = isBlocked;
 	}
 
 }

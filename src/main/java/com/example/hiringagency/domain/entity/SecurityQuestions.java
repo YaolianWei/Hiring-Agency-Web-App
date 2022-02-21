@@ -20,8 +20,7 @@ public class SecurityQuestions  implements Serializable {
 //   	@Column(name = "QuestionID" )
 	private Long questionId;
 
-//   	@Column(name = "Question" )
-	private Long bankQuestionID;
+	private Long bankQuestionId;
 
 //   	@Column(name = "Answer" )
 	private String answer;
@@ -38,11 +37,11 @@ public class SecurityQuestions  implements Serializable {
 	}
 
 	public Long getQuestion() {
-		return this.bankQuestionID;
+		return this.bankQuestionId;
 	}
 
 	public void setQuestion(String question) {
-		this.bankQuestionID = bankQuestionID;
+		this.bankQuestionId = bankQuestionId;
 	}
 
 	public String getAnswer() {
