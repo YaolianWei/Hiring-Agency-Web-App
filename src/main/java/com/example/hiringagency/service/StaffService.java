@@ -1,6 +1,7 @@
 package com.example.hiringagency.service;
 
 import com.example.hiringagency.domain.entity.JobAdvertisements;
+import com.example.hiringagency.domain.entity.Users;
 import com.example.hiringagency.domain.model.HPInfo;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,7 +13,7 @@ public interface StaffService {
 
     List<JobAdvertisements> viewAllAds();
 
-    void deleteAd(@Param("jobAdvertisementID") long AdvertisementIDName);
+    void deleteAd(@Param("jobAdvertisementID") long AdvertisementID);
 
     void addHPAccount(String firstName, String lastName, String username, String password, String postalAddress, Long phoneNumber, String email);
 
@@ -24,5 +25,7 @@ public interface StaffService {
 
     // hire HP - 3
     void updateUserId(@Param("userId") Long userId, @Param("healthcareJobApplicationId") Long healthcareJobApplicationId);
+
+    List<Users> allHP();
 
 }

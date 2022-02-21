@@ -2,6 +2,7 @@ package com.example.hiringagency.service.impl;
 
 import com.example.hiringagency.DAO.StaffMapper;
 import com.example.hiringagency.domain.entity.JobAdvertisements;
+import com.example.hiringagency.domain.entity.Users;
 import com.example.hiringagency.domain.model.HPInfo;
 import com.example.hiringagency.service.StaffService;
 import org.apache.ibatis.annotations.Param;
@@ -54,5 +55,9 @@ public class StaffServiceImpl implements StaffService {
         staffMapper.updateUserId(userId, healthcareJobApplicationId);
     }
 
+    @Override
+    public List<Users> allHP(){
+        return staffMapper.selectAllHP();
+    }
 
 }

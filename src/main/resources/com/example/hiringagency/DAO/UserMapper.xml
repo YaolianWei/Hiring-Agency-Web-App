@@ -86,13 +86,13 @@
 
     <update id="activateUser" parameterType="com.example.hiringagency.domain.entity.Users">
         update Users
-        set isBlocked = 1
+        set isBlocked = 0
         where username = #{userName}
     </update>
 
     <update id="deactivateUser" parameterType="com.example.hiringagency.domain.entity.Users">
         update Users
-        set isBlocked= 0
+        set isBlocked = 1
         where username = #{userName}
     </update>
 </mapper>

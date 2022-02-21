@@ -4,13 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace = "com.example.hiringagency.DAO.HPMapper">
     <insert id="setHP" parameterType="com.example.hiringagency.domain.entity.HealthcareJobApplication">
-        insert into HealthcareJobApplication(`firstName`, `lastName`,`gender`, `dateOfBirth`, `ssn`,`serviceType`, `degree`, `educationQualifications`, `yearsExperience`,`postalAddress`, `phoneNumber`, `email`,`active`, `jobAdvertisementID`)
-        values (#{firstName}, #{lastName}, #{gender}, #{dateOfBirth}, #{ssn}, #{serviceType}, #{degree}, #{educationQualifications}, #{yearsExperience}, #{postalAddress}, #{phoneNumber}, #{email}, 1, #{jobAdvertisementID})
+        insert into HealthcareJobApplication(`firstName`, `lastName`,`gender`, `dateOfBirth`, `ssn`,`serviceType`, `degree`, `educationQualifications`, `yearsExperience`,`postalAddress`, `phoneNumber`, `email`,`active`, `jobAdvertisementId`)
+        values (#{firstName}, #{lastName}, #{gender}, #{dateOfBirth}, #{ssn}, #{serviceType}, #{degree}, #{educationQualifications}, #{yearsExperience}, #{postalAddress}, #{phoneNumber}, #{email}, 1, #{jobAdvertisementId})
     </insert>
 
     <select id="selectAllHPs" resultType="com.example.hiringagency.domain.entity.HealthcareJobApplication">
         select *
         from HealthcareJobApplication hja left join JobAdvertisements ja on hja.jobAdvertisementID = ja.jobAdvertisementID
-        where hja.degree = ja.educationRequirement
+        where hja.degree = ja.educationRequirement and hja.active = 1
     </select>
 </mapper>

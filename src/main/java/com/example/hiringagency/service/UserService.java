@@ -36,7 +36,7 @@ public interface UserService {
 
     boolean isCorrectPwFormat(String password);
 
-    void deleteSecurityQuestion(@Param("bankQuestionID") Long bankQuestionID, @Param("userID") int userID);
+    void deleteSecurityQuestion(@Param("bankQuestionID") Long bankQuestionID, @Param("userID")Long userID);
 
     void deleteUser(@Param("userName") String userName);
 

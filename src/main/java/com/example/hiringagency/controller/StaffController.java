@@ -8,6 +8,7 @@ import com.example.hiringagency.service.Utilities;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -24,6 +25,7 @@ public class StaffController {
     private Utilities utilities;
 
     @GetMapping("/setAd")
+    @ResponseBody
     public Map<String,String> setAd(JobAdvertisements jobAdvertisements){
         Map<String, String> ret = new HashMap<String, String>();
         staffService.setAd(jobAdvertisements);
@@ -71,6 +73,11 @@ public class StaffController {
         ret.put("code", "200");
         ret.put("msg", "Hire the healthcare professional success.");
         return ret;
+    }
+
+    @GetMapping("/allHP")
+    public List<Users> allHP(){
+        return staffService.allHP();
     }
 
 }

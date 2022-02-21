@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public void deleteSecurityQuestion(@Param("bankQuestionID") Long bankQuestionID, @Param("userID") int userID){
+    public void deleteSecurityQuestion(@Param("bankQuestionID") Long bankQuestionID, @Param("userID") Long userID){
         userMapper.deleteSecurityQuestion(bankQuestionID, userID);
     }
 

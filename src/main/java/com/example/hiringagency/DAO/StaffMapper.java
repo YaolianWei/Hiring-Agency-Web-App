@@ -28,4 +28,9 @@ public interface StaffMapper {
 
     // hire HP - 3
     void updateUserId(@Param("userId") Long userId, @Param("healthcareJobApplicationId") Long healthcareJobApplicationId);
+
+    List<Users> selectAllHP();
+
+
+
 }

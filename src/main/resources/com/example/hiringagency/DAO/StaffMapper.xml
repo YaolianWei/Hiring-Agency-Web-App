@@ -5,8 +5,8 @@
 <mapper namespace = "com.example.hiringagency.DAO.StaffMapper">
 
     <insert id="setAd" parameterType="com.example.hiringagency.domain.entity.JobAdvertisements">
-        insert into JobAdvertisements(`serviceType`, `educationRequirement`, `experience`,`photoLink`)
-        values (#{serviceType}, #{educationRequirement}, #{experience}, #{photoLink})
+        insert into JobAdvertisements(`serviceType`, `educationRequirement`, `experience`)
+        values (#{serviceType}, #{educationRequirement}, #{experience})
     </insert>
 
     <select id="selectAllAds" resultType="com.example.hiringagency.domain.entity.JobAdvertisements">
@@ -41,5 +41,11 @@
         set userId = #{userId}
         where healthcareJobApplicationId = #{healthcareJobApplicationId}
     </update>
+
+    <select id="selectAllHP" resultType="com.example.hiringagency.domain.entity.Users">
+        select *
+        from Users
+        where Type = 3
+    </select>
 
 </mapper>

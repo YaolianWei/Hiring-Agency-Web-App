@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -106,7 +107,7 @@ public class UserController {
     }
 
     @GetMapping("/deleteQuestion")
-    public Map<String, String> deleteSecurityQuestion(@Param("bankQuestionID") Long bankQuestionID, @Param("userID") int userID){
+    public Map<String, String> deleteSecurityQuestion(@Param("bankQuestionID") Long bankQuestionID, @Param("userID") Long userID){
         Map<String, String> ret = new HashMap<String, String>();
         userService.deleteSecurityQuestion(bankQuestionID, userID);
         ret.put("code", "200");
