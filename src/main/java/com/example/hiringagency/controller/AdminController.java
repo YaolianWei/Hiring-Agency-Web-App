@@ -37,7 +37,7 @@ public class AdminController {
         }
         Boolean isCoEmail = utilities.isCorrectEmaFormat(Email);
         if(!isCoEmail){
-            ret.put("code", "400");
+            ret.put("code", "401");
             ret.put("msg", "Please enter email in the correct format.");
             return ret;
         }

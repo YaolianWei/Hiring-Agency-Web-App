@@ -4,6 +4,9 @@ import java.io.Serializable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+import javax.persistence.Table;
+
 /**
  * @Description  
  * @Author Yaolian
@@ -12,20 +15,21 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-//@Table ( name ="SecurityQuestions" )
+@Table( name ="SecurityQuestions" )
 public class SecurityQuestions  implements Serializable {
 
 	private static final long serialVersionUID =  1294529902645851971L;
 
-//   	@Column(name = "QuestionID" )
+   	@Column(name = "QuestionID" )
 	private Long questionId;
 
+	@Column(name = "BankQuestionID" )
 	private Long bankQuestionId;
 
-//   	@Column(name = "Answer" )
+   	@Column(name = "Answer" )
 	private String answer;
 
-//   	@Column(name = "UserID" )
+  	@Column(name = "UserID" )
 	private Long userId;
 
 	public Long getQuestionId() {
