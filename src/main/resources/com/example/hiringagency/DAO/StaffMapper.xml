@@ -42,6 +42,7 @@
         where healthcareJobApplicationId = #{healthcareJobApplicationId}
     </update>
 
+    <!-- hired HP -->
     <select id="selectAllHP" resultType="com.example.hiringagency.domain.entity.Users">
         select *
         from Users

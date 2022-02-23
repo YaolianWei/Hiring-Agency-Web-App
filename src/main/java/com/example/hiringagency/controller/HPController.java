@@ -3,6 +3,7 @@ package com.example.hiringagency.controller;
 import com.example.hiringagency.domain.entity.HealthcareJobApplication;
 import com.example.hiringagency.service.HPService;
 import com.example.hiringagency.service.Utilities;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +44,10 @@ public class HPController {
     @GetMapping("/hpList")
     public List<HealthcareJobApplication> getHPList(){
         return hpService.selectAllHPs();
+    }
+
+    @GetMapping("/hpByJobId/{jobAdvertisementId}")
+    public List<HealthcareJobApplication> getHPByJobId(@PathVariable("jobAdvertisementId") Long jobAdvertisementId){
+        return hpService.selectHPByJobId(jobAdvertisementId);
     }
 }

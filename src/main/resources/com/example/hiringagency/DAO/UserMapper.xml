@@ -67,10 +67,10 @@
         where username = #{username}
     </update>
 
-    <update id="changePassword" parameterType="com.example.hiringagency.domain.entity.Users">
+    <update id="changePassword" parameterType="com.example.hiringagency.domain.model.UserPassword">
         update Users
         set password = #{password}
-        where username = #{userName}
+        where username = #{username}
     </update>
 
     <delete id="deleteSecurityQuestion" parameterType="com.example.hiringagency.domain.entity.SecurityQuestions">

@@ -3,15 +3,13 @@ package com.example.hiringagency.controller;
 import com.example.hiringagency.domain.entity.SecurityQuestionBank;
 import com.example.hiringagency.domain.entity.SecurityQuestions;
 import com.example.hiringagency.domain.entity.Users;
+import com.example.hiringagency.domain.model.UserPassword;
 import com.example.hiringagency.domain.model.UserQuestions;
 import com.example.hiringagency.service.UserService;
 import com.example.hiringagency.service.Utilities;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -88,14 +86,14 @@ public class UserController {
         return userService.selectUserInfo(userName);
     }
 
-    @GetMapping("/changePassword")
-    public Map<String, String> changePassword(@Param("userName") String userName, @Param("password") String password){
+    @PostMapping("/changePassword")
+    public Map<String, String> changePassword(@RequestBody UserPassword userPassword){
         Map<String, String> ret = new HashMap<String, String>();
 
-        boolean isCorrect = userService.isCorrectPwFormat(password);
+        boolean isCorrect = userService.isCorrectPwFormat(userPassword.getPassword());
         if(isCorrect){
-            String pwd = utilities.getSalt(password);
-            userService.changePassword(userName, pwd);
+            String pwd = utilities.getSalt(userPassword.getPassword());
+            userService.changePassword(userPassword.getUsername(), pwd);
             ret.put("code", "200");
             ret.put("msg", "Change password success.");
             return ret;

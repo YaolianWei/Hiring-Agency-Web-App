@@ -13,4 +13,11 @@
         from HealthcareJobApplication hja left join JobAdvertisements ja on hja.jobAdvertisementID = ja.jobAdvertisementID
         where hja.degree = ja.educationRequirement and hja.active = 1
     </select>
+
+    <select id="selectHPByJobId" resultType="com.example.hiringagency.domain.entity.HealthcareJobApplication">
+        select *
+        from HealthcareJobApplication hja left join JobAdvertisements ja on hja.jobAdvertisementID = ja.jobAdvertisementID
+        where hja.degree = ja.educationRequirement and hja.active = 1 and hja.jobAdvertisementID = #{jobAdvertisementId}
+
+    </select>
 </mapper>

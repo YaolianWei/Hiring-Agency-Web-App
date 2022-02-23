@@ -3,6 +3,7 @@ package com.example.hiringagency.DAO;
 import com.example.hiringagency.domain.entity.SecurityQuestionBank;
 import com.example.hiringagency.domain.entity.SecurityQuestions;
 import com.example.hiringagency.domain.entity.Users;
+import com.example.hiringagency.domain.model.UserPassword;
 import com.example.hiringagency.domain.model.UserQuestions;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -36,7 +37,7 @@ public interface UserMapper {
 
     void updateFirstLogin(@Param("username") String username);
 
-    void changePassword(@Param("userName") String userName, @Param("password") String password);
+    void changePassword(@Param("username") String username, @Param("password") String password);
 
     void deleteSecurityQuestion(@Param("bankQuestionID") Long bankQuestionID, @Param("userID") Long userID);
 

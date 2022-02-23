@@ -4,6 +4,7 @@ import com.example.hiringagency.DAO.UserMapper;
 import com.example.hiringagency.domain.entity.SecurityQuestionBank;
 import com.example.hiringagency.domain.entity.SecurityQuestions;
 import com.example.hiringagency.domain.entity.Users;
+import com.example.hiringagency.domain.model.UserPassword;
 import com.example.hiringagency.domain.model.UserQuestions;
 import com.example.hiringagency.service.UserService;
 import org.apache.ibatis.annotations.Param;
@@ -76,8 +77,8 @@ public class UserServiceImpl implements UserService {
         userMapper.updateFirstLogin(username);
     }
 
-    public void changePassword(@Param("userName") String userName, @Param("password") String password){
-        userMapper.changePassword(userName, password);
+    public void changePassword(@Param("username") String username, @Param("password") String password){
+        userMapper.changePassword(username, password);
     }
 
     public boolean isCorrectPwFormat(String password){
