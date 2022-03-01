@@ -24,12 +24,12 @@ public class UtilitiesImpl implements Utilities {
     private String from;
 
     @Override
-    public void sendEmail(@Param("userName") String userName, @Param("email") String email, @Param("password") String password){
+    public void sendEmail(@Param("username") String username, @Param("email") String email, @Param("password") String password){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
         message.setTo(email);
         message.setSubject("Account Information");
-        message.setText("Welcome to Hiring Agency! "+"\r\n\n "+ "Your username is:     "+userName+"\n"+"Your password is:      "+password);
+        message.setText("Welcome to Hiring Agency! "+"\r\n\n" + "Your username is:     " + username + "\n" + "Your password is:      "+password);
         javaMailSender.send(message);
     }
 

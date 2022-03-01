@@ -4,4 +4,45 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace = "com.example.hiringagency.DAO.CTMapper">
 
+    <insert id="CTRegister" parameterType="com.example.hiringagency.domain.entity.CareTakerRegistration">
+        insert into CareTakerRegistration(`firstName`, `lastName`,`postalAddress`, `phoneNumber`, `email`,`active`)
+        values (#{firstName}, #{lastName}, #{postalAddress}, #{phoneNumber}, #{email}, 1)
+    </insert>
+
+    <select id="selectAllCTs" resultType="com.example.hiringagency.domain.entity.CareTakerRegistration">
+        select *
+        from CareTakerRegistration
+        where active = 1
+    </select>
+
+    <insert id="addRequest" parameterType="com.example.hiringagency.domain.entity.CareRequests">
+        insert into CareRequests(FirstName, LastName, Gender, DateOfBirth, ServiceAddress, PatientPhone, PatientEmail, WeekDay, StartTime, EndTime, TotalDays, GenderSpecific, LowerAgeLimit, UpperAgeLimit, FlexibleHoursFlag, FlexibleHoursPerDay, CareTakerID, ServiceType)
+        values (#{firstName}, #{lastName}, #{gender}, #{dateOfBirth}, #{serviceAddress}, #{patientPhone}, #{patientEmail},
+                                 #{weekDay}, #{startTime}, #{endTime}, #{totalDays}, #{genderSpecific}, #{lowerAgeLimit},
+                                 #{upperAgeLimit}, #{flexibleHoursFlag}, #{flexibleHoursPerDay}, #{careTakerId}, #{serviceType})
+    </insert>
+
+    <select id="selectRequests" resultType="com.example.hiringagency.domain.entity.CareRequests">
+        select *
+        from CareRequests
+        where careTakerId = #{careTakerId}
+    </select>
+
+    <select id="selectPendingService" resultType="com.example.hiringagency.domain.entity.CareService">
+        select *
+        from Service
+        where status = 0 and careTakerId = #{careTakerId}
+    </select>
+
+    <select id="selectTerminateService" parameterType="com.example.hiringagency.domain.entity.CareService">
+        select *
+        from Service
+        where status = 1 and careTakerId = #{careTakerId}
+    </select>
+
+    <select id="selectBilling" parameterType="com.example.hiringagency.domain.entity.Billing">
+        select *
+        from Billing
+        where careTakerId = #{careTakerId}
+    </select>
 </mapper>

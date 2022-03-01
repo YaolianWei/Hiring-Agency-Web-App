@@ -10,10 +10,7 @@ import com.example.hiringagency.service.Utilities;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import javax.annotation.Resource;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,20 +25,18 @@ public class UserController {
 
     /**
      * user login
-     * @param username
-     * @param password
      * @return
      */
-    @GetMapping("/login")
-    public Map<String,String> login(@Param("username") String username, @Param("password") String password){
+    @PostMapping("/login")
+    public Map<String,String> login(@RequestBody HashMap<String, String> map){
         Map<String, String> ret = new HashMap<String, String>();
-        Users user = userService.login(username, password);
+        Users user = userService.login(map.get("username"), map.get("password"));
         if(user != null){
-            Boolean isBlocked = userService.IsBlocked(username);
+            Boolean isBlocked = userService.IsBlocked(map.get("username"));
             if(!isBlocked){
-                Boolean hasFirst = userService.FirstLogin(username);
+                Boolean hasFirst = userService.FirstLogin(map.get("username"));
                 if(!hasFirst){
-                    userService.updateFirstLogin(username);
+                    userService.updateFirstLogin(map.get("username"));
                     ret.put("code", "200");
                     ret.put("isFirst", "true");
                     return ret;
@@ -69,21 +64,28 @@ public class UserController {
     @GetMapping("/setQuestions")
     public Map<String,String> setQuestions(SecurityQuestions securityQuestions){
         Map<String, String> ret = new HashMap<String, String>();
-        userService.setQuestions(securityQuestions);
+        Long exist = userService.checkExistQuestion(securityQuestions.getBankQuestionId(), securityQuestions.getUserId());
+        if( exist == null){
+            userService.setQuestions(securityQuestions);
 
-        ret.put("code", "200");
-        ret.put("msg", "Set questions success.");
+            ret.put("code", "200");
+            ret.put("msg", "Set questions success.");
+        } else {
+            ret.put("code", "400");
+            ret.put("msg", "You have chosen this security question.");
+        }
         return ret;
     }
 
+
     @GetMapping("/getQuestions")
-    public List<UserQuestions> questionsList(@Param("UserID") Long UserID){
-        return userService.questionsList(UserID);
+    public List<UserQuestions> questionsList(@Param("userId") Long userId){
+        return userService.questionsList(userId);
     }
 
     @GetMapping("/getUserInfo")
-    public Users getUserInfo(@Param("userName") String userName){
-        return userService.selectUserInfo(userName);
+    public Users getUserInfo(@Param("username") String username){
+        return userService.selectUserInfo(username);
     }
 
     @PostMapping("/changePassword")
@@ -105,39 +107,47 @@ public class UserController {
     }
 
     @GetMapping("/deleteQuestion")
-    public Map<String, String> deleteSecurityQuestion(@Param("bankQuestionID") Long bankQuestionID, @Param("userID") Long userID){
+    public Map<String, String> deleteSecurityQuestion(@Param("bankQuestionId") Long bankQuestionId, @Param("userId") Long userId){
         Map<String, String> ret = new HashMap<String, String>();
-        userService.deleteSecurityQuestion(bankQuestionID, userID);
+        userService.deleteSecurityQuestion(bankQuestionId, userId);
         ret.put("code", "200");
         ret.put("msg", "Delete security question success.");
         return ret;
     }
 
-
     @GetMapping("/deleteUser")
-    public Map<String, String> deleteUser(@Param("userName") String userName){
+    public Map<String, String> deleteUser(@Param("username") String username){
         Map<String, String> ret = new HashMap<String, String>();
-        userService.deleteUser(userName);
+        userService.deleteUser(username);
         ret.put("code", "200");
         ret.put("msg", "Delete user success.");
         return ret;
     }
 
     @GetMapping("/activateUser")
-    public Map<String, String> activateUser(@Param("userName") String userName){
+    public Map<String, String> activateUser(@Param("username") String username){
         Map<String, String> ret = new HashMap<String, String>();
-        userService.activateUser(userName);
+        userService.activateUser(username);
         ret.put("code", "200");
         ret.put("msg", "Activate user success.");
         return ret;
     }
 
     @GetMapping("/blockUser")
-    public Map<String, String> blockUser(@Param("userName") String userName){
+    public Map<String, String> blockUser(@Param("username") String username){
         Map<String, String> ret = new HashMap<String, String>();
-        userService.deactivateUser(userName);
+        userService.deactivateUser(username);
         ret.put("code", "200");
         ret.put("msg", "Deactivate user success.");
+        return ret;
+    }
+
+    @GetMapping("/softDeleteUser")
+    public Map<String, String> softDeleteUser(@Param("username") String username){
+        Map<String, String> ret = new HashMap<String, String>();
+        userService.softDeleteUser(username);
+        ret.put("code", "200");
+        ret.put("msg", "Delete user success.");
         return ret;
     }
 }

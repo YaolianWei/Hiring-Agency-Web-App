@@ -16,6 +16,7 @@
         <result property="email" column="Email" />
         <result property="type" column="Type" />
         <result property="isBlocked" column="IsBlocked" />
+        <result property="isDeleted" column="IsDeleted" />
     </resultMap>
 
     <!-- log in -->
@@ -34,7 +35,7 @@
     <select id="selectFirstLoginByName" resultType="boolean" >
         select FirstLogin
         from Users
-        where username = #{userName}
+        where username = #{username}
     </select>
 
     <select id="selectAllQuestions" resultType="com.example.hiringagency.domain.entity.SecurityQuestionBank">
@@ -49,14 +50,14 @@
 
     <select id="selectQuestionById" resultType="com.example.hiringagency.domain.model.UserQuestions">
         select *
-        from SecurityQuestions sq left join SecurityQuestionBank sqb on sq.bankQuestionID = sqb.bankQuestionID
-        where UserID = #{UserID}
+        from SecurityQuestions sq left join SecurityQuestionBank sqb on sq.bankQuestionId = sqb.bankQuestionId
+        where userId = #{userId}
     </select>
 
     <select id="selectUserInfoByUserName" resultMap="UserResult" >
         select *
         from Users
-        where username = #{userName}
+        where username = #{username}
     </select>
     
     <update id="updateFirstLogin" parameterType="com.example.hiringagency.domain.entity.Users" >
@@ -75,24 +76,38 @@
 
     <delete id="deleteSecurityQuestion" parameterType="com.example.hiringagency.domain.entity.SecurityQuestions">
         delete from SecurityQuestions
-        where bankQuestionID = #{bankQuestionID} and userID = #{userID}
+        where bankQuestionId = #{bankQuestionId} and userId = #{userId}
     </delete>
 
 
     <delete id="deleteUser" parameterType="com.example.hiringagency.domain.entity.Users">
         delete from Users
-        where username = #{userName}
+        where username = #{username}
     </delete>
 
     <update id="activateUser" parameterType="com.example.hiringagency.domain.entity.Users">
         update Users
         set isBlocked = 0
-        where username = #{userName}
+        where username = #{username}
     </update>
 
     <update id="deactivateUser" parameterType="com.example.hiringagency.domain.entity.Users">
         update Users
         set isBlocked = 1
-        where username = #{userName}
+        where username = #{username}
     </update>
+
+    <select id="selectQuestionIdById" resultType="java.lang.Long">
+        select questionId
+        from SecurityQuestions
+        where userId = #{userId} and bankQuestionId = #{bankQuestionId}
+    </select>
+
+    <update id="softDeleteUser" parameterType="com.example.hiringagency.domain.entity.Users">
+        update Users
+        set isDeleted = 1
+        where username = #{username}
+    </update>
+
+
 </mapper>

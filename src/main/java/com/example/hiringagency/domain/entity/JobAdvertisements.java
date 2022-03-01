@@ -26,7 +26,7 @@ public class JobAdvertisements  implements Serializable {
 	private Long serviceType;
 
    	@Column(name = "EducationRequirement" )
-	private String educationRequirement;
+	private Long educationRequirement;
 
    	@Column(name = "Experience" )
 	private String experience;
@@ -47,11 +47,11 @@ public class JobAdvertisements  implements Serializable {
 		this.serviceType = serviceType;
 	}
 
-	public String getEducationRequirement() {
+	public Long getEducationRequirement() {
 		return this.educationRequirement;
 	}
 
-	public void setEducationRequirement(String educationRequirement) {
+	public void setEducationRequirement(Long educationRequirement) {
 		this.educationRequirement = educationRequirement;
 	}
 

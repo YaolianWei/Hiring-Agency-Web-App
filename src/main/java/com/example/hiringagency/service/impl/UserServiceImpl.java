@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -52,8 +53,8 @@ public class UserServiceImpl implements UserService {
         return isBlocked;
     }
 
-    public boolean FirstLogin(@Param("userName") String userName){
-        boolean hasLogin = userMapper.selectFirstLoginByName(userName);
+    public boolean FirstLogin(@Param("username") String username){
+        boolean hasLogin = userMapper.selectFirstLoginByName(username);
         return hasLogin;
     }
 
@@ -65,12 +66,12 @@ public class UserServiceImpl implements UserService {
         userMapper.setQuestions(securityQuestions);
     }
 
-    public List<UserQuestions> questionsList(@Param("UserID") Long UserID){
-        return userMapper.selectQuestionById(UserID);
+    public List<UserQuestions> questionsList(@Param("userId") Long userId){
+        return userMapper.selectQuestionById(userId);
     }
 
-    public Users selectUserInfo(@Param("userName") String userName){
-        return userMapper.selectUserInfoByUserName(userName);
+    public Users selectUserInfo(@Param("username") String username){
+        return userMapper.selectUserInfoByUserName(username);
     }
 
     public void updateFirstLogin(@Param("username") String username){
@@ -100,19 +101,27 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public void deleteSecurityQuestion(@Param("bankQuestionID") Long bankQuestionID, @Param("userID") Long userID){
-        userMapper.deleteSecurityQuestion(bankQuestionID, userID);
+    public void deleteSecurityQuestion(@Param("bankQuestionId") Long bankQuestionId, @Param("userId") Long userId){
+        userMapper.deleteSecurityQuestion(bankQuestionId, userId);
     }
 
-    public void deleteUser(@Param("userName") String userName){
-        userMapper.deleteUser(userName);
+    public void deleteUser(@Param("username") String username){
+        userMapper.deleteUser(username);
     }
 
-    public void activateUser(@Param("userName") String userName){
-        userMapper.activateUser(userName);
+    public void activateUser(@Param("username") String username){
+        userMapper.activateUser(username);
     }
 
-    public void deactivateUser(@Param("userName") String userName){
-        userMapper.deactivateUser(userName);
+    public void deactivateUser(@Param("username") String username){
+        userMapper.deactivateUser(username);
+    }
+
+    public Long checkExistQuestion(@Param("bankQuestionId") Long bankQuestionId, @Param("userId") Long userId){
+        return userMapper.selectQuestionIdById(bankQuestionId, userId);
+    }
+
+    public void softDeleteUser(@Param("username") String username){
+        userMapper.softDeleteUser(username);
     }
 }

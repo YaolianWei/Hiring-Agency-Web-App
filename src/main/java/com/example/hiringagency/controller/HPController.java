@@ -3,7 +3,6 @@ package com.example.hiringagency.controller;
 import com.example.hiringagency.domain.entity.HealthcareJobApplication;
 import com.example.hiringagency.service.HPService;
 import com.example.hiringagency.service.Utilities;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +22,6 @@ public class HPController {
     @PostMapping("/addHP")
     public Map<String,String> addHP(@RequestBody HealthcareJobApplication healthcareJobApplication){
         Map<String, String> ret = new HashMap<String, String>();
-        hpService.setHP(healthcareJobApplication);
         Boolean isCoNum = utilities.isCorrectNumFormat(Long.toString(healthcareJobApplication.getPhoneNumber()));
         if(!isCoNum){
             ret.put("code", "400");
@@ -36,6 +34,7 @@ public class HPController {
             ret.put("msg", "Please enter email in the correct format.");
             return ret;
         }
+        hpService.setHP(healthcareJobApplication);
         ret.put("code", "200");
         ret.put("msg", "Apply success.");
         return ret;

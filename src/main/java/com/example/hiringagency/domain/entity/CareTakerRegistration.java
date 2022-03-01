@@ -41,7 +41,7 @@ public class CareTakerRegistration  implements Serializable {
 	private Boolean active;
 
    	@Column(name = "UserID" )
-	private String userId;
+	private Long userId;
 
 	public Long getCareTakerRegistrationId() {
 		return this.careTakerRegistrationId;
@@ -99,11 +99,11 @@ public class CareTakerRegistration  implements Serializable {
 		this.active = active;
 	}
 
-	public String getUserId() {
+	public Long getuserId() {
 		return this.userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setuserId(Long userId) {
 		this.userId = userId;
 	}
 

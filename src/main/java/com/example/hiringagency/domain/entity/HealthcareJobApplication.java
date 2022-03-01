@@ -32,7 +32,7 @@ public class HealthcareJobApplication  implements Serializable {
 	private String lastName;
 
    	@Column(name = "Gender" )
-	private String gender;
+	private Long gender;
 
    	@Column(name = "DateOfBirth" )
 	@JsonFormat(pattern = "yyyy-MM-dd")
@@ -45,7 +45,7 @@ public class HealthcareJobApplication  implements Serializable {
 	private Long serviceType;
 
 	@Column(name = "Degree" )
-	private String degree;
+	private Long degree;
 
    	@Column(name = "EducationQualifications" )
 	private String educationQualifications;
@@ -95,11 +95,11 @@ public class HealthcareJobApplication  implements Serializable {
 		this.lastName = lastName;
 	}
 
-	public String getGender() {
+	public Long getGender() {
 		return this.gender;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(Long gender) {
 		this.gender = gender;
 	}
 

@@ -17,6 +17,6 @@
     <select id="selectAllStaff" resultType="com.example.hiringagency.domain.entity.Users">
         select *
         from Users
-        where Type = 1
+        where Type = 1 and isDeleted = 0
     </select>
 </mapper>

@@ -8,6 +8,7 @@ import com.example.hiringagency.domain.model.UserQuestions;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -21,29 +22,33 @@ public interface UserMapper {
      */
     Users login(@Param("username") String username, @Param("password") String password);
 
-    // Users notFirstLogin(@Param("userName") String userName, @Param("password") String password);
+    // Users notFirstLogin(@Param("username") String username, @Param("password") String password);
 
     Boolean selectIsBlockedByName(@Param("username") String username);
 
-    Boolean selectFirstLoginByName(@Param("userName")String userName);
+    Boolean selectFirstLoginByName(@Param("username")String username);
 
     List<SecurityQuestionBank> selectAllQuestions();
 
-    void setQuestions(SecurityQuestions securityQuestions);
+    void setQuestions(@RequestBody SecurityQuestions securityQuestions);
 
-    List<UserQuestions> selectQuestionById(@Param("UserID") Long UserID);
+    List<UserQuestions> selectQuestionById(@Param("userId") Long userId);
 
-    Users selectUserInfoByUserName(@Param("userName")String userName);
+    Users selectUserInfoByUserName(@Param("username")String username);
 
     void updateFirstLogin(@Param("username") String username);
 
     void changePassword(@Param("username") String username, @Param("password") String password);
 
-    void deleteSecurityQuestion(@Param("bankQuestionID") Long bankQuestionID, @Param("userID") Long userID);
+    void deleteSecurityQuestion(@Param("bankQuestionId") Long bankQuestionId, @Param("userId") Long userId);
 
-    void deleteUser(@Param("userName") String userName);
+    void deleteUser(@Param("username") String username);
 
-    void activateUser(@Param("userName") String userName);
+    void activateUser(@Param("username") String username);
 
-    void deactivateUser(@Param("userName") String userName);
+    void deactivateUser(@Param("username") String username);
+
+    Long selectQuestionIdById(@Param("bankQuestionId") Long bankQuestionId, @Param("userId") Long userId);
+
+    void softDeleteUser(@Param("username") String username);
 }

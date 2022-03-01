@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
-public class HPInfo implements Serializable {
+public class Info implements Serializable {
 
     private String firstName;
 

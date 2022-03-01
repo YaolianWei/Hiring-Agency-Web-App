@@ -53,6 +53,9 @@ public class Users  implements Serializable {
 	@Column(name = "IsBlocked" )
 	private Boolean isBlocked;
 
+	@Column(name = "IsDeleted" )
+	private Boolean isDeleted;
+
 	public Long getUserId() {
 		return this.userId;
 	}

@@ -8,16 +8,17 @@
         values (#{firstName}, #{lastName}, #{gender}, #{dateOfBirth}, #{ssn}, #{serviceType}, #{degree}, #{educationQualifications}, #{yearsExperience}, #{postalAddress}, #{phoneNumber}, #{email}, 1, #{jobAdvertisementId})
     </insert>
 
+    <!-- HP applicants -->
     <select id="selectAllHPs" resultType="com.example.hiringagency.domain.entity.HealthcareJobApplication">
         select *
-        from HealthcareJobApplication hja left join JobAdvertisements ja on hja.jobAdvertisementID = ja.jobAdvertisementID
-        where hja.degree = ja.educationRequirement and hja.active = 1
+        from HealthcareJobApplication hja left join JobAdvertisements ja on hja.jobAdvertisementId = ja.jobAdvertisementId
+        where hja.degree >= ja.educationRequirement and hja.active = 1
     </select>
 
     <select id="selectHPByJobId" resultType="com.example.hiringagency.domain.entity.HealthcareJobApplication">
         select *
-        from HealthcareJobApplication hja left join JobAdvertisements ja on hja.jobAdvertisementID = ja.jobAdvertisementID
-        where hja.degree = ja.educationRequirement and hja.active = 1 and hja.jobAdvertisementID = #{jobAdvertisementId}
+        from HealthcareJobApplication hja left join JobAdvertisements ja on hja.jobAdvertisementId = ja.jobAdvertisementId
+        where hja.degree >= ja.educationRequirement and hja.active = 1 and hja.jobAdvertisementId = #{jobAdvertisementId}
 
     </select>
 </mapper>

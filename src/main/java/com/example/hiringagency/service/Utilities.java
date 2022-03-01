@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Param;
 
 public interface Utilities {
 
-    void sendEmail(@Param("userName") String userName, @Param("email") String email, @Param("password") String password);
+    void sendEmail(@Param("username") String username, @Param("email") String email, @Param("password") String password);
 
     String randomPassword();
 

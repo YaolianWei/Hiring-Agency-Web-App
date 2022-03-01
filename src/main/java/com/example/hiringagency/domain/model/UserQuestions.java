@@ -18,7 +18,7 @@ public class UserQuestions implements Serializable {
 
     private Long questionId;
 
-    private int bankQuestionID;
+    private int bankQuestionId;
 
     private String answer;
 
