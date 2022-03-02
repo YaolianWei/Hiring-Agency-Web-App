@@ -19,4 +19,5 @@
         from Users
         where Type = 1 and isDeleted = 0
     </select>
+
 </mapper>

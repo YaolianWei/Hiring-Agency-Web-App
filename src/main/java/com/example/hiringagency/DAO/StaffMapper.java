@@ -48,7 +48,7 @@ public interface StaffMapper {
 
     void addBilling(Billing billing);
 
-    List<CareRequests> selectRequests();
+    List<CareRequests> selectAllRequests();
 
     List<CareService> selectPendingService();
 

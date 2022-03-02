@@ -63,6 +63,7 @@ public class CTController {
         return ret;
     }
 
+    // care taker's request list
     @GetMapping("/requestList")
     public List<CareRequests> getRequestList(Long careTakerId){
         return ctService.selectRequests(careTakerId);

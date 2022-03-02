@@ -45,7 +45,7 @@ public interface StaffService {
 
     void addBilling(Billing billing);
 
-    List<CareRequests> selectRequests();
+    List<CareRequests> requestsList();
 
     List<CareService> selectPendingService();
 

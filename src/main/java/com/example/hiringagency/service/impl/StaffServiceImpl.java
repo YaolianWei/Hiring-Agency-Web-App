@@ -106,8 +106,8 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public List<CareRequests> selectRequests(){
-        return staffMapper.selectRequests();
+    public List<CareRequests> requestsList(){
+        return staffMapper.selectAllRequests();
     }
 
     @Override

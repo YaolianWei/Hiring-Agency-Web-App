@@ -74,7 +74,7 @@
         where Type = 2 and isDeleted = 0
     </select>
 
-    <select id="selectHPbyRequest">
+    <select id="selectHPbyRequest" resultType="com.example.hiringagency.domain.entity.Users">
         select UserID
         from HealthcareJobApplication hja left join CareRequests cb on cb.GenderSpecific = hja.Gender and cb.ServiceType = hja.ServiceType
         where hja.active = 0 and cb.careRequestID = #{careRequestId}
@@ -102,7 +102,7 @@
         values (#{careTakerId}, #{careRequestId}, #{hourlyRate}, #{paidAmount}, #{amountYetToPay}, #{serviceId})
     </insert>
 
-    <select id="selectRequests" resultType="com.example.hiringagency.domain.entity.CareRequests">
+    <select id="selectAllRequests" resultType="com.example.hiringagency.domain.entity.CareRequests">
         select *
         from CareRequests
     </select>
@@ -125,13 +125,13 @@
         where userId = #{careTakerId}
     </update>
 
-    <select id="selectTerminateService" parameterType="com.example.hiringagency.domain.entity.CareService">
+    <select id="selectTerminateService" resultType="com.example.hiringagency.domain.entity.CareService">
         select *
         from Service
         where status = 1
     </select>
 
-    <select id="selectBilling" parameterType="com.example.hiringagency.domain.entity.Billing">
+    <select id="selectBilling" resultType="com.example.hiringagency.domain.entity.Billing">
         select *
         from Billing
     </select>

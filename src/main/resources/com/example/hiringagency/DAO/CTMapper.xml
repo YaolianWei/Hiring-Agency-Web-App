@@ -34,13 +34,13 @@
         where status = 0 and careTakerId = #{careTakerId}
     </select>
 
-    <select id="selectTerminateService" parameterType="com.example.hiringagency.domain.entity.CareService">
+    <select id="selectTerminateService" resultType="com.example.hiringagency.domain.entity.CareService">
         select *
         from Service
         where status = 1 and careTakerId = #{careTakerId}
     </select>
 
-    <select id="selectBilling" parameterType="com.example.hiringagency.domain.entity.Billing">
+    <select id="selectBilling" resultType="com.example.hiringagency.domain.entity.Billing">
         select *
         from Billing
         where careTakerId = #{careTakerId}

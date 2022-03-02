@@ -159,9 +159,10 @@ public class StaffController {
         return ret;
     }
 
-    @GetMapping("/selectRequests")
-    public List<CareRequests> selectRequests(){
-        return staffService.selectRequests();
+    // all requests list
+    @GetMapping("/allRequests")
+    public List<CareRequests> allRequests(){
+        return staffService.requestsList();
     }
 
     @GetMapping("/selectPendingService")
