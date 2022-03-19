@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -157,7 +156,7 @@ public class CareRequests  implements Serializable {
 		return this.weekDay;
 	}
 
-	public Date getStartTime() {
+	public Timestamp getStartTime() {
 		return this.startTime;
 	}
 
@@ -165,7 +164,7 @@ public class CareRequests  implements Serializable {
 		this.startTime = startTime;
 	}
 
-	public Date getEndTime() {
+	public Timestamp getEndTime() {
 		return this.endTime;
 	}
 

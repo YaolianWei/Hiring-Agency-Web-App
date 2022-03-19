@@ -3,7 +3,6 @@ package com.example.hiringagency.DAO;
 import com.example.hiringagency.domain.entity.SecurityQuestionBank;
 import com.example.hiringagency.domain.entity.SecurityQuestions;
 import com.example.hiringagency.domain.entity.Users;
-import com.example.hiringagency.domain.model.UserPassword;
 import com.example.hiringagency.domain.model.UserQuestions;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -22,8 +21,6 @@ public interface UserMapper {
      */
     Users login(@Param("username") String username, @Param("password") String password);
 
-    // Users notFirstLogin(@Param("username") String username, @Param("password") String password);
-
     Boolean selectIsBlockedByName(@Param("username") String username);
 
     Boolean selectFirstLoginByName(@Param("username")String username);
@@ -35,8 +32,6 @@ public interface UserMapper {
     List<UserQuestions> selectQuestionById(@Param("userId") Long userId);
 
     Users selectUserInfoByUserName(@Param("username")String username);
-
-    void updateFirstLogin(@Param("username") String username);
 
     void changePassword(@Param("username") String username, @Param("password") String password);
 

@@ -17,7 +17,7 @@ public interface StaffMapper {
 
     void deleteAd(@Param("jobAdvertisementId") long jobAdvertisementId);
 
-    void addHPAccount(String firstName, String lastName, String username, String password, String postalAddress, Long phoneNumber, String email);
+    void addHPAccount(String firstName, String lastName, String username, String password, String postalAddress, Long phoneNumber, String email, Double hourlyRate);
 
     // hire HP - 1
     Info selectHPInfoById(@Param("healthcareJobApplicationId") Long healthcareJobApplicationId);
@@ -38,25 +38,31 @@ public interface StaffMapper {
 
     List<Users> selectAllCT();
 
-    List<Users> selectHPbyRequest(@Param("careRequestId") Long careRequestId);
-
-    void addService(CareService careService);
-
-    void terminateService(@Param("serviceId") Long serviceId);
-
-    void reAssignHP(@Param("serviceId") Long serviceId, @Param("hpid") Long hpid);
-
-    void addBilling(Billing billing);
+    List<HealthcareJobApplication> selectHPbyRequest(@Param("serviceType") Long serviceType, @Param("genderSpecific") Long genderSpecific);
 
     List<CareRequests> selectAllRequests();
 
-    List<CareService> selectPendingService();
+    List<ServiceEntries> selectServiceEntries(@Param("careRequestId") Long careRequestId);
 
-    Long selectPendingServiceById(@Param("careTakerId") Long careTakerId);
+    CareRequests selectRequestById(@Param("careRequestId") Long careRequestId);
+
+    ServiceEntries selectEntriesById(@Param("serviceEntryId") Long serviceEntryId);
+
+    List<ServiceEntries> selectEntriesByHp (@Param("userId") Long userId);
+
+    void assignHP(@Param("userId") Long userId, @Param("serviceEntryId") Long serviceEntryId);
+
+    void deAssignHP(@Param("serviceEntryId") Long serviceEntryId);
+
+    void addBilling(Billing billing);
+
+    List<Billing> selectBilling();
+
+    void pay(@Param("amount") double amount, @Param("billingId") Long billingId);
 
     Boolean softDeleteCT(@Param("careTakerId") Long careTakerId);
 
-    List<CareService> selectTerminateService();
+    void withdraw(@Param("serviceEntryId") long serviceEntryId);
 
-    List<Billing> selectBilling();
+    List<CareRequests> selectRequestByCt(@Param("careTakerId") Long careTakerId);
 }

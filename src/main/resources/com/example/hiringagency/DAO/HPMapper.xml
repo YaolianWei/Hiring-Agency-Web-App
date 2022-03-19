@@ -19,6 +19,23 @@
         select *
         from HealthcareJobApplication hja left join JobAdvertisements ja on hja.jobAdvertisementId = ja.jobAdvertisementId
         where hja.degree >= ja.educationRequirement and hja.active = 1 and hja.jobAdvertisementId = #{jobAdvertisementId}
-
     </select>
+
+    <select id="selectAllSsn" resultType="com.example.hiringagency.domain.entity.HealthcareJobApplication">
+        select *
+        from HealthcareJobApplication
+        where userId is not null
+    </select>
+
+    <select id="selectEntries" resultType="com.example.hiringagency.domain.entity.ServiceEntries">
+        select *
+        from ServiceEntries
+        where hpId = #{userId}
+    </select>
+
+    <update id="updateHour" parameterType="com.example.hiringagency.domain.entity.ServiceEntries">
+        update ServiceEntries
+        set startTime = #{startTime} and endTime = #{endTime} and completedFlag = 1
+        where serviceEntryId = #{serviceEntryId}
+    </update>
 </mapper>

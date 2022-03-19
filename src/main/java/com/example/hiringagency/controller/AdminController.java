@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 @RestController
 public class AdminController {
@@ -28,21 +27,21 @@ public class AdminController {
 
     @GetMapping("/addStaff")
     public Map<String,String> addStaff(String FirstName, String LastName, String PostalAddress, String PhoneNumber, String Email){
-        Map<String, String> ret = new HashMap<String, String>();
-        Boolean isCoNum = utilities.isCorrectNumFormat(PhoneNumber);
+        Map<String, String> ret = new HashMap<>();
+        boolean isCoNum = utilities.isCorrectNumFormat(PhoneNumber);
         if(!isCoNum){
             ret.put("code", "400");
             ret.put("msg", "Please enter phone number in the correct format.");
             return ret;
         }
-        Boolean isCoEmail = utilities.isCorrectEmaFormat(Email);
+        boolean isCoEmail = utilities.isCorrectEmaFormat(Email);
         if(!isCoEmail){
             ret.put("code", "401");
             ret.put("msg", "Please enter email in the correct format.");
             return ret;
         }
 
-        String Username = null;
+        String Username;
         int no = adminService.maxId();
         if(no < 10){
             Username = LastName + '0' + no;

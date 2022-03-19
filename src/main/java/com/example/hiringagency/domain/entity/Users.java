@@ -56,6 +56,9 @@ public class Users  implements Serializable {
 	@Column(name = "IsDeleted" )
 	private Boolean isDeleted;
 
+	@Column(name = "HourlyRate" )
+	private Double hourlyRate;
+
 	public Long getUserId() {
 		return this.userId;
 	}

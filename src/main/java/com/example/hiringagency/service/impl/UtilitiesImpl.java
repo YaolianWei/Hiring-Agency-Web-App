@@ -38,7 +38,7 @@ public class UtilitiesImpl implements Utilities {
         String str1 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String str2 = "~!@#$%&*+";
         Random random = new Random();
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuffer = new StringBuilder();
         for (int i= 0; i < 6; i++){
             int number = random.nextInt(52);
             stringBuffer.append(str1.charAt(number));
@@ -50,16 +50,15 @@ public class UtilitiesImpl implements Utilities {
 
     /**
      * password encryption
-     * @param password
-     * @return
      */
     public String getSalt(String password) {
         String md5 = password + '/' + salt;
         return DigestUtils.md5DigestAsHex(md5.getBytes());
     }
 
+    @Override
     public boolean isCorrectNumFormat(String phoneNum){
-        Boolean isCorrect=false;
+        boolean isCorrect=false;
         if(phoneNum.length()==10){
             if(phoneNum.matches("[0-9]+")){
                 isCorrect = true;
@@ -68,8 +67,9 @@ public class UtilitiesImpl implements Utilities {
         return  isCorrect;
     }
 
+    @Override
     public boolean isCorrectEmaFormat(String email){
-        Boolean isCorrect=true;
+        boolean isCorrect=true;
         String regEx="\\w{3,15}@(\\w{2,8}\\.){1,2}(com|net|cn|edu)";
         Pattern pattern = Pattern.compile(regEx);
         Matcher matcher = pattern.matcher(email);

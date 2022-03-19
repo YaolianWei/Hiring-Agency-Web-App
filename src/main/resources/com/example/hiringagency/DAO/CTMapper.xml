@@ -28,21 +28,32 @@
         where careTakerId = #{careTakerId}
     </select>
 
-    <select id="selectPendingService" resultType="com.example.hiringagency.domain.entity.CareService">
+    <select id="selectRequestsById" resultType="com.example.hiringagency.domain.entity.CareRequests">
         select *
-        from Service
-        where status = 0 and careTakerId = #{careTakerId}
+        from CareRequests
+        where careRequestId = #{careRequestId}
     </select>
 
-    <select id="selectTerminateService" resultType="com.example.hiringagency.domain.entity.CareService">
+    <select id="selectServiceEntries" resultType="com.example.hiringagency.domain.entity.ServiceEntries">
         select *
-        from Service
-        where status = 1 and careTakerId = #{careTakerId}
+        from ServiceEntries
+        where careRequestId = #{careRequestId}
     </select>
+
+    <insert id="addEntries" parameterType="com.example.hiringagency.domain.entity.ServiceEntries">
+        insert into ServiceEntries(Date, StartTime, EndTime, careRequestId)
+        values (#{date}, #{startTime}, #{endTime}, #{careRequestId})
+    </insert>
 
     <select id="selectBilling" resultType="com.example.hiringagency.domain.entity.Billing">
         select *
         from Billing
         where careTakerId = #{careTakerId}
     </select>
+
+    <update id="pay" parameterType="com.example.hiringagency.domain.entity.Billing">
+        update Billing
+        set paidAmount = paidAmount + #{amount}
+        where billingId = #{billingId}
+    </update>
 </mapper>

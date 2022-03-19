@@ -6,10 +6,7 @@ import com.example.hiringagency.service.StaffService;
 import com.example.hiringagency.service.Utilities;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +25,7 @@ public class StaffController {
     @GetMapping("/setAd")
     @ResponseBody
     public Map<String,String> setAd(JobAdvertisements jobAdvertisements){
-        Map<String, String> ret = new HashMap<String, String>();
+        Map<String, String> ret = new HashMap<>();
         staffService.setAd(jobAdvertisements);
 
         ret.put("code", "200");
@@ -45,7 +42,7 @@ public class StaffController {
     // delete advertisement
     @GetMapping("/deleteAd")
     public Map<String, String> deleteAd(@Param("jobAdvertisementId") long jobAdvertisementId){
-        Map<String, String> ret = new HashMap<String, String>();
+        Map<String, String> ret = new HashMap<>();
         staffService.deleteAd(jobAdvertisementId);
         ret.put("code", "200");
         ret.put("msg", "Delete advertisement success.");
@@ -54,11 +51,11 @@ public class StaffController {
 
     // hire a healthcare professional
     @GetMapping("/hireHP")
-    public Map<String,String> hireHP(@Param("healthcareJobApplicationId") Long healthcareJobApplicationId){
-        Map<String, String> ret = new HashMap<String, String>();
+    public Map<String,String> hireHP(@Param("healthcareJobApplicationId") Long healthcareJobApplicationId, Double hourlyRate){
+        Map<String, String> ret = new HashMap<>();
         Info info = staffService.selectHPInfoById(healthcareJobApplicationId);
 
-        String username = null;
+        String username;
         Long no = staffService.maxId();
         if(no < 10){
             username = info.getLastName() + '0' + no;
@@ -70,7 +67,7 @@ public class StaffController {
 
         String pwd = utilities.getSalt(Password);
 
-        staffService.addHPAccount(info.getFirstName(),info.getLastName(),username,pwd, info.getPostalAddress(), info.getPhoneNumber(), info.getEmail());
+        staffService.addHPAccount(info.getFirstName(),info.getLastName(),username,pwd, info.getPostalAddress(), info.getPhoneNumber(), info.getEmail(), hourlyRate);
 
         Long userId = no + 1;
         staffService.updateHPId(userId,healthcareJobApplicationId);
@@ -88,10 +85,10 @@ public class StaffController {
     // approve care taker's registration
     @GetMapping("/approveCT")
     public Map<String,String> approveCT(@Param("careTakerRegistrationId") Long careTakerRegistrationId){
-        Map<String, String> ret = new HashMap<String, String>();
+        Map<String, String> ret = new HashMap<>();
         Info info = staffService.selectCTInfoById(careTakerRegistrationId);
 
-        String username = null;
+        String username;
         Long no = staffService.maxId();
         if(no < 10){
             username = info.getLastName() + '0' + no;
@@ -118,61 +115,52 @@ public class StaffController {
         return staffService.allCT();
     }
 
-    @GetMapping("/selectHPbyRequest")
-    public List<Users> selectHPbyRequest(@Param("careRequestId") Long careRequestId){
-        return staffService.selectHPbyRequest(careRequestId);
-    }
-
-    @PostMapping("/addService")
-    public Map<String,String> addService(CareService careService){
-        Map<String, String> ret = new HashMap<String, String>();
-        staffService.addService(careService);
-        ret.put("code", "200");
-        ret.put("msg", "Add service success.");
-        return ret;
-    }
-
-    @PostMapping("/addBilling")
-    public Map<String,String> addBilling(Billing billing){
-        Map<String, String> ret = new HashMap<String, String>();
-        staffService.addBilling(billing);
-        ret.put("code", "200");
-        ret.put("msg", "Add billing success.");
-        return ret;
-    }
-
-    @GetMapping("/terminateService")
-    public Map<String, String> terminateService(@Param("serviceId") long serviceId){
-        Map<String, String> ret = new HashMap<String, String>();
-        staffService.terminateService(serviceId);
-        ret.put("code", "200");
-        ret.put("msg", "Terminate service success.");
-        return ret;
-    }
-
-    @GetMapping("/reAssignHP")
-    public Map<String, String> reAssignHP(@Param("serviceId") long serviceId, @Param("hpid") Long hpid){
-        Map<String, String> ret = new HashMap<String, String>();
-        staffService.reAssignHP(serviceId, hpid);
-        ret.put("code", "200");
-        ret.put("msg", "Re-assign HP success.");
-        return ret;
-    }
-
     // all requests list
     @GetMapping("/allRequests")
     public List<CareRequests> allRequests(){
         return staffService.requestsList();
     }
 
-    @GetMapping("/selectPendingService")
-    public List<CareService> selectPendingService(){
-        return staffService.selectPendingService();
+    @GetMapping("/getEntriesList")
+    public List<ServiceEntries> getEntriesList(Long careRequestId){
+        return staffService.selectServiceEntries(careRequestId);
     }
 
-    @GetMapping("/selectTerminateService")
-    public List<CareService> selectTerminateService(){
-        return staffService.selectTerminateService();
+    @GetMapping("/assignHPList")
+    public List<HealthcareJobApplication> assignHPList(@Param("careRequestId") Long careRequestId, @Param("serviceEntryId") Long serviceEntryId){
+        return staffService.assignHPList(careRequestId, serviceEntryId);
+    }
+
+    @GetMapping("/assignHP")
+    public Map<String, String> assignHP(@Param("userId") Long userId, @Param("serviceEntryId") Long serviceEntryId){
+        Map<String, String> ret = new HashMap<>();
+        staffService.assignHP(userId, serviceEntryId);
+        ret.put("code", "200");
+        ret.put("msg", "Assign HP success.");
+        return ret;
+    }
+
+    @GetMapping("/selectEntriesByHp")
+    public List<ServiceEntries> selectEntriesByHp(@Param("userId") Long userId){
+        return staffService.selectEntriesByHp(userId);
+    }
+
+    @GetMapping("/deAssignHP")
+    public Map<String, String> deAssignHP(@Param("serviceEntryId") Long serviceEntryId){
+        Map<String, String> ret = new HashMap<>();
+        staffService.deAssignHP(serviceEntryId);
+        ret.put("code", "200");
+        ret.put("msg", "Assign HP success.");
+        return ret;
+    }
+
+    @PostMapping("/addBilling")
+    public Map<String,String> addBilling(@RequestBody Billing billing){
+        Map<String, String> ret = new HashMap<>();
+        staffService.addBilling(billing);
+        ret.put("code", "200");
+        ret.put("msg", "Add billing success.");
+        return ret;
     }
 
     @GetMapping("/selectBilling")
@@ -180,17 +168,39 @@ public class StaffController {
         return staffService.selectBilling();
     }
 
-    // soft delete care taker
+    @GetMapping("/payBilling")
+    public Map<String, String> pay(@Param("amount") double amount, @Param("billingId") Long billingId){
+        Map<String, String> ret = new HashMap<>();
+        staffService.pay(amount, billingId);
+        ret.put("code", "200");
+        ret.put("msg", "Pay billing account success.");
+        return ret;
+    }
+
     @GetMapping("/softDeleteCT")
     public Map<String, String> softDeleteCT(@Param("careTakerId") Long careTakerId){
-        Map<String, String> ret = new HashMap<String, String>();
+        Map<String, String> ret = new HashMap<>();
         if (staffService.softDeleteCT(careTakerId)){
             ret.put("code", "200");
             ret.put("msg", "Delete care taker success.");
         }else {
-            ret.put("code", "400");
-            ret.put("msg", "The care taker has pending service now.");
+            ret.put("code", "201");
+            ret.put("msg", "There are patients associated with the care taker now.");
         }
         return ret;
+    }
+
+    @GetMapping("/withdraw")
+    public Map<String, String> withdraw(@Param("careRequestId") long careRequestId){
+        Map<String, String> ret = new HashMap<>();
+        staffService.withdraw(careRequestId);
+        ret.put("code", "200");
+        ret.put("msg", "Pay billing account success.");
+        return ret;
+    }
+
+    @GetMapping("/viewRequestByCt")
+    public List<CareRequests> selectRequestByCt(@Param("careTakerId") Long careTakerId){
+        return staffService.selectRequestByCt(careTakerId);
     }
 }

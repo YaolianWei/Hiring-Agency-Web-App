@@ -3,8 +3,12 @@ package com.example.hiringagency.domain.entity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -23,20 +27,23 @@ public class ServiceEntries  implements Serializable {
    	@Column(name = "ServiceEntryID" )
 	private Long serviceEntryId;
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
    	@Column(name = "Date" )
 	private Date date;
 
    	@Column(name = "HPID" )
 	private Long hpid;
 
-   	@Column(name = "BillingID" )
-	private Long billingId;
+   	@Column(name = "CompleteFlag" )
+	private Boolean completeFlag;
 
-   	@Column(name = "StartTime" )
-	private Date startTime;
+	@JsonFormat(pattern = "HH:mm")
+	@Column(name = "StartTime" )
+	private Timestamp startTime;
 
-   	@Column(name = "EndTime" )
-	private Date endTime;
+	@JsonFormat(pattern = "HH:mm")
+	@Column(name = "EndTime" )
+	private Timestamp endTime;
 
    	@Column(name = "CareRequestID" )
 	private Long careRequestId;
@@ -65,27 +72,19 @@ public class ServiceEntries  implements Serializable {
 		this.hpid = hpid;
 	}
 
-	public Long getBillingId() {
-		return this.billingId;
-	}
-
-	public void setBillingId(Long billingId) {
-		this.billingId = billingId;
-	}
-
-	public Date getStartTime() {
+	public Timestamp getStartTime() {
 		return this.startTime;
 	}
 
-	public void setStartTime(Date startTime) {
+	public void setStartTime(Timestamp startTime) {
 		this.startTime = startTime;
 	}
 
-	public Date getEndTime() {
+	public Timestamp getEndTime() {
 		return this.endTime;
 	}
 
-	public void setEndTime(Date endTime) {
+	public void setEndTime(Timestamp endTime) {
 		this.endTime = endTime;
 	}
 

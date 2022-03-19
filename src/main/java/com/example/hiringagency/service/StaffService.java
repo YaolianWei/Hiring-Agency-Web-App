@@ -14,7 +14,7 @@ public interface StaffService {
 
     void deleteAd(@Param("jobAdvertisementId") long AdvertisementId);
 
-    void addHPAccount(String firstName, String lastName, String username, String password, String postalAddress, Long phoneNumber, String email);
+    void addHPAccount(String firstName, String lastName, String username, String password, String postalAddress, Long phoneNumber, String email, Double hourlyRate);
 
     // hire HP - 1
     Info selectHPInfoById(@Param("healthcareJobApplicationId") Long healthcareJobApplicationId);
@@ -35,23 +35,27 @@ public interface StaffService {
 
     List<Users> allCT();
 
-    List<Users> selectHPbyRequest(@Param("careRequestId") Long careRequestId);
+    List<CareRequests> requestsList();
 
-    void addService(CareService careService);
+    List<ServiceEntries> selectServiceEntries(@Param("careRequestId") Long careRequestId);
 
-    void terminateService(@Param("serviceId") Long serviceId);
+    List<HealthcareJobApplication> assignHPList(@Param("careRequestId") Long careRequestId, @Param("serviceEntryId") Long serviceEntryId);
 
-    void reAssignHP(@Param("serviceId") Long serviceId, @Param("hpid") Long hpid);
+    void assignHP(@Param("userId") Long userId, @Param("serviceEntryId") Long serviceEntryId);
+
+    List<ServiceEntries> selectEntriesByHp(@Param("userId") Long userId);
+
+    void deAssignHP(@Param("serviceEntryId") Long serviceEntryId);
 
     void addBilling(Billing billing);
 
-    List<CareRequests> requestsList();
-
-    List<CareService> selectPendingService();
-
-    List<CareService> selectTerminateService();
-
     List<Billing> selectBilling();
 
+    void pay(@Param("amount") double amount, @Param("billingId") Long billingId);
+
     Boolean softDeleteCT(@Param("careTakerId") Long careTakerId);
+
+    void withdraw(@Param("careRequestId") long careRequestId);
+
+    List<CareRequests> selectRequestByCt(@Param("careTakerId") Long careTakerId);
 }

@@ -22,8 +22,8 @@ spring:
     from: geshi6746@gmail.com
     default-encoding: utf-8
   datasource:
-    url: jdbc:sqlite:/Users/wylllll/Desktop/Agency.db
-    # url: jdbc:sqlite:C:/Users/dell/Downloads/Agency.db
+    # url: jdbc:sqlite:/Users/wylllll/Desktop/Agency.db
+    url: jdbc:sqlite:C:/Users/dell/Downloads/Agency.db
     # url: jdbc:sqlite:C:/Users/wei5927/Desktop/Agency.db
     username:
     password:

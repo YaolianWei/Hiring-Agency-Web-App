@@ -21,8 +21,8 @@
 
     <!-- 接下来4个都是为了hire HP-->
     <insert id="addHPAccount" parameterType="com.example.hiringagency.domain.entity.Users">
-        insert into Users(`firstName`, `lastName`,`username`, `password`, `firstLogin`, `postalAddress`, `phoneNumber`,`email`,`type`, `isBlocked`)
-        values (#{firstName}, #{lastName}, #{username}, #{password}, 0, #{postalAddress}, #{phoneNumber}, #{email}, 3, 0)
+        insert into Users(`firstName`, `lastName`,`username`, `password`, `firstLogin`, `postalAddress`, `phoneNumber`,`email`,`type`, `isBlocked`, `hourlyRate`)
+        values (#{firstName}, #{lastName}, #{username}, #{password}, 0, #{postalAddress}, #{phoneNumber}, #{email}, 3, 0, #{hourlyRate})
     </insert>
 
     <select id="selectHPInfoById" resultType="com.example.hiringagency.domain.model.Info">
@@ -74,50 +74,68 @@
         where Type = 2 and isDeleted = 0
     </select>
 
-    <select id="selectHPbyRequest" resultType="com.example.hiringagency.domain.entity.Users">
-        select UserID
-        from HealthcareJobApplication hja left join CareRequests cb on cb.GenderSpecific = hja.Gender and cb.ServiceType = hja.ServiceType
-        where hja.active = 0 and cb.careRequestID = #{careRequestId}
+    <select id="selectHPbyRequest" resultType="com.example.hiringagency.domain.entity.HealthcareJobApplication">
+        select *
+        from HealthcareJobApplication
+        where active = 0 and serviceType = #{serviceType} and gender = #{genderSpecific}
     </select>
-
-    <insert id="addService" parameterType="com.example.hiringagency.domain.entity.CareService">
-        insert into Service(`serviceId`, `requestId`, `hpid`, `careTakerId`, `status`)
-        values (#{serviceId}, #{requestId}, #{hpid}, #{careTakerId}, 0)
-    </insert>
-
-    <update id="terminateService">
-        update Service
-        set status = 1
-        where serviceId = #{serviceId}
-    </update>
-
-    <update id="reAssignHP">
-        update Service
-        set hpid = #{hpid}
-        where serviceId = #{serviceId}
-    </update>
-
-    <insert id="addBilling" parameterType="com.example.hiringagency.domain.entity.Billing">
-        insert into Billing(`careTakerId`, `careRequestId`, `hourlyRate`, `paidAmount`, `amountYetToPay`, `serviceId`)
-        values (#{careTakerId}, #{careRequestId}, #{hourlyRate}, #{paidAmount}, #{amountYetToPay}, #{serviceId})
-    </insert>
 
     <select id="selectAllRequests" resultType="com.example.hiringagency.domain.entity.CareRequests">
         select *
         from CareRequests
     </select>
 
-    <select id="selectPendingService" resultType="com.example.hiringagency.domain.entity.CareService">
+    <select id="selectServiceEntries" resultType="com.example.hiringagency.domain.entity.ServiceEntries">
         select *
-        from Service
-        where status = 0
+        from ServiceEntries
+        where careRequestId = #{careRequestId}
     </select>
 
-    <select id="selectPendingServiceById" resultType="java.lang.Long">
-        select status
-        from Service
-        where status = 0 and careTakerId = #{careTakerId}
+    <select id="selectRequestById" resultType="com.example.hiringagency.domain.entity.CareRequests">
+        select *
+        from CareRequests
+        where careRequestId = #{careRequestId}
     </select>
+
+    <select id="selectEntriesById" resultType="com.example.hiringagency.domain.entity.ServiceEntries">
+        select *
+        from ServiceEntries
+        where serviceEntryId = #{serviceEntryId}
+    </select>
+
+    <select id="selectEntriesByHp" resultType="com.example.hiringagency.domain.entity.ServiceEntries">
+        select *
+        from ServiceEntries
+        where hpId = #{userId}
+    </select>
+
+    <update id="assignHP" parameterType="com.example.hiringagency.domain.entity.ServiceEntries">
+        update ServiceEntries
+        set hpId = #{userId}
+        where serviceEntryId = #{serviceEntryId}
+    </update>
+
+    <update id="deAssignHP" parameterType="com.example.hiringagency.domain.entity.ServiceEntries">
+        update ServiceEntries
+        set hpId = null
+        where serviceEntryId = #{serviceEntryId}
+    </update>
+
+    <insert id="addBilling" parameterType="com.example.hiringagency.domain.entity.Billing">
+        insert into Billing(`careTakerId`, `careRequestId`, `hourlyRate`, `paidAmount`, `amountYetToPay`)
+        values (#{careTakerId}, #{careRequestId}, #{hourlyRate}, 0, 0)
+    </insert>
+
+    <select id="selectBilling" resultType="com.example.hiringagency.domain.entity.Billing">
+        select *
+        from Billing
+    </select>
+
+    <update id="pay" parameterType="com.example.hiringagency.domain.entity.Billing">
+        update Billing
+        set paidAmount = paidAmount + #{amount}
+        where billingId = #{billingId}
+    </update>
 
     <update id="softDeleteCT" parameterType="com.example.hiringagency.domain.entity.Users">
         update Users
@@ -125,14 +143,14 @@
         where userId = #{careTakerId}
     </update>
 
-    <select id="selectTerminateService" resultType="com.example.hiringagency.domain.entity.CareService">
-        select *
-        from Service
-        where status = 1
-    </select>
+    <delete id="withdraw" parameterType="com.example.hiringagency.domain.entity.ServiceEntries">
+        delete from ServiceEntries
+        where serviceEntryId = #{serviceEntryId}
+    </delete>
 
-    <select id="selectBilling" resultType="com.example.hiringagency.domain.entity.Billing">
+    <select id="selectRequestByCt" resultType="com.example.hiringagency.domain.entity.CareRequests">
         select *
-        from Billing
+        from CareRequests
+        where careTakerId = #{careTakerId}
     </select>
 </mapper>
