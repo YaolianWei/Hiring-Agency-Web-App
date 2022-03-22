@@ -153,4 +153,10 @@
         from CareRequests
         where careTakerId = #{careTakerId}
     </select>
+
+    <update id="updateHour" parameterType="com.example.hiringagency.domain.entity.ServiceEntries">
+        update ServiceEntries
+        set startTime = #{startTime} and endTime = #{endTime}
+        where serviceEntryId = #{serviceEntryId}
+    </update>
 </mapper>

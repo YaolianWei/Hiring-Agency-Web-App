@@ -56,4 +56,9 @@
         set paidAmount = paidAmount + #{amount}
         where billingId = #{billingId}
     </update>
+
+    <select id="selectMaxId" resultType="java.lang.Long">
+        select MAX(careRequestId)
+        from CareRequests
+    </select>
 </mapper>

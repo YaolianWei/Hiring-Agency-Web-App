@@ -96,7 +96,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public List<HealthcareJobApplication> assignHPList(@Param("careRequestId") Long careRequestId, @Param("serviceEntryId") Long serviceEntryId){
         CareRequests cr = staffMapper.selectRequestById(careRequestId);//得到CareRequests
-        Date date = staffMapper.selectEntriesById(serviceEntryId).getDate();//得到CareRequests的某一日
+        Date date = staffMapper.selectEntriesById(serviceEntryId).getDate();//根据serviceEntry得到日期
         List<HealthcareJobApplication> hpList = staffMapper.selectHPbyRequest(cr.getServiceType(), cr.getGenderSpecific());//得到符合类型和性别的HP
         for (HealthcareJobApplication hja : hpList) {
             int hpAge = getAge(hja.getDateOfBirth());
@@ -108,17 +108,11 @@ public class StaffServiceImpl implements StaffService {
             List<ServiceEntries> seList = staffMapper.selectEntriesByHp(hja.getUserId());
             for (ServiceEntries se : seList) {
                 if (se.getDate() == date){//如果HP在这一天有服务
-                    if (cr.getFlexibleHoursFlag()) {
-                        hpList.remove(hja);//因为cr是灵活的，直接删去在这一天有服务的HP
-                    } else if (se.getStartTime() == null){
-                        hpList.remove(hja);//HP这一天的服务是灵活的，删去
-                    } else {//对比两个时间段是否重合
-                        if (DateUtil.overlapped(
+                    if (DateUtil.overlapped(
                                 DateUtil.buildSlot(cr.getStartTime(), cr.getEndTime()),
                                 DateUtil.buildSlot(se.getStartTime(), se.getEndTime())
-                        )) {
-                            hpList.remove(hja);//重合，删去
-                        }
+                    )) {
+                        hpList.remove(hja);//重合，删去
                     }
                 }
             }
@@ -259,5 +253,10 @@ public class StaffServiceImpl implements StaffService {
                 staffMapper.withdraw(se.getServiceEntryId());
             }
         }
+    }
+
+    @Override
+    public void updateHour(@Param("startTime")Timestamp startTime, @Param("endTime")Timestamp endTime, @Param("serviceEntryId")Long serviceEntryId){
+        staffMapper.updateHour(startTime, endTime, serviceEntryId);
     }
 }

@@ -30,4 +30,6 @@ public interface CTMapper {
     List<Billing> selectBilling(@Param("careTakerId") Long careTakerId);
 
     void pay(@Param("amount") double amount, @Param("billingId") Long billingId);
+
+    Long selectMaxId();
 }

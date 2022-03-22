@@ -5,6 +5,7 @@ import com.example.hiringagency.domain.model.Info;
 import org.apache.ibatis.annotations.Param;
 
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface StaffService {
@@ -58,4 +59,6 @@ public interface StaffService {
     void withdraw(@Param("careRequestId") long careRequestId);
 
     List<CareRequests> selectRequestByCt(@Param("careTakerId") Long careTakerId);
+
+    void updateHour(@Param("startTime") Timestamp startTime, @Param("endTime")Timestamp endTime, @Param("serviceEntryId")Long serviceEntryId);
 }

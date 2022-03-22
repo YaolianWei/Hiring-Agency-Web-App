@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -202,5 +203,14 @@ public class StaffController {
     @GetMapping("/viewRequestByCt")
     public List<CareRequests> selectRequestByCt(@Param("careTakerId") Long careTakerId){
         return staffService.selectRequestByCt(careTakerId);
+    }
+
+    @GetMapping("/addHour")
+    public Map<String, String> updateHour(@Param("startTime") Timestamp startTime, @Param("endTime")Timestamp endTime, @Param("serviceEntryId")Long serviceEntryId){
+        Map<String, String> ret = new HashMap<>();
+        staffService.updateHour(startTime, endTime, serviceEntryId);
+        ret.put("code", "200");
+        ret.put("msg", "Pay billing account success.");
+        return ret;
     }
 }

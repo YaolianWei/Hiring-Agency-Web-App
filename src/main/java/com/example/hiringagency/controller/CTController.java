@@ -76,15 +76,6 @@ public class CTController {
         return ctService.selectRequests(careTakerId);
     }
 
-    @PostMapping("/addEntries")
-    public Map<String,String> addEntries(Long careRequestId) {
-        Map<String, String> ret = new HashMap<>();
-        ctService.addEntries(careRequestId);
-        ret.put("code", "200");
-        ret.put("msg", "Add Entries success.");
-        return ret;
-    }
-
     @GetMapping("/entriesList")
     public List<ServiceEntries> getEntriesList(Long careRequestId){
         return ctService.selectServiceEntries(careRequestId);

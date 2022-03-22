@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -65,4 +66,6 @@ public interface StaffMapper {
     void withdraw(@Param("serviceEntryId") long serviceEntryId);
 
     List<CareRequests> selectRequestByCt(@Param("careTakerId") Long careTakerId);
+
+    void updateHour(@Param("startTime") Timestamp startTime, @Param("endTime")Timestamp endTime, @Param("serviceEntryId")Long serviceEntryId);
 }

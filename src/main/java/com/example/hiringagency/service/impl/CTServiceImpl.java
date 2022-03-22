@@ -54,6 +54,15 @@ public class CTServiceImpl implements CTService {
         }
         if (canAdd){
             ctMapper.addRequest(careRequests);
+            ServiceEntries serviceEntries = new ServiceEntries();
+            serviceEntries.setCareRequestId(ctMapper.selectMaxId());
+            serviceEntries.setStartTime(careRequests.getStartTime());
+            serviceEntries.setEndTime(careRequests.getEndTime());
+            List<Date> dates = CalDates(careRequests.getWeekDay(), Math.toIntExact(careRequests.getTotalDays()));
+            for (Date date : dates) {
+                serviceEntries.setDate(date);
+                ctMapper.addEntries(serviceEntries);
+            }
         }
         return canAdd;
     }
@@ -95,20 +104,6 @@ public class CTServiceImpl implements CTService {
     @Override
     public List<ServiceEntries> selectServiceEntries(Long careRequestsID){
         return ctMapper.selectServiceEntries(careRequestsID);
-    }
-
-    @Override
-    public void addEntries(Long careRequestId){
-        CareRequests careRequests = ctMapper.selectRequestsById(careRequestId);
-        ServiceEntries serviceEntries = new ServiceEntries();
-        serviceEntries.setCareRequestId(careRequestId);
-        serviceEntries.setStartTime(careRequests.getStartTime());
-        serviceEntries.setEndTime(careRequests.getEndTime());
-        List<Date> dates = CalDates(careRequests.getWeekDay(), Math.toIntExact(careRequests.getTotalDays()));
-        for (Date date : dates) {
-            serviceEntries.setDate(date);
-            ctMapper.addEntries(serviceEntries);
-        }
     }
 
     @Override
