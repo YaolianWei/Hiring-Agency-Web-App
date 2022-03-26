@@ -37,6 +37,9 @@ public class Billing  implements Serializable {
    	@Column(name = "AmountYetToPay" )
 	private Double amountYetToPay;
 
+	@Column(name = "ServiceID" )
+	private Long serviceId;
+
 	public Long getBillingId() {
 		return this.billingId;
 	}

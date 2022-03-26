@@ -32,21 +32,26 @@ public class ServiceEntries  implements Serializable {
 	private Date date;
 
    	@Column(name = "HPID" )
-	private Long hpid;
+	private Long hpId;
 
-   	@Column(name = "CompleteFlag" )
-	private Boolean completeFlag;
+   	@Column(name = "Status" )
+	private Long status;
 
 	@JsonFormat(pattern = "HH:mm")
 	@Column(name = "StartTime" )
 	private Timestamp startTime;
 
+//	@JsonFormat(timezone = "GMT-5", pattern = "yyyy:MM:dd HH:mm:ss.SSS")
 	@JsonFormat(pattern = "HH:mm")
 	@Column(name = "EndTime" )
 	private Timestamp endTime;
 
    	@Column(name = "CareRequestID" )
 	private Long careRequestId;
+
+	@Column(name = "CompleteFlag" )
+	private Boolean completeFlag;
+
 
 	public Long getServiceEntryId() {
 		return this.serviceEntryId;
@@ -64,12 +69,12 @@ public class ServiceEntries  implements Serializable {
 		this.date = date;
 	}
 
-	public Long getHpid() {
-		return this.hpid;
+	public Long getHpId() {
+		return this.hpId;
 	}
 
-	public void setHpid(Long hpid) {
-		this.hpid = hpid;
+	public void setHpId(Long hpId) {
+		this.hpId = hpId;
 	}
 
 	public Timestamp getStartTime() {

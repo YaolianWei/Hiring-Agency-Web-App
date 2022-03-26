@@ -25,15 +25,16 @@ public class UserController {
 
     /**
      * user login
+     * @return
      */
     @PostMapping("/login")
     public Map<String,String> login(@RequestBody HashMap<String, String> map){
-        Map<String, String> ret = new HashMap<>();
+        Map<String, String> ret = new HashMap<String, String>();
         Users user = userService.login(map.get("username"), map.get("password"));
         if(user != null){
-            boolean isBlocked = userService.IsBlocked(map.get("username"));
+            Boolean isBlocked = userService.IsBlocked(map.get("username"));
             if(!isBlocked){
-                boolean hasFirst = userService.FirstLogin(map.get("username"));
+                Boolean hasFirst = userService.FirstLogin(map.get("username"));
                 if(!hasFirst){
                     ret.put("code", "200");
                     ret.put("isFirst", "true");
@@ -61,7 +62,7 @@ public class UserController {
 
     @GetMapping("/setQuestions")
     public Map<String,String> setQuestions(SecurityQuestions securityQuestions){
-        Map<String, String> ret = new HashMap<>();
+        Map<String, String> ret = new HashMap<String, String>();
         Long exist = userService.checkExistQuestion(securityQuestions.getBankQuestionId(), securityQuestions.getUserId());
         if( exist == null){
             userService.setQuestions(securityQuestions);
@@ -88,7 +89,7 @@ public class UserController {
 
     @PostMapping("/changePassword")
     public Map<String, String> changePassword(@RequestBody UserPassword userPassword){
-        Map<String, String> ret = new HashMap<>();
+        Map<String, String> ret = new HashMap<String, String>();
 
         boolean isCorrect = userService.isCorrectPwFormat(userPassword.getPassword());
         if(isCorrect){
@@ -106,7 +107,7 @@ public class UserController {
 
     @GetMapping("/deleteQuestion")
     public Map<String, String> deleteSecurityQuestion(@Param("bankQuestionId") Long bankQuestionId, @Param("userId") Long userId){
-        Map<String, String> ret = new HashMap<>();
+        Map<String, String> ret = new HashMap<String, String>();
         userService.deleteSecurityQuestion(bankQuestionId, userId);
         ret.put("code", "200");
         ret.put("msg", "Delete security question success.");
@@ -115,7 +116,7 @@ public class UserController {
 
     @GetMapping("/deleteUser")
     public Map<String, String> deleteUser(@Param("username") String username){
-        Map<String, String> ret = new HashMap<>();
+        Map<String, String> ret = new HashMap<String, String>();
         userService.deleteUser(username);
         ret.put("code", "200");
         ret.put("msg", "Delete user success.");
@@ -124,7 +125,7 @@ public class UserController {
 
     @GetMapping("/activateUser")
     public Map<String, String> activateUser(@Param("username") String username){
-        Map<String, String> ret = new HashMap<>();
+        Map<String, String> ret = new HashMap<String, String>();
         userService.activateUser(username);
         ret.put("code", "200");
         ret.put("msg", "Activate user success.");
@@ -133,7 +134,7 @@ public class UserController {
 
     @GetMapping("/blockUser")
     public Map<String, String> blockUser(@Param("username") String username){
-        Map<String, String> ret = new HashMap<>();
+        Map<String, String> ret = new HashMap<String, String>();
         userService.deactivateUser(username);
         ret.put("code", "200");
         ret.put("msg", "Deactivate user success.");
@@ -142,7 +143,7 @@ public class UserController {
 
     @GetMapping("/softDeleteUser")
     public Map<String, String> softDeleteUser(@Param("username") String username){
-        Map<String, String> ret = new HashMap<>();
+        Map<String, String> ret = new HashMap<String, String>();
         userService.softDeleteUser(username);
         ret.put("code", "200");
         ret.put("msg", "Delete user success.");

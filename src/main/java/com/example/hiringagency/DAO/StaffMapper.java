@@ -1,10 +1,12 @@
 package com.example.hiringagency.DAO;
 
 import com.example.hiringagency.domain.entity.*;
+import com.example.hiringagency.domain.model.BillingAccountInfo;
 import com.example.hiringagency.domain.model.Info;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -41,6 +43,8 @@ public interface StaffMapper {
 
     List<HealthcareJobApplication> selectHPbyRequest(@Param("serviceType") Long serviceType, @Param("genderSpecific") Long genderSpecific);
 
+    List<HealthcareJobApplication> selectHPbyType(@Param("serviceType") Long serviceType);
+
     List<CareRequests> selectAllRequests();
 
     List<ServiceEntries> selectServiceEntries(@Param("careRequestId") Long careRequestId);
@@ -49,17 +53,23 @@ public interface StaffMapper {
 
     ServiceEntries selectEntriesById(@Param("serviceEntryId") Long serviceEntryId);
 
-    List<ServiceEntries> selectEntriesByHp (@Param("userId") Long userId);
+    List<ServiceEntries> selectEntriesByHp(@Param("userId") Long userId);
+
+    List<Billing> selectBillingByRequest(@Param("careRequestId") Long careRequestId);
 
     void assignHP(@Param("userId") Long userId, @Param("serviceEntryId") Long serviceEntryId);
 
     void deAssignHP(@Param("serviceEntryId") Long serviceEntryId);
 
+    Long selectMaxServiceId();
+
     void addBilling(Billing billing);
 
-    List<Billing> selectBilling();
+    List<BillingAccountInfo> selectBilling();
 
-    void pay(@Param("amount") double amount, @Param("billingId") Long billingId);
+    void pay(@Param("sum") double sum, @Param("billingId") Long billingId);
+
+    double selectPaidById(@Param("billingId") Long billingId);
 
     Boolean softDeleteCT(@Param("careTakerId") Long careTakerId);
 
@@ -67,5 +77,5 @@ public interface StaffMapper {
 
     List<CareRequests> selectRequestByCt(@Param("careTakerId") Long careTakerId);
 
-    void updateHour(@Param("startTime") Timestamp startTime, @Param("endTime")Timestamp endTime, @Param("serviceEntryId")Long serviceEntryId);
+    void updateHour(@RequestBody ServiceEntries serviceEntries);
 }

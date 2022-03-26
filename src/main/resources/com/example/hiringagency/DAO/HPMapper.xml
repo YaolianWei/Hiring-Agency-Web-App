@@ -24,18 +24,41 @@
     <select id="selectAllSsn" resultType="com.example.hiringagency.domain.entity.HealthcareJobApplication">
         select *
         from HealthcareJobApplication
-        where userId is not null
     </select>
 
-    <select id="selectEntries" resultType="com.example.hiringagency.domain.entity.ServiceEntries">
-        select *
-        from ServiceEntries
+    <select id="selectEntries" resultType="com.example.hiringagency.domain.model.ScheduleDetails">
+        select cr.FirstName, cr.LastName, cr.Gender, cr.DateOfBirth, cr.ServiceAddress, cr.PatientPhone, cr.PatientEmail, se.ServiceEntryID, se.Date, se.Status, se.StartTime, se.EndTime, se.CareRequestID
+        from ServiceEntries se left join CareRequests cr on cr.careRequestId = se.careRequestId
         where hpId = #{userId}
     </select>
 
     <update id="updateHour" parameterType="com.example.hiringagency.domain.entity.ServiceEntries">
         update ServiceEntries
-        set startTime = #{startTime} and endTime = #{endTime} and completedFlag = 1
+        set startTime = #{startTime}, endTime = #{endTime}, Status = 2, completedFlag = 1
         where serviceEntryId = #{serviceEntryId}
     </update>
+
+    <select id="selectRequestByEntry" resultType="com.example.hiringagency.domain.entity.ServiceEntries">
+        select *
+        from ServiceEntries
+        where serviceEntryId = #{serviceEntryId}
+    </select>
+
+    <select id="selectBillingByRequest" resultType="com.example.hiringagency.domain.entity.Billing">
+        select *
+        from Billing
+        where careRequestId = #{careRequestId}
+    </select>
+
+    <update id="updateCost" parameterType="com.example.hiringagency.domain.entity.Billing">
+        update Billing
+        set amountYetToPay = #{sum}
+        where billingId = #{billingId}
+    </update>
+
+    <select id="selectCostById" resultType="java.lang.Double">
+        select amountYetToPay
+        from Billing
+        where billingId = #{billingId}
+    </select>
 </mapper>

@@ -40,15 +40,21 @@
         where careRequestId = #{careRequestId}
     </select>
 
+    <select id="selectEntriesDetails" resultType="com.example.hiringagency.domain.model.EntriesDetails">
+        select hja.FirstName, hja.LastName, se.Date, se.StartTime, se.EndTime, se.Status
+        from ServiceEntries se left join HealthcareJobApplication hja on se.HPID = hja.UserID
+        where careRequestId = #{careRequestId}
+    </select>
+
     <insert id="addEntries" parameterType="com.example.hiringagency.domain.entity.ServiceEntries">
         insert into ServiceEntries(Date, StartTime, EndTime, careRequestId)
         values (#{date}, #{startTime}, #{endTime}, #{careRequestId})
     </insert>
 
-    <select id="selectBilling" resultType="com.example.hiringagency.domain.entity.Billing">
-        select *
-        from Billing
-        where careTakerId = #{careTakerId}
+    <select id="selectBilling" resultType="com.example.hiringagency.domain.model.BillingAccountInfo">
+        select CR.FirstName "patientFirstName", CR.LastName "patientLastName", B.hourlyRate, B.paidAmount, B.amountYetToPay, B.BillingID, B.ServiceID, B.CareRequestID
+        from Billing B left join CareRequests CR on CR.CareRequestID = B.CareRequestID
+        where B.careTakerId = #{careTakerId}
     </select>
 
     <update id="pay" parameterType="com.example.hiringagency.domain.entity.Billing">
@@ -60,5 +66,17 @@
     <select id="selectMaxId" resultType="java.lang.Long">
         select MAX(careRequestId)
         from CareRequests
+    </select>
+
+    <select id="selectCompleteEntriesByRequest" resultType="com.example.hiringagency.domain.model.BillingDetails">
+        select cr.firstName "patientFirstName", cr.lastName "patientLastName", hja.firstName "hpFirstName", hja.lastName "hpLastName", se.date, se.startTime, se.endTime
+        from ServiceEntries se left join CareRequests cr on cr.careRequestId = se.careRequestId left join HealthcareJobApplication hja on se.hpId = hja.userId
+        where se.careRequestId = #{careRequestId} and se.completedFlag = 1
+    </select>
+
+    <select id="selectRateByRequest" resultType="java.lang.Double">
+        select hourlyRate
+        from Billing
+        where careRequestId = #{careRequestId}
     </select>
 </mapper>

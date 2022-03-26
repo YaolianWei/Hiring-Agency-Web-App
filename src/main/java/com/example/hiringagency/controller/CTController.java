@@ -1,9 +1,11 @@
 package com.example.hiringagency.controller;
 
-import com.example.hiringagency.domain.entity.Billing;
 import com.example.hiringagency.domain.entity.CareRequests;
 import com.example.hiringagency.domain.entity.CareTakerRegistration;
 import com.example.hiringagency.domain.entity.ServiceEntries;
+import com.example.hiringagency.domain.model.BillingAccountInfo;
+import com.example.hiringagency.domain.model.BillingDetails;
+import com.example.hiringagency.domain.model.EntriesDetails;
 import com.example.hiringagency.service.CTService;
 import com.example.hiringagency.service.Utilities;
 import org.apache.ibatis.annotations.Param;
@@ -76,23 +78,22 @@ public class CTController {
         return ctService.selectRequests(careTakerId);
     }
 
+    // care taker see the service request entries
     @GetMapping("/entriesList")
-    public List<ServiceEntries> getEntriesList(Long careRequestId){
-        return ctService.selectServiceEntries(careRequestId);
+    public List<EntriesDetails> getEntriesList(Long careRequestId){
+        return ctService.entriesDetails(careRequestId);
     }
 
+    // care taker see his/her own service
     @GetMapping("/billingList")
-    public List<Billing> getBillingList(Long careTakerId){
+    public List<BillingAccountInfo> getBillingList(Long careTakerId){
         return ctService.selectBilling(careTakerId);
     }
 
-    @GetMapping("/ctPayment")
-    public Map<String, String> pay(@Param("amount") double amount, @Param("billingId") Long billingId){
-        Map<String, String> ret = new HashMap<>();
-        ctService.pay(amount, billingId);
-        ret.put("code", "200");
-        ret.put("msg", "Pay billing account success.");
-        return ret;
+    // care taker see the billing account details
+    @GetMapping("/billingDetails")
+    public List<BillingDetails> selectCompleteEntriesByRequest(@Param("careRequestId") Long careRequestId){
+        return ctService.selectCompleteEntriesByRequest(careRequestId);
     }
 }
 

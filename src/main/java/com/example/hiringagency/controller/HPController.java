@@ -2,6 +2,7 @@ package com.example.hiringagency.controller;
 
 import com.example.hiringagency.domain.entity.HealthcareJobApplication;
 import com.example.hiringagency.domain.entity.ServiceEntries;
+import com.example.hiringagency.domain.model.ScheduleDetails;
 import com.example.hiringagency.service.HPService;
 import com.example.hiringagency.service.Utilities;
 import org.apache.ibatis.annotations.Param;
@@ -43,8 +44,8 @@ public class HPController {
             ret.put("msg", "Apply success.");
             return ret;
         } else {
-            ret.put("code", "201");
-            ret.put("msg", "Apply failure.");
+            ret.put("code", "402");
+            ret.put("msg", "The SSN has been applied.");
             return ret;
         }
     }
@@ -59,15 +60,17 @@ public class HPController {
         return hpService.selectHPByJobId(jobAdvertisementId);
     }
 
+    // hp see his/her schedule
     @GetMapping("/viewEntries")
-    public List<ServiceEntries> selectEntries (@Param("userId")Long userId){
+    public List<ScheduleDetails> selectEntries (@Param("userId")Long userId){
         return hpService.selectEntries(userId);
     }
 
-    @GetMapping("/updateHour")
-    public Map<String,String> updateHour(@Param("startTime") Timestamp startTime, @Param("endTime")Timestamp endTime, @Param("serviceEntryId")Long serviceEntryId){
+    // hp update his/her work time
+    @PostMapping("/updateHour")
+    public Map<String,String> updateHour(@RequestBody ServiceEntries serviceEntries){
         Map<String, String> ret = new HashMap<>();
-        hpService.updateHour(startTime, endTime, serviceEntryId);
+        hpService.updateHour(serviceEntries);
         ret.put("code", "200");
         ret.put("msg", "Update hour success.");
         return ret;

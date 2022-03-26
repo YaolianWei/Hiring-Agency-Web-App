@@ -1,6 +1,7 @@
 package com.example.hiringagency.controller;
 
 import com.example.hiringagency.domain.entity.*;
+import com.example.hiringagency.domain.model.BillingAccountInfo;
 import com.example.hiringagency.domain.model.Info;
 import com.example.hiringagency.service.StaffService;
 import com.example.hiringagency.service.Utilities;
@@ -122,16 +123,26 @@ public class StaffController {
         return staffService.requestsList();
     }
 
+    // get each service request entries
     @GetMapping("/getEntriesList")
     public List<ServiceEntries> getEntriesList(Long careRequestId){
         return staffService.selectServiceEntries(careRequestId);
     }
 
+    // check the request has billing account
+    @GetMapping("/hasAddBilling")
+    public boolean selectBillingByRequest(@Param("careRequestId") Long careRequestId){
+        //true是有账户
+        return staffService.selectBillingByRequest(careRequestId);
+    }
+
+    // get optional hp list
     @GetMapping("/assignHPList")
     public List<HealthcareJobApplication> assignHPList(@Param("careRequestId") Long careRequestId, @Param("serviceEntryId") Long serviceEntryId){
         return staffService.assignHPList(careRequestId, serviceEntryId);
     }
 
+    // assign healthcare professional
     @GetMapping("/assignHP")
     public Map<String, String> assignHP(@Param("userId") Long userId, @Param("serviceEntryId") Long serviceEntryId){
         Map<String, String> ret = new HashMap<>();
@@ -146,15 +157,17 @@ public class StaffController {
         return staffService.selectEntriesByHp(userId);
     }
 
+    // staff deAssign healthcare worker
     @GetMapping("/deAssignHP")
     public Map<String, String> deAssignHP(@Param("serviceEntryId") Long serviceEntryId){
         Map<String, String> ret = new HashMap<>();
         staffService.deAssignHP(serviceEntryId);
         ret.put("code", "200");
-        ret.put("msg", "Assign HP success.");
+        ret.put("msg", "UnAssign HP success.");
         return ret;
     }
 
+    // add billing account
     @PostMapping("/addBilling")
     public Map<String,String> addBilling(@RequestBody Billing billing){
         Map<String, String> ret = new HashMap<>();
@@ -164,11 +177,13 @@ public class StaffController {
         return ret;
     }
 
-    @GetMapping("/selectBilling")
-    public List<Billing> selectBilling(){
+    // staff can see all billing account info
+    @GetMapping("/allBillingInfoList")
+    public List<BillingAccountInfo> billingInfoList(){
         return staffService.selectBilling();
     }
 
+    // staff pay for the service by billingId
     @GetMapping("/payBilling")
     public Map<String, String> pay(@Param("amount") double amount, @Param("billingId") Long billingId){
         Map<String, String> ret = new HashMap<>();
@@ -205,10 +220,11 @@ public class StaffController {
         return staffService.selectRequestByCt(careTakerId);
     }
 
-    @GetMapping("/addHour")
-    public Map<String, String> updateHour(@Param("startTime") Timestamp startTime, @Param("endTime")Timestamp endTime, @Param("serviceEntryId")Long serviceEntryId){
+    // staff add service hour for healthcare worker
+    @PostMapping("/addHour")
+    public Map<String, String> updateHour(@RequestBody ServiceEntries serviceEntries){
         Map<String, String> ret = new HashMap<>();
-        staffService.updateHour(startTime, endTime, serviceEntryId);
+        staffService.updateHour(serviceEntries);
         ret.put("code", "200");
         ret.put("msg", "Pay billing account success.");
         return ret;

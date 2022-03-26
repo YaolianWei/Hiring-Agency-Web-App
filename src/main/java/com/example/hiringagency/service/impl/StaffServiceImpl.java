@@ -2,12 +2,15 @@ package com.example.hiringagency.service.impl;
 
 import com.example.hiringagency.DAO.StaffMapper;
 import com.example.hiringagency.domain.entity.*;
+import com.example.hiringagency.domain.model.BillingAccountInfo;
 import com.example.hiringagency.domain.model.Info;
 import com.example.hiringagency.service.StaffService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -94,32 +97,66 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
+    public boolean selectBillingByRequest(@Param("careRequestId") Long careRequestId){
+        List<Billing> list = staffMapper.selectBillingByRequest(careRequestId);
+        Boolean hasBilling;
+        if(list.size() != 0){
+            hasBilling = true;
+        }else {
+            hasBilling = false;
+        }
+        return hasBilling;
+    }
+
+    @Override
     public List<HealthcareJobApplication> assignHPList(@Param("careRequestId") Long careRequestId, @Param("serviceEntryId") Long serviceEntryId){
-        CareRequests cr = staffMapper.selectRequestById(careRequestId);//得到CareRequests
-        Date date = staffMapper.selectEntriesById(serviceEntryId).getDate();//根据serviceEntry得到日期
-        List<HealthcareJobApplication> hpList = staffMapper.selectHPbyRequest(cr.getServiceType(), cr.getGenderSpecific());//得到符合类型和性别的HP
-        for (HealthcareJobApplication hja : hpList) {
-            int hpAge = getAge(hja.getDateOfBirth());
-            if (hpAge < cr.getLowerAgeLimit() || hpAge > cr.getUpperAgeLimit()){
-                hpList.remove(hja);//删去年龄不符合要求的HP
+        CareRequests cr = staffMapper.selectRequestById(careRequestId);
+        Date date = staffMapper.selectEntriesById(serviceEntryId).getDate();
+        List<HealthcareJobApplication> hpList;
+        if(cr.getGenderSpecific() != null){
+            hpList = staffMapper.selectHPbyRequest(cr.getServiceType(), cr.getGenderSpecific());
+        } else {
+            hpList = staffMapper.selectHPbyType(cr.getServiceType());
+        }
+        if(hpList.size() > 0){
+            for (HealthcareJobApplication hja : hpList) {
+                int hpAge = getAge(hja.getDateOfBirth());
+                if(hpList.size() > 0){
+                    if (cr.getLowerAgeLimit() != null) {
+                        if (hpAge < cr.getLowerAgeLimit()) {
+                            hpList.remove(hja);
+                        }
+                    }
+                }
+                if(hpList.size() > 0){
+                    if(cr.getUpperAgeLimit() != null){
+                        if (hpAge > cr.getUpperAgeLimit()){
+                            hpList.remove(hja);
+                        }
+                    }
+                }
             }
         }
-        for (HealthcareJobApplication hja : hpList) {
-            List<ServiceEntries> seList = staffMapper.selectEntriesByHp(hja.getUserId());
-            for (ServiceEntries se : seList) {
-                if (se.getDate() == date){//如果HP在这一天有服务
-                    if (DateUtil.overlapped(
+        if(hpList.size() > 0){
+            for (HealthcareJobApplication hja : hpList) {
+                List<ServiceEntries> seList = staffMapper.selectEntriesByHp(hja.getUserId());
+                for (ServiceEntries se : seList) {
+                    if (se.getDate() == date) {
+                        if (DateUtil.overlapped(
                                 DateUtil.buildSlot(cr.getStartTime(), cr.getEndTime()),
                                 DateUtil.buildSlot(se.getStartTime(), se.getEndTime())
-                    )) {
-                        hpList.remove(hja);//重合，删去
+                        )) {
+                            hpList.remove(hja);
+                        }
                     }
                 }
             }
         }
         int patientAge = getAge(cr.getDateOfBirth());
-        if (patientAge > 59 && cr.getServiceType() == 2){
-            hpList.removeIf(hja -> hja.getDegree() < 2);//如果病人大于60岁，且需要type为2的服务，删去学历不为2的HP
+        if(hpList.size() > 0){
+            if (patientAge > 59 && cr.getServiceType() == 3){
+                hpList.removeIf(hja -> hja.getDegree() < 3);
+            }
         }
         return hpList;
     }
@@ -206,17 +243,26 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public void addBilling(Billing billing){
+        billing.setServiceId(staffMapper.selectMaxServiceId()+1);
         staffMapper.addBilling(billing);
     }
 
     @Override
-    public List<Billing> selectBilling(){
+    public List<BillingAccountInfo> selectBilling(){
         return staffMapper.selectBilling();
     }
 
     @Override
     public void pay(@Param("amount") double amount, @Param("billingId") Long billingId){
-        staffMapper.pay(amount, billingId);
+        double paidAmount = staffMapper.selectPaidById(billingId);
+        double sum = sum(paidAmount, amount);
+        staffMapper.pay(sum, billingId);
+    }
+
+    public double sum(double d1,double d2){
+        BigDecimal bd1 = new BigDecimal(Double.toString(d1));
+        BigDecimal bd2 = new BigDecimal(Double.toString(d2));
+        return bd1.add(bd2).doubleValue();
     }
 
     @Override
@@ -256,7 +302,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public void updateHour(@Param("startTime")Timestamp startTime, @Param("endTime")Timestamp endTime, @Param("serviceEntryId")Long serviceEntryId){
-        staffMapper.updateHour(startTime, endTime, serviceEntryId);
+    public void updateHour(@RequestBody ServiceEntries serviceEntries){
+        staffMapper.updateHour(serviceEntries);
     }
 }
