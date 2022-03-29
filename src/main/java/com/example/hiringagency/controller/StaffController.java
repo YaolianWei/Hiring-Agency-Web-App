@@ -193,6 +193,7 @@ public class StaffController {
         return ret;
     }
 
+    // staff soft delete care taker
     @GetMapping("/softDeleteCT")
     public Map<String, String> softDeleteCT(@Param("careTakerId") Long careTakerId){
         Map<String, String> ret = new HashMap<>();

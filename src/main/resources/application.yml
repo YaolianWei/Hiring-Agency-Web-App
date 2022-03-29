@@ -29,4 +29,4 @@ spring:
     password:
     driver-class-name: org.sqlite.JDBC
   jackson:
-    time-zone: GMT
+    time-zone: GMT-5

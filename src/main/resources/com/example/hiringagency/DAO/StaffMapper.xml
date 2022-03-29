@@ -76,14 +76,14 @@
 
     <select id="selectHPbyRequest" resultType="com.example.hiringagency.domain.entity.HealthcareJobApplication">
         select *
-        from HealthcareJobApplication
-        where active = 0 and serviceType = #{serviceType} and gender = #{genderSpecific}
+        from HealthcareJobApplication hja left join Users U on U.UserID = hja.UserID
+        where hja.active = 0 and hja.serviceType = #{serviceType} and hja.gender = #{genderSpecific} and U.isDeleted = 0
     </select>
 
     <select id="selectHPbyType" resultType="com.example.hiringagency.domain.entity.HealthcareJobApplication">
         select *
-        from HealthcareJobApplication
-        where active = 0 and serviceType = #{serviceType}
+        from HealthcareJobApplication hja left join Users U on U.UserID = hja.UserID
+        where hja.active = 0 and hja.serviceType = #{serviceType} and U.isDeleted = 0
     </select>
 
     <select id="selectAllRequests" resultType="com.example.hiringagency.domain.entity.CareRequests">

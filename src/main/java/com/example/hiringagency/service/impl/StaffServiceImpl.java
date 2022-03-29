@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class StaffServiceImpl implements StaffService {
@@ -135,18 +136,24 @@ public class StaffServiceImpl implements StaffService {
                         }
                     }
                 }
+                if( hpList.size() == 0 ){
+                    return hpList;
+                }
             }
         }
         if(hpList.size() > 0){
             for (HealthcareJobApplication hja : hpList) {
                 List<ServiceEntries> seList = staffMapper.selectEntriesByHp(hja.getUserId());
                 for (ServiceEntries se : seList) {
-                    if (se.getDate() == date) {
+                    if (Objects.equals(se.getDate(), date)) {
                         if (DateUtil.overlapped(
                                 DateUtil.buildSlot(cr.getStartTime(), cr.getEndTime()),
                                 DateUtil.buildSlot(se.getStartTime(), se.getEndTime())
                         )) {
                             hpList.remove(hja);
+                        }
+                        if( hpList.size() == 0 ){
+                            return hpList;
                         }
                     }
                 }
