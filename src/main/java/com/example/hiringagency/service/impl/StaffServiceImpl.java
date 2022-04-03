@@ -3,6 +3,7 @@ package com.example.hiringagency.service.impl;
 import com.example.hiringagency.DAO.StaffMapper;
 import com.example.hiringagency.domain.entity.*;
 import com.example.hiringagency.domain.model.BillingAccountInfo;
+import com.example.hiringagency.domain.model.HPDetails;
 import com.example.hiringagency.domain.model.Info;
 import com.example.hiringagency.service.StaffService;
 import org.apache.ibatis.annotations.Param;
@@ -63,7 +64,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public List<Users> allHP(){
+    public List<HPDetails> allHP(){
         return staffMapper.selectAllHP();
     }
 
@@ -100,12 +101,8 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public boolean selectBillingByRequest(@Param("careRequestId") Long careRequestId){
         List<Billing> list = staffMapper.selectBillingByRequest(careRequestId);
-        Boolean hasBilling;
-        if(list.size() != 0){
-            hasBilling = true;
-        }else {
-            hasBilling = false;
-        }
+        boolean hasBilling;
+        hasBilling = list.size() != 0;
         return hasBilling;
     }
 
@@ -260,10 +257,18 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public void pay(@Param("amount") double amount, @Param("billingId") Long billingId){
+    public boolean pay(@Param("amount") double amount, @Param("billingId") Long billingId){
         double paidAmount = staffMapper.selectPaidById(billingId);
         double sum = sum(paidAmount, amount);
-        staffMapper.pay(sum, billingId);
+        sum = (double) Math.round(sum * 100) / 100;
+        if (sum >= 0){
+            staffMapper.pay(sum, billingId);
+            Date date = new Date();
+            staffMapper.addCTPayment(amount, date, billingId);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public double sum(double d1,double d2){
@@ -287,7 +292,8 @@ public class StaffServiceImpl implements StaffService {
             }
         }
         if (canDelete){
-            staffMapper.softDeleteCT(careTakerId);
+            long userId = careTakerId;
+            staffMapper.softDeleteUser(userId);
         }
         return canDelete;
     }
@@ -299,6 +305,7 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public void withdraw(@Param("careRequestId") long careRequestId){
+        staffMapper.terminate(careRequestId);
         List<ServiceEntries> seList = staffMapper.selectServiceEntries(careRequestId);
         Date date = new Date();
         for (ServiceEntries se : seList) {
@@ -311,5 +318,49 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public void updateHour(@RequestBody ServiceEntries serviceEntries){
         staffMapper.updateHour(serviceEntries);
+    }
+
+    @Override
+    public Boolean softDeleteHP(@Param("hpId") Long hpId){
+        boolean canDelete = false;
+        HPAccount hpa = staffMapper.selectHPAccountById(hpId);
+        if (hpa.getAmountYetToPay() == hpa.getAmountPaid()){
+            canDelete = true;
+            long userId = hpId;
+            staffMapper.softDeleteUser(userId);
+        }
+        return canDelete;
+    }
+
+    @Override
+    public boolean payHP(@Param("amount") double amount, @Param("hpId") Long hpId){
+        long userId = hpId;
+        HPAccount hpa = staffMapper.selectHPAccountById(userId);
+        double paidAmount = hpa.getAmountPaid();
+        double sum = sum(paidAmount, amount);
+        sum = (double) Math.round(sum * 100) / 100;
+        if (sum >= 0){
+            staffMapper.payHP(sum, hpId);
+            Date date = new Date();
+            staffMapper.addHPPayment(amount, date, hpa.getHpAccountId());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public List<HPAccount> selectHPAccount() {
+        return staffMapper.selectHPAccount();
+    }
+
+    @Override
+    public List<CareRequests> selectWithdrawRequests(){
+        return staffMapper.selectWithdrawRequests();
+    }
+
+    @Override
+    public List<CareRequests> selectTerminateRequests(){
+        return staffMapper.selectTerminateRequests();
     }
 }

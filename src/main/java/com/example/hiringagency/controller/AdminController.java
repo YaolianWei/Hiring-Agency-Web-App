@@ -57,6 +57,4 @@ public class AdminController {
         ret.put("msg", "Staff inserts success.");
         return ret;
     }
-
-
 }

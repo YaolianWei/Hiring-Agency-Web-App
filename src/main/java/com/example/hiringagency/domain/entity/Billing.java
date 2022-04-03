@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Table ( name ="Billing" )
-public class Billing  implements Serializable {
+public class Billing implements Serializable {
 
 	private static final long serialVersionUID =  8917345549048495086L;
 

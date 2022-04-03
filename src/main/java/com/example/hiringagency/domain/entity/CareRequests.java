@@ -84,6 +84,9 @@ public class CareRequests  implements Serializable {
    	@Column(name = "ServiceType" )
 	private Long serviceType;
 
+	@Column(name = "Status" )
+	private Long status;
+
 	public Long getCareRequestId() {
 		return this.careRequestId;
 	}

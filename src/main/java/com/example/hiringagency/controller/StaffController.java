@@ -2,6 +2,7 @@ package com.example.hiringagency.controller;
 
 import com.example.hiringagency.domain.entity.*;
 import com.example.hiringagency.domain.model.BillingAccountInfo;
+import com.example.hiringagency.domain.model.HPDetails;
 import com.example.hiringagency.domain.model.Info;
 import com.example.hiringagency.service.StaffService;
 import com.example.hiringagency.service.Utilities;
@@ -9,7 +10,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +80,7 @@ public class StaffController {
 
     // list all hired healthcare professional
     @GetMapping("/allHP")
-    public List<Users> allHP(){
+    public List<HPDetails> allHP(){
         return staffService.allHP();
     }
 
@@ -187,9 +187,14 @@ public class StaffController {
     @GetMapping("/payBilling")
     public Map<String, String> pay(@Param("amount") double amount, @Param("billingId") Long billingId){
         Map<String, String> ret = new HashMap<>();
-        staffService.pay(amount, billingId);
-        ret.put("code", "200");
-        ret.put("msg", "Pay billing account success.");
+        boolean canPay = staffService.pay(amount, billingId);
+        if(canPay){
+            ret.put("code", "200");
+            ret.put("msg", "Pay billing account success.");
+        } else {
+            ret.put("code", "201");
+            ret.put("msg", "Pay billing account failure.");
+        }
         return ret;
     }
 
@@ -212,7 +217,7 @@ public class StaffController {
         Map<String, String> ret = new HashMap<>();
         staffService.withdraw(careRequestId);
         ret.put("code", "200");
-        ret.put("msg", "Pay billing account success.");
+        ret.put("msg", "Withdraw request success.");
         return ret;
     }
 
@@ -227,7 +232,49 @@ public class StaffController {
         Map<String, String> ret = new HashMap<>();
         staffService.updateHour(serviceEntries);
         ret.put("code", "200");
-        ret.put("msg", "Pay billing account success.");
+        ret.put("msg", "Add hour success.");
         return ret;
+    }
+
+    @GetMapping("/softDeleteHP")
+    public Map<String, String> softDeleteHP(@Param("hpId") Long hpId){
+        Map<String, String> ret = new HashMap<>();
+        if (staffService.softDeleteHP(hpId)){
+            ret.put("code", "200");
+            ret.put("msg", "Delete healthcare professional success.");
+        }else {
+            ret.put("code", "201");
+            ret.put("msg", "Pay off before delete this healthcare professional.");
+        }
+        return ret;
+    }
+
+    @GetMapping("/payHP")
+    public Map<String, String> payHP(@Param("amount") double amount, @Param("hpId") Long hpId){
+        Map<String, String> ret = new HashMap<>();
+        boolean canPay = staffService.payHP(amount, hpId);
+        if(canPay){
+            ret.put("code", "200");
+            ret.put("msg", "Pay HP account success.");
+        } else {
+            ret.put("code", "201");
+            ret.put("msg", "Pay HP account failure.");
+        }
+        return ret;
+    }
+
+    @GetMapping("/viewHPAccount")
+    public List<HPAccount> selectHPAccount(){
+        return staffService.selectHPAccount();
+    }
+
+    @GetMapping("/withdrawRequests")
+    public List<CareRequests> selectWithdrawRequests(){
+        return staffService.selectWithdrawRequests();
+    }
+
+    @GetMapping("/terminateRequests")
+    public List<CareRequests> selectTerminateRequests(){
+        return staffService.selectTerminateRequests();
     }
 }

@@ -25,16 +25,15 @@ public class UserController {
 
     /**
      * user login
-     * @return
      */
     @PostMapping("/login")
     public Map<String,String> login(@RequestBody HashMap<String, String> map){
-        Map<String, String> ret = new HashMap<String, String>();
+        Map<String, String> ret = new HashMap<>();
         Users user = userService.login(map.get("username"), map.get("password"));
         if(user != null){
-            Boolean isBlocked = userService.IsBlocked(map.get("username"));
+            boolean isBlocked = userService.IsBlocked(map.get("username"));
             if(!isBlocked){
-                Boolean hasFirst = userService.FirstLogin(map.get("username"));
+                boolean hasFirst = userService.FirstLogin(map.get("username"));
                 if(!hasFirst){
                     ret.put("code", "200");
                     ret.put("isFirst", "true");
@@ -62,7 +61,7 @@ public class UserController {
 
     @GetMapping("/setQuestions")
     public Map<String,String> setQuestions(SecurityQuestions securityQuestions){
-        Map<String, String> ret = new HashMap<String, String>();
+        Map<String, String> ret = new HashMap<>();
         Long exist = userService.checkExistQuestion(securityQuestions.getBankQuestionId(), securityQuestions.getUserId());
         if( exist == null){
             userService.setQuestions(securityQuestions);
@@ -76,7 +75,6 @@ public class UserController {
         return ret;
     }
 
-
     @GetMapping("/getQuestions")
     public List<UserQuestions> questionsList(@Param("userId") Long userId){
         return userService.questionsList(userId);
@@ -89,7 +87,7 @@ public class UserController {
 
     @PostMapping("/changePassword")
     public Map<String, String> changePassword(@RequestBody UserPassword userPassword){
-        Map<String, String> ret = new HashMap<String, String>();
+        Map<String, String> ret = new HashMap<>();
 
         boolean isCorrect = userService.isCorrectPwFormat(userPassword.getPassword());
         if(isCorrect){
@@ -107,7 +105,7 @@ public class UserController {
 
     @GetMapping("/deleteQuestion")
     public Map<String, String> deleteSecurityQuestion(@Param("bankQuestionId") Long bankQuestionId, @Param("userId") Long userId){
-        Map<String, String> ret = new HashMap<String, String>();
+        Map<String, String> ret = new HashMap<>();
         userService.deleteSecurityQuestion(bankQuestionId, userId);
         ret.put("code", "200");
         ret.put("msg", "Delete security question success.");
@@ -116,7 +114,7 @@ public class UserController {
 
     @GetMapping("/deleteUser")
     public Map<String, String> deleteUser(@Param("username") String username){
-        Map<String, String> ret = new HashMap<String, String>();
+        Map<String, String> ret = new HashMap<>();
         userService.deleteUser(username);
         ret.put("code", "200");
         ret.put("msg", "Delete user success.");
@@ -125,7 +123,7 @@ public class UserController {
 
     @GetMapping("/activateUser")
     public Map<String, String> activateUser(@Param("username") String username){
-        Map<String, String> ret = new HashMap<String, String>();
+        Map<String, String> ret = new HashMap<>();
         userService.activateUser(username);
         ret.put("code", "200");
         ret.put("msg", "Activate user success.");
@@ -134,7 +132,7 @@ public class UserController {
 
     @GetMapping("/blockUser")
     public Map<String, String> blockUser(@Param("username") String username){
-        Map<String, String> ret = new HashMap<String, String>();
+        Map<String, String> ret = new HashMap<>();
         userService.deactivateUser(username);
         ret.put("code", "200");
         ret.put("msg", "Deactivate user success.");
@@ -143,7 +141,7 @@ public class UserController {
 
     @GetMapping("/softDeleteUser")
     public Map<String, String> softDeleteUser(@Param("username") String username){
-        Map<String, String> ret = new HashMap<String, String>();
+        Map<String, String> ret = new HashMap<>();
         userService.softDeleteUser(username);
         ret.put("code", "200");
         ret.put("msg", "Delete user success.");

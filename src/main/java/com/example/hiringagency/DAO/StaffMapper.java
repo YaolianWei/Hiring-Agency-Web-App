@@ -2,13 +2,14 @@ package com.example.hiringagency.DAO;
 
 import com.example.hiringagency.domain.entity.*;
 import com.example.hiringagency.domain.model.BillingAccountInfo;
+import com.example.hiringagency.domain.model.HPDetails;
 import com.example.hiringagency.domain.model.Info;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -31,7 +32,7 @@ public interface StaffMapper {
     // hire HP - 3
     void updateHPId(@Param("userId") Long userId, @Param("healthcareJobApplicationId") Long healthcareJobApplicationId);
 
-    List<Users> selectAllHP();
+    List<HPDetails> selectAllHP();
 
     void addCTAccount(String firstName, String lastName, String username, String password, String postalAddress, Long phoneNumber, String email);
 
@@ -71,11 +72,27 @@ public interface StaffMapper {
 
     double selectPaidById(@Param("billingId") Long billingId);
 
-    Boolean softDeleteCT(@Param("careTakerId") Long careTakerId);
+    Boolean softDeleteUser(@Param("userId") Long userId);
 
     void withdraw(@Param("serviceEntryId") long serviceEntryId);
 
     List<CareRequests> selectRequestByCt(@Param("careTakerId") Long careTakerId);
 
     void updateHour(@RequestBody ServiceEntries serviceEntries);
+
+    void terminate(@Param("careRequestId") Long careRequestId);
+
+    HPAccount selectHPAccountById(@Param("userId")Long userId);
+
+    void addCTPayment(@Param("amount") double amount, @Param("date") Date date, @Param("billingId") Long billingId);
+
+    void payHP(@Param("sum") double sum, @Param("hpId") Long hpId);
+
+    void addHPPayment(@Param("amount") double amount, @Param("date") Date date, @Param("hpAccountId") Long hpAccountId);
+
+    List<CareRequests> selectWithdrawRequests();
+
+    List<CareRequests> selectTerminateRequests();
+
+    List<HPAccount> selectHPAccount();
 }

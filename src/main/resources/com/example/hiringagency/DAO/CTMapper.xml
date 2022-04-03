@@ -16,10 +16,10 @@
     </select>
 
     <insert id="addRequest" parameterType="com.example.hiringagency.domain.entity.CareRequests">
-        insert into CareRequests(FirstName, LastName, Gender, DateOfBirth, ServiceAddress, PatientPhone, PatientEmail, WeekDay, StartTime, EndTime, TotalDays, GenderSpecific, LowerAgeLimit, UpperAgeLimit, FlexibleHoursFlag, FlexibleHoursPerDay, CareTakerID, ServiceType)
+        insert into CareRequests(FirstName, LastName, Gender, DateOfBirth, ServiceAddress, PatientPhone, PatientEmail, WeekDay, StartTime, EndTime, TotalDays, GenderSpecific, LowerAgeLimit, UpperAgeLimit, FlexibleHoursFlag, FlexibleHoursPerDay, CareTakerID, ServiceType, status)
         values (#{firstName}, #{lastName}, #{gender}, #{dateOfBirth}, #{serviceAddress}, #{patientPhone}, #{patientEmail},
                                  #{weekDay}, #{startTime}, #{endTime}, #{totalDays}, #{genderSpecific}, #{lowerAgeLimit},
-                                 #{upperAgeLimit}, #{flexibleHoursFlag}, #{flexibleHoursPerDay}, #{careTakerId}, #{serviceType})
+                                 #{upperAgeLimit}, #{flexibleHoursFlag}, #{flexibleHoursPerDay}, #{careTakerId}, #{serviceType}, 0)
     </insert>
 
     <select id="selectRequests" resultType="com.example.hiringagency.domain.entity.CareRequests">
@@ -76,6 +76,24 @@
 
     <select id="selectRateByRequest" resultType="java.lang.Double">
         select hourlyRate
+        from Billing
+        where careRequestId = #{careRequestId}
+    </select>
+
+    <update id="withdraw" parameterType="com.example.hiringagency.domain.entity.CareRequests">
+        update CareRequests
+        set status = 1
+        where careRequestId = #{careRequestId}
+    </update>
+
+    <select id="selectCTPaymentById" resultType="com.example.hiringagency.domain.entity.CTPayment">
+        select *
+        from CtPayment
+        where billingId = #{billingId}
+    </select>
+
+    <select id="selectBillingByRequest" resultType="com.example.hiringagency.domain.entity.Billing">
+        select *
         from Billing
         where careRequestId = #{careRequestId}
     </select>

@@ -1,9 +1,7 @@
 package com.example.hiringagency.service.impl;
 
 import com.example.hiringagency.DAO.CTMapper;
-import com.example.hiringagency.domain.entity.CareRequests;
-import com.example.hiringagency.domain.entity.CareTakerRegistration;
-import com.example.hiringagency.domain.entity.ServiceEntries;
+import com.example.hiringagency.domain.entity.*;
 import com.example.hiringagency.domain.model.BillingAccountInfo;
 import com.example.hiringagency.domain.model.BillingDetails;
 import com.example.hiringagency.domain.model.EntriesDetails;
@@ -113,18 +111,6 @@ public class CTServiceImpl implements CTService {
 
     @Override
     public List<EntriesDetails> entriesDetails(Long careRequestsID){
-//        List<ServiceEntries> seList = ctMapper.selectServiceEntries(careRequestsID);
-//        List<EntriesDetails> edList = ctMapper.selectEntriesDetails(careRequestsID);
-//        for (ServiceEntries se : seList) {
-//            if (se.getHpId() == null){
-//                EntriesDetails ed = null;
-//                ed.setDate(se.getDate());
-//                ed.setStatus(se.getStatus());
-//                ed.setStartTime(se.getStartTime());
-//                ed.setEndTime(se.getEndTime());
-//                edList.add(ed);
-//            }
-//        }
         return ctMapper.selectEntriesDetails(careRequestsID);
     }
 
@@ -144,6 +130,7 @@ public class CTServiceImpl implements CTService {
             double minutes = (double) (((time2 - time1) / 1000 - hours*(60*60)) / 60);
             double hour = hours + minutes/60;
             double amount = mul(hour, hourlyRate);
+            amount = (double) Math.round(amount * 100) / 100;
             bd.setAmount(amount);
         }
         return bdList;
@@ -155,4 +142,17 @@ public class CTServiceImpl implements CTService {
         return bd1.multiply(bd2).doubleValue();
     }
 
+    public boolean withdraw(@Param("careRequestId") Long careRequestId){
+        boolean canWithdraw = false;
+        Billing billing = ctMapper.selectBillingByRequest(careRequestId);
+        if (billing.getAmountYetToPay().equals(billing.getPaidAmount())){
+            canWithdraw = true;
+            ctMapper.withdraw(careRequestId);
+        }
+        return canWithdraw;
+    }
+
+    public List<CTPayment> selectCTPaymentById(@Param("billingId")Long billingId){
+        return ctMapper.selectCTPaymentById(billingId);
+    }
 }

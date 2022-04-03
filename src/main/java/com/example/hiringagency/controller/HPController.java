@@ -1,6 +1,8 @@
 package com.example.hiringagency.controller;
 
 import com.example.hiringagency.domain.entity.HealthcareJobApplication;
+import com.example.hiringagency.domain.entity.HPAccount;
+import com.example.hiringagency.domain.entity.HPPayment;
 import com.example.hiringagency.domain.entity.ServiceEntries;
 import com.example.hiringagency.domain.model.ScheduleDetails;
 import com.example.hiringagency.service.HPService;
@@ -9,7 +11,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,5 +75,15 @@ public class HPController {
         ret.put("code", "200");
         ret.put("msg", "Update hour success.");
         return ret;
+    }
+
+    @GetMapping("/viewAccount")
+    public HPAccount selectHPAccountById(@Param("userId")Long userId){
+        return hpService.selectHPAccountById(userId);
+    }
+
+    @GetMapping("/viewHPPayment")
+    public List<HPPayment> selectHPPaymentById(@Param("hpAccountId")Long hpAccountId){
+        return hpService.selectHPPaymentById(hpAccountId);
     }
 }

@@ -52,7 +52,6 @@ public class ServiceEntries  implements Serializable {
 	@Column(name = "CompleteFlag" )
 	private Boolean completeFlag;
 
-
 	public Long getServiceEntryId() {
 		return this.serviceEntryId;
 	}

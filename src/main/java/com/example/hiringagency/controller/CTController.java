@@ -2,7 +2,7 @@ package com.example.hiringagency.controller;
 
 import com.example.hiringagency.domain.entity.CareRequests;
 import com.example.hiringagency.domain.entity.CareTakerRegistration;
-import com.example.hiringagency.domain.entity.ServiceEntries;
+import com.example.hiringagency.domain.entity.CTPayment;
 import com.example.hiringagency.domain.model.BillingAccountInfo;
 import com.example.hiringagency.domain.model.BillingDetails;
 import com.example.hiringagency.domain.model.EntriesDetails;
@@ -95,5 +95,24 @@ public class CTController {
     public List<BillingDetails> selectCompleteEntriesByRequest(@Param("careRequestId") Long careRequestId){
         return ctService.selectCompleteEntriesByRequest(careRequestId);
     }
-}
 
+    @GetMapping("/withdrawRequest")
+    public Map<String,String> withdraw(@Param("careRequestId") Long careRequestId){
+        Map<String, String> ret = new HashMap<>();
+        boolean canWithdraw = ctService.withdraw(careRequestId);
+        if (canWithdraw){
+            ret.put("code", "200");
+            ret.put("msg", "Add request success.");
+            return ret;
+        } else {
+            ret.put("code", "201");
+            ret.put("msg", "Add request failure.");
+            return ret;
+        }
+    }
+
+    @GetMapping("/viewPayment")
+    public List<CTPayment> selectCTPaymentById(@Param("billingId")Long billingId){
+        return ctService.selectCTPaymentById(billingId);
+    }
+}

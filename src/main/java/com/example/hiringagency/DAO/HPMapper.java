@@ -1,15 +1,12 @@
 package com.example.hiringagency.DAO;
 
-import com.example.hiringagency.domain.entity.Billing;
-import com.example.hiringagency.domain.entity.HealthcareJobApplication;
-import com.example.hiringagency.domain.entity.ServiceEntries;
+import com.example.hiringagency.domain.entity.*;
 import com.example.hiringagency.domain.model.ScheduleDetails;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -35,4 +32,16 @@ public interface HPMapper {
     void updateCost(@Param("billingId")Long billingId, @Param("sum")double sum);
 
     double selectCostById(@Param("billingId")Long billingId);
+
+    Users selectHPById(@Param("userId")Long userId);
+
+    HPAccount selectHPAccountById(@Param("userId")Long userId);
+
+    void updateSalary(@Param("userId")Long userId, @Param("salary")double salary);
+
+    List<HPPayment> selectHPPaymentById(@Param("hpAccountId")Long hpAccountId);
+
+    void terminate(@Param("careRequestId") Long careRequestId);
+
+    List<ServiceEntries> selectServiceEntries(@Param("careRequestId") Long careRequestId);
 }

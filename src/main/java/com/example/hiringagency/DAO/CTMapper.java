@@ -1,8 +1,6 @@
 package com.example.hiringagency.DAO;
 
-import com.example.hiringagency.domain.entity.CareRequests;
-import com.example.hiringagency.domain.entity.CareTakerRegistration;
-import com.example.hiringagency.domain.entity.ServiceEntries;
+import com.example.hiringagency.domain.entity.*;
 import com.example.hiringagency.domain.model.BillingAccountInfo;
 import com.example.hiringagency.domain.model.BillingDetails;
 import com.example.hiringagency.domain.model.EntriesDetails;
@@ -40,4 +38,10 @@ public interface CTMapper {
     List<BillingDetails> selectCompleteEntriesByRequest(@Param("careRequestId") Long careRequestId);
 
     Double selectRateByRequest(@Param("careRequestId") Long careRequestId);
+
+    void withdraw(@Param("careRequestId") Long careRequestId);
+
+    List<CTPayment> selectCTPaymentById(@Param("billingId")Long billingId);
+
+    Billing selectBillingByRequest(@Param("careRequestId") Long careRequestId);
 }

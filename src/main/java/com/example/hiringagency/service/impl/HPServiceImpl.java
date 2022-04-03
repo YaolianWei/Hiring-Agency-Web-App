@@ -1,9 +1,7 @@
 package com.example.hiringagency.service.impl;
 
 import com.example.hiringagency.DAO.HPMapper;
-import com.example.hiringagency.domain.entity.Billing;
-import com.example.hiringagency.domain.entity.HealthcareJobApplication;
-import com.example.hiringagency.domain.entity.ServiceEntries;
+import com.example.hiringagency.domain.entity.*;
 import com.example.hiringagency.domain.model.ScheduleDetails;
 import com.example.hiringagency.service.HPService;
 import org.apache.ibatis.annotations.Param;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -55,6 +52,7 @@ public class HPServiceImpl implements HPService {
     @Override
     public void updateHour(@RequestBody ServiceEntries serviceEntries){
         hpMapper.updateHour(serviceEntries);
+
         long time1 = serviceEntries.getStartTime().getTime();
         long time2 = serviceEntries.getEndTime().getTime();
         double hours = (double) ((time2 - time1) / (1000*60*60));
@@ -66,7 +64,27 @@ public class HPServiceImpl implements HPService {
         double cost = mul(hour, b.getHourlyRate());
         double amountYetToPay = hpMapper.selectCostById(b.getBillingId());
         double sum = sum(cost, amountYetToPay);
+        sum = (double) Math.round(sum * 100) / 100;
         hpMapper.updateCost(b.getBillingId(), sum);
+
+        Users hp = hpMapper.selectHPById(se.getHpId());
+        double salary = mul(hour, hp.getHourlyRate());
+        HPAccount hpa = hpMapper.selectHPAccountById(se.getHpId());
+        salary = sum(salary, hpa.getAmountYetToPay());
+        salary = (double) Math.round(salary * 100) / 100;
+        hpMapper.updateSalary(se.getHpId(), salary);
+
+        List<ServiceEntries> seList = hpMapper.selectServiceEntries(se.getCareRequestId());
+        boolean canUpdate = true;
+        for (ServiceEntries ses : seList){
+            if (ses.getStatus() == 1) {
+                canUpdate = false;
+                break;
+            }
+        }
+        if (canUpdate){
+            hpMapper.terminate(se.getCareRequestId());
+        }
     }
 
     public double mul(double d1,double d2){
@@ -79,5 +97,13 @@ public class HPServiceImpl implements HPService {
         BigDecimal bd1 = new BigDecimal(Double.toString(d1));
         BigDecimal bd2 = new BigDecimal(Double.toString(d2));
         return bd1.add(bd2).doubleValue();
+    }
+
+    public HPAccount selectHPAccountById(@Param("userId")Long userId){
+        return hpMapper.selectHPAccountById(userId);
+    }
+
+    public List<HPPayment> selectHPPaymentById(@Param("hpAccountId")Long hpAccountId){
+        return hpMapper.selectHPPaymentById(hpAccountId);
     }
 }

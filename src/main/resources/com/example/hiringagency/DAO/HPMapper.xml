@@ -61,4 +61,40 @@
         from Billing
         where billingId = #{billingId}
     </select>
+
+    <select id="selectHPById" resultType="com.example.hiringagency.domain.entity.Users">
+        select *
+        from Users
+        where userId = #{userId}
+    </select>
+
+    <select id="selectHPAccountById" resultType="com.example.hiringagency.domain.entity.HPAccount">
+        select *
+        from HpAccount
+        where hpId = #{userId}
+    </select>
+
+    <update id="updateSalary" parameterType="com.example.hiringagency.domain.entity.HPAccount">
+        update HPAccount
+        set amountYetToPay = #{salary}
+        where hpId = #{userId}
+    </update>
+
+    <select id="selectHPPaymentById" resultType="com.example.hiringagency.domain.entity.HPPayment">
+        select *
+        from HpPayment
+        where hpAccountId = #{hpAccountId}
+    </select>
+
+    <update id="terminate" parameterType="com.example.hiringagency.domain.entity.CareRequests">
+        update CareRequests
+        set status = 2
+        where careRequestId = #{careRequestId}
+    </update>
+
+    <select id="selectServiceEntries" resultType="com.example.hiringagency.domain.entity.ServiceEntries">
+        select *
+        from ServiceEntries
+        where careRequestId = #{careRequestId}
+    </select>
 </mapper>

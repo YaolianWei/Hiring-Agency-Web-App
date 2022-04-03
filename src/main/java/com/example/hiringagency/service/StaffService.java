@@ -2,12 +2,11 @@ package com.example.hiringagency.service;
 
 import com.example.hiringagency.domain.entity.*;
 import com.example.hiringagency.domain.model.BillingAccountInfo;
+import com.example.hiringagency.domain.model.HPDetails;
 import com.example.hiringagency.domain.model.Info;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-import java.sql.Timestamp;
 import java.util.List;
 
 public interface StaffService {
@@ -28,7 +27,7 @@ public interface StaffService {
     // hire HP - 3
     void updateHPId(@Param("userId") Long userId, @Param("healthcareJobApplicationId") Long healthcareJobApplicationId);
 
-    List<Users> allHP();
+    List<HPDetails> allHP();
 
     void addCTAccount(String firstName, String lastName, String username, String password, String postalAddress, Long phoneNumber, String email);
 
@@ -56,7 +55,7 @@ public interface StaffService {
 
     List<BillingAccountInfo> selectBilling();
 
-    void pay(@Param("amount") double amount, @Param("billingId") Long billingId);
+    boolean pay(@Param("amount") double amount, @Param("billingId") Long billingId);
 
     Boolean softDeleteCT(@Param("careTakerId") Long careTakerId);
 
@@ -65,4 +64,14 @@ public interface StaffService {
     List<CareRequests> selectRequestByCt(@Param("careTakerId") Long careTakerId);
 
     void updateHour(@RequestBody ServiceEntries serviceEntries);
+
+    Boolean softDeleteHP(@Param("hpId") Long hpId);
+
+    boolean payHP(@Param("amount") double amount, @Param("hpId") Long hpId);
+
+    List<HPAccount> selectHPAccount();
+
+    List<CareRequests> selectWithdrawRequests();
+
+    List<CareRequests> selectTerminateRequests();
 }

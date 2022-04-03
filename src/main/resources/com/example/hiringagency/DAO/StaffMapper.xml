@@ -43,10 +43,10 @@
     </update>
 
     <!-- list hired HP -->
-    <select id="selectAllHP" resultType="com.example.hiringagency.domain.entity.Users">
-        select *
-        from Users
-        where Type = 3 and isDeleted = 0
+    <select id="selectAllHP" resultType="com.example.hiringagency.domain.model.HPDetails">
+        select hja.userId, hja.firstName, hja.lastName, u.username, hja.postalAddress, hja.phoneNumber, hja.email, u.hourlyRate, hja.serviceType, hja.gender, hja.dateOfBirth, hja.degree, hja.ssn, hja.educationQualifications, hja.yearsExperience
+        from Users u left join HealthcareJobApplication hja on u.userId = hja.userId
+        where u.type = 3 and u.isDeleted = 0
     </select>
 
     <!-- 接下来3个都是为了approve CT-->
@@ -89,6 +89,7 @@
     <select id="selectAllRequests" resultType="com.example.hiringagency.domain.entity.CareRequests">
         select *
         from CareRequests
+        where status = 0
     </select>
 
     <select id="selectServiceEntries" resultType="com.example.hiringagency.domain.entity.ServiceEntries">
@@ -160,10 +161,10 @@
         where billingId = #{billingId}
     </select>
 
-    <update id="softDeleteCT" parameterType="com.example.hiringagency.domain.entity.Users">
+    <update id="softDeleteUser" parameterType="com.example.hiringagency.domain.entity.Users">
         update Users
         set isDeleted = 1
-        where userId = #{careTakerId}
+        where userId = #{userId}
     </update>
 
     <delete id="withdraw" parameterType="com.example.hiringagency.domain.entity.ServiceEntries">
@@ -182,4 +183,50 @@
         set startTime = #{startTime}, endTime = #{endTime}
         where serviceEntryId = #{serviceEntryId}
     </update>
+
+    <update id="terminate" parameterType="com.example.hiringagency.domain.entity.CareRequests">
+        update CareRequests
+        set status = 2
+        where careRequestId = #{careRequestId}
+    </update>
+
+    <select id="selectHPAccountById" resultType="com.example.hiringagency.domain.entity.HPAccount">
+        select *
+        from HPAccount
+        where hpId = #{userId}
+    </select>
+
+    <insert id="addCTPayment" parameterType="com.example.hiringagency.domain.entity.CTPayment">
+        insert into CTPayment(`amount`, `date`, `billingId`)
+        values (#{amount}, #{date}, #{billingId})
+    </insert>
+
+    <update id="payHP" parameterType="com.example.hiringagency.domain.entity.HPAccount">
+        update HPAccount
+        set amountPaid = #{sum}
+        where hpId = #{hpId}
+    </update>
+
+    <insert id="addHPPayment" parameterType="com.example.hiringagency.domain.entity.HPPayment">
+        insert into HPPayment(`amount`, `date`, `hpAccountId`)
+        values (#{amount}, #{date}, #{hpAccountId})
+    </insert>
+
+    <select id="selectWithdrawRequests" resultType="com.example.hiringagency.domain.entity.CareRequests">
+        select *
+        from CareRequests
+        where status = 1
+    </select>
+
+    <select id="selectTerminateRequests" resultType="com.example.hiringagency.domain.entity.CareRequests">
+        select *
+        from CareRequests
+        where status = 2
+    </select>
+
+    <select id="selectHPAccount" resultType="com.example.hiringagency.domain.entity.HPAccount">
+        select hpa.hpAccountId, hpa.amountPaid, hpa.amountYetToPay, hpa.hpid
+        from HPAccount hpa left join Users u on hpa.hpId = u.userId
+        where u.isDeleted = false
+    </select>
 </mapper>
