@@ -224,8 +224,8 @@
         where status = 2
     </select>
 
-    <select id="selectHPAccount" resultType="com.example.hiringagency.domain.entity.HPAccount">
-        select hpa.hpAccountId, hpa.amountPaid, hpa.amountYetToPay, hpa.hpid
+    <select id="selectHPAccount" resultType="com.example.hiringagency.domain.model.HPAccountInfo">
+        select hpa.hpAccountId, hpa.hpId, u.firstName, u.lastName, hpa.amountPaid, hpa.amountYetToPay
         from HPAccount hpa left join Users u on hpa.hpId = u.userId
         where u.isDeleted = false
     </select>

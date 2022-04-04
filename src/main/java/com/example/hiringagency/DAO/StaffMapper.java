@@ -2,6 +2,7 @@ package com.example.hiringagency.DAO;
 
 import com.example.hiringagency.domain.entity.*;
 import com.example.hiringagency.domain.model.BillingAccountInfo;
+import com.example.hiringagency.domain.model.HPAccountInfo;
 import com.example.hiringagency.domain.model.HPDetails;
 import com.example.hiringagency.domain.model.Info;
 import org.apache.ibatis.annotations.Mapper;
@@ -94,5 +95,5 @@ public interface StaffMapper {
 
     List<CareRequests> selectTerminateRequests();
 
-    List<HPAccount> selectHPAccount();
+    List<HPAccountInfo> selectHPAccount();
 }

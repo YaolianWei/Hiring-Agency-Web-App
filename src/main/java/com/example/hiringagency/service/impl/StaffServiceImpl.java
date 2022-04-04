@@ -3,6 +3,7 @@ package com.example.hiringagency.service.impl;
 import com.example.hiringagency.DAO.StaffMapper;
 import com.example.hiringagency.domain.entity.*;
 import com.example.hiringagency.domain.model.BillingAccountInfo;
+import com.example.hiringagency.domain.model.HPAccountInfo;
 import com.example.hiringagency.domain.model.HPDetails;
 import com.example.hiringagency.domain.model.Info;
 import com.example.hiringagency.service.StaffService;
@@ -350,7 +351,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public List<HPAccount> selectHPAccount() {
+    public List<HPAccountInfo> selectHPAccount() {
         return staffMapper.selectHPAccount();
     }
 

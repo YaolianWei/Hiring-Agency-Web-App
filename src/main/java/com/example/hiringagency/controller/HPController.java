@@ -1,9 +1,9 @@
 package com.example.hiringagency.controller;
 
 import com.example.hiringagency.domain.entity.HealthcareJobApplication;
-import com.example.hiringagency.domain.entity.HPAccount;
 import com.example.hiringagency.domain.entity.HPPayment;
 import com.example.hiringagency.domain.entity.ServiceEntries;
+import com.example.hiringagency.domain.model.HPAccountInfo;
 import com.example.hiringagency.domain.model.ScheduleDetails;
 import com.example.hiringagency.service.HPService;
 import com.example.hiringagency.service.Utilities;
@@ -78,7 +78,7 @@ public class HPController {
     }
 
     @GetMapping("/viewAccount")
-    public HPAccount selectHPAccountById(@Param("userId")Long userId){
+    public HPAccountInfo selectHPAccountById(@Param("userId")Long userId){
         return hpService.selectHPAccountById(userId);
     }
 

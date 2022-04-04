@@ -2,6 +2,7 @@ package com.example.hiringagency.service;
 
 import com.example.hiringagency.domain.entity.*;
 import com.example.hiringagency.domain.model.BillingAccountInfo;
+import com.example.hiringagency.domain.model.HPAccountInfo;
 import com.example.hiringagency.domain.model.HPDetails;
 import com.example.hiringagency.domain.model.Info;
 import org.apache.ibatis.annotations.Param;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 public interface StaffService {
+
     void setAd(JobAdvertisements jobAdvertisements);
 
     List<JobAdvertisements> viewAllAds();
@@ -69,7 +71,7 @@ public interface StaffService {
 
     boolean payHP(@Param("amount") double amount, @Param("hpId") Long hpId);
 
-    List<HPAccount> selectHPAccount();
+    List<HPAccountInfo> selectHPAccount();
 
     List<CareRequests> selectWithdrawRequests();
 

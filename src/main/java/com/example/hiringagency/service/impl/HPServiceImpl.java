@@ -2,6 +2,7 @@ package com.example.hiringagency.service.impl;
 
 import com.example.hiringagency.DAO.HPMapper;
 import com.example.hiringagency.domain.entity.*;
+import com.example.hiringagency.domain.model.HPAccountInfo;
 import com.example.hiringagency.domain.model.ScheduleDetails;
 import com.example.hiringagency.service.HPService;
 import org.apache.ibatis.annotations.Param;
@@ -69,7 +70,7 @@ public class HPServiceImpl implements HPService {
 
         Users hp = hpMapper.selectHPById(se.getHpId());
         double salary = mul(hour, hp.getHourlyRate());
-        HPAccount hpa = hpMapper.selectHPAccountById(se.getHpId());
+        HPAccountInfo hpa = hpMapper.selectHPAccountById(se.getHpId());
         salary = sum(salary, hpa.getAmountYetToPay());
         salary = (double) Math.round(salary * 100) / 100;
         hpMapper.updateSalary(se.getHpId(), salary);
@@ -99,10 +100,12 @@ public class HPServiceImpl implements HPService {
         return bd1.add(bd2).doubleValue();
     }
 
-    public HPAccount selectHPAccountById(@Param("userId")Long userId){
+    @Override
+    public HPAccountInfo selectHPAccountById(@Param("userId")Long userId){
         return hpMapper.selectHPAccountById(userId);
     }
 
+    @Override
     public List<HPPayment> selectHPPaymentById(@Param("hpAccountId")Long hpAccountId){
         return hpMapper.selectHPPaymentById(hpAccountId);
     }

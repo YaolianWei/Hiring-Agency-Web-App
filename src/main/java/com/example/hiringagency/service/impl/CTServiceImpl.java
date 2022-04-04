@@ -142,6 +142,7 @@ public class CTServiceImpl implements CTService {
         return bd1.multiply(bd2).doubleValue();
     }
 
+    @Override
     public boolean withdraw(@Param("careRequestId") Long careRequestId){
         boolean canWithdraw = false;
         Billing billing = ctMapper.selectBillingByRequest(careRequestId);
@@ -152,6 +153,7 @@ public class CTServiceImpl implements CTService {
         return canWithdraw;
     }
 
+    @Override
     public List<CTPayment> selectCTPaymentById(@Param("billingId")Long billingId){
         return ctMapper.selectCTPaymentById(billingId);
     }

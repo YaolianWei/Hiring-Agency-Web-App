@@ -43,7 +43,7 @@
     <select id="selectEntriesDetails" resultType="com.example.hiringagency.domain.model.EntriesDetails">
         select hja.FirstName, hja.LastName, se.Date, se.StartTime, se.EndTime, se.Status
         from ServiceEntries se left join HealthcareJobApplication hja on se.HPID = hja.UserID
-        where careRequestId = #{careRequestId}
+        where se.careRequestId = #{careRequestId}
     </select>
 
     <insert id="addEntries" parameterType="com.example.hiringagency.domain.entity.ServiceEntries">

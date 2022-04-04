@@ -1,6 +1,7 @@
 package com.example.hiringagency.DAO;
 
 import com.example.hiringagency.domain.entity.*;
+import com.example.hiringagency.domain.model.HPAccountInfo;
 import com.example.hiringagency.domain.model.ScheduleDetails;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -35,7 +36,7 @@ public interface HPMapper {
 
     Users selectHPById(@Param("userId")Long userId);
 
-    HPAccount selectHPAccountById(@Param("userId")Long userId);
+    HPAccountInfo selectHPAccountById(@Param("userId")Long userId);
 
     void updateSalary(@Param("userId")Long userId, @Param("salary")double salary);
 

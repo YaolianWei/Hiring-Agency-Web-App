@@ -2,6 +2,7 @@ package com.example.hiringagency.controller;
 
 import com.example.hiringagency.domain.entity.*;
 import com.example.hiringagency.domain.model.BillingAccountInfo;
+import com.example.hiringagency.domain.model.HPAccountInfo;
 import com.example.hiringagency.domain.model.HPDetails;
 import com.example.hiringagency.domain.model.Info;
 import com.example.hiringagency.service.StaffService;
@@ -264,7 +265,7 @@ public class StaffController {
     }
 
     @GetMapping("/viewHPAccount")
-    public List<HPAccount> selectHPAccount(){
+    public List<HPAccountInfo> selectHPAccount(){
         return staffService.selectHPAccount();
     }
 

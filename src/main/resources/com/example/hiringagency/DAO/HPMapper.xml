@@ -29,7 +29,7 @@
     <select id="selectEntries" resultType="com.example.hiringagency.domain.model.ScheduleDetails">
         select cr.FirstName, cr.LastName, cr.Gender, cr.DateOfBirth, cr.ServiceAddress, cr.PatientPhone, cr.PatientEmail, se.ServiceEntryID, se.Date, se.Status, se.StartTime, se.EndTime, se.CareRequestID
         from ServiceEntries se left join CareRequests cr on cr.careRequestId = se.careRequestId
-        where hpId = #{userId}
+        where se.hpId = #{userId}
     </select>
 
     <update id="updateHour" parameterType="com.example.hiringagency.domain.entity.ServiceEntries">
@@ -68,10 +68,10 @@
         where userId = #{userId}
     </select>
 
-    <select id="selectHPAccountById" resultType="com.example.hiringagency.domain.entity.HPAccount">
-        select *
-        from HpAccount
-        where hpId = #{userId}
+    <select id="selectHPAccountById" resultType="com.example.hiringagency.domain.model.HPAccountInfo">
+        select hpa.hpAccountId, hpa.hpId, u.firstName, u.lastName, hpa.amountPaid, hpa.amountYetToPay
+        from HPAccount hpa left join Users u on hpa.hpId = u.userId
+        where hpa.hpId = #{userId}
     </select>
 
     <update id="updateSalary" parameterType="com.example.hiringagency.domain.entity.HPAccount">
@@ -82,7 +82,7 @@
 
     <select id="selectHPPaymentById" resultType="com.example.hiringagency.domain.entity.HPPayment">
         select *
-        from HpPayment
+        from HPPayment
         where hpAccountId = #{hpAccountId}
     </select>
 
