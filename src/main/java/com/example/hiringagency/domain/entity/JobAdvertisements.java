@@ -31,6 +31,9 @@ public class JobAdvertisements  implements Serializable {
    	@Column(name = "Experience" )
 	private String experience;
 
+	@Column(name = "Description" )
+	private String description;
+
 	public Long getJobAdvertisementId() {
 		return this.jobAdvertisementId;
 	}

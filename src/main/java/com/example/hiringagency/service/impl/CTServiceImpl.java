@@ -39,7 +39,7 @@ public class CTServiceImpl implements CTService {
         boolean canAdd = true;
         List<CareRequests> ctr = ctMapper.selectRequests(careRequests.getCareTakerId());
         for (CareRequests cr : ctr) {
-            if ((cr.getFirstName().equals(careRequests.getFirstName())) && (cr.getLastName().equals(careRequests.getLastName())) && (cr.getServiceType().equals(careRequests.getServiceType()))) {
+            if ((cr.getFirstName().equals(careRequests.getFirstName())) && (cr.getLastName().equals(careRequests.getLastName())) && (cr.getDateOfBirth().equals(careRequests.getDateOfBirth())) && (cr.getServiceType().equals(careRequests.getServiceType()))) {
                 List<ServiceEntries> ses = ctMapper.selectServiceEntries(cr.getCareRequestId());
                 if (ses.size() != 0) {
                     List<Date> dates = CalDates(careRequests.getWeekDay(), Math.toIntExact(careRequests.getTotalDays()));

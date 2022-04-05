@@ -5,8 +5,8 @@
 <mapper namespace = "com.example.hiringagency.DAO.StaffMapper">
 
     <insert id="setAd" parameterType="com.example.hiringagency.domain.entity.JobAdvertisements">
-        insert into JobAdvertisements(`serviceType`, `educationRequirement`, `experience`)
-        values (#{serviceType}, #{educationRequirement}, #{experience})
+        insert into JobAdvertisements(`serviceType`, `educationRequirement`, `experience`, `description`)
+        values (#{serviceType}, #{educationRequirement}, #{experience}, , #{description})
     </insert>
 
     <select id="selectAllAds" resultType="com.example.hiringagency.domain.entity.JobAdvertisements">
