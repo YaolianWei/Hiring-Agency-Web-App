@@ -89,11 +89,13 @@ public interface StaffMapper {
 
     void payHP(@Param("sum") double sum, @Param("hpId") Long hpId);
 
-    void addHPPayment(@Param("amount") double amount, @Param("date") Date date, @Param("hpAccountId") Long hpAccountId);
+    void addHPPayment(@Param("amount") double amount, @Param("date") Date date, @Param("hpId") Long hpId);
 
     List<CareRequests> selectWithdrawRequests();
 
     List<CareRequests> selectTerminateRequests();
 
     List<HPAccountInfo> selectHPAccount();
+
+    Billing selectBillingById(@Param("billingId")Long billingId);
 }

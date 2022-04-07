@@ -6,7 +6,7 @@
 
     <insert id="setAd" parameterType="com.example.hiringagency.domain.entity.JobAdvertisements">
         insert into JobAdvertisements(`serviceType`, `educationRequirement`, `experience`, `description`)
-        values (#{serviceType}, #{educationRequirement}, #{experience}, , #{description})
+        values (#{serviceType}, #{educationRequirement}, #{experience}, #{description})
     </insert>
 
     <select id="selectAllAds" resultType="com.example.hiringagency.domain.entity.JobAdvertisements">
@@ -208,8 +208,8 @@
     </update>
 
     <insert id="addHPPayment" parameterType="com.example.hiringagency.domain.entity.HPPayment">
-        insert into HPPayment(`amount`, `date`, `hpAccountId`)
-        values (#{amount}, #{date}, #{hpAccountId})
+        insert into HPPayment(`amount`, `date`, `hpId`)
+        values (#{amount}, #{date}, #{hpId})
     </insert>
 
     <select id="selectWithdrawRequests" resultType="com.example.hiringagency.domain.entity.CareRequests">
@@ -225,8 +225,14 @@
     </select>
 
     <select id="selectHPAccount" resultType="com.example.hiringagency.domain.model.HPAccountInfo">
-        select hpa.hpAccountId, hpa.hpId, u.firstName, u.lastName, hpa.amountPaid, hpa.amountYetToPay
+        select hpa.hpAccountId, hpa.hpId, u.firstName, u.lastName, u.hourlyRate, hpa.amountPaid, hpa.amountYetToPay
         from HPAccount hpa left join Users u on hpa.hpId = u.userId
         where u.isDeleted = false
+    </select>
+
+    <select id="selectBillingById" resultType="com.example.hiringagency.domain.entity.Billing">
+        select *
+        from Billing
+        where billingId = #{billingId}
     </select>
 </mapper>

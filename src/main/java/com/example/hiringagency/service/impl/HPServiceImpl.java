@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -75,13 +76,19 @@ public class HPServiceImpl implements HPService {
         salary = (double) Math.round(salary * 100) / 100;
         hpMapper.updateSalary(se.getHpId(), salary);
 
+        Billing billing = hpMapper.selectBillingByRequest(se.getCareRequestId());
         List<ServiceEntries> seList = hpMapper.selectServiceEntries(se.getCareRequestId());
         boolean canUpdate = true;
-        for (ServiceEntries ses : seList){
-            if (ses.getStatus() == 1) {
-                canUpdate = false;
-                break;
+        if(billing.getAmountYetToPay().equals(billing.getPaidAmount())){
+            Date date = new Date();
+            for (ServiceEntries ses : seList){
+                if ((ses.getDate().compareTo(date) > 0) || (ses.getStatus() == 1)) {
+                    canUpdate = false;
+                    break;
+                }
             }
+        } else {
+            canUpdate = false;
         }
         if (canUpdate){
             hpMapper.terminate(se.getCareRequestId());
@@ -106,7 +113,7 @@ public class HPServiceImpl implements HPService {
     }
 
     @Override
-    public List<HPPayment> selectHPPaymentById(@Param("hpAccountId")Long hpAccountId){
-        return hpMapper.selectHPPaymentById(hpAccountId);
+    public List<HPPayment> selectHPPaymentById(@Param("hpId")Long hpId){
+        return hpMapper.selectHPPaymentById(hpId);
     }
 }

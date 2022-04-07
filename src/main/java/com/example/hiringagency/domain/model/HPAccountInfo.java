@@ -14,13 +14,16 @@ public class HPAccountInfo implements Serializable {
     private long hpAccountId;
 
     @Column(name = "HPID" )
-    private long hpid;
+    private long hpId;
 
     @Column(name = "FirstName" )
     private String firstName;
 
     @Column(name = "LastName" )
     private String lastName;
+
+    @Column(name = "HourlyRate" )
+    private String hourlyRate;
 
     @Column(name = "AmountPaid" )
     private double amountPaid;

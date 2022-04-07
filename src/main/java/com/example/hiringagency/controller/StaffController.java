@@ -213,7 +213,8 @@ public class StaffController {
         return ret;
     }
 
-    @GetMapping("/withdraw")
+    // staff terminate the service
+    @GetMapping("/terminate")
     public Map<String, String> withdraw(@Param("careRequestId") long careRequestId){
         Map<String, String> ret = new HashMap<>();
         staffService.withdraw(careRequestId);
@@ -237,6 +238,7 @@ public class StaffController {
         return ret;
     }
 
+    // staff soft delete healthcare professional
     @GetMapping("/softDeleteHP")
     public Map<String, String> softDeleteHP(@Param("hpId") Long hpId){
         Map<String, String> ret = new HashMap<>();
@@ -250,6 +252,7 @@ public class StaffController {
         return ret;
     }
 
+    // staff pay foe the HP
     @GetMapping("/payHP")
     public Map<String, String> payHP(@Param("amount") double amount, @Param("hpId") Long hpId){
         Map<String, String> ret = new HashMap<>();
@@ -264,16 +267,19 @@ public class StaffController {
         return ret;
     }
 
+    // staff view the hp payment account
     @GetMapping("/viewHPAccount")
     public List<HPAccountInfo> selectHPAccount(){
         return staffService.selectHPAccount();
     }
 
+    // staff view the care taker withdrawing service list
     @GetMapping("/withdrawRequests")
     public List<CareRequests> selectWithdrawRequests(){
         return staffService.selectWithdrawRequests();
     }
 
+    // staff view terminate service
     @GetMapping("/terminateRequests")
     public List<CareRequests> selectTerminateRequests(){
         return staffService.selectTerminateRequests();

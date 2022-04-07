@@ -24,5 +24,5 @@ public interface HPService {
 
     HPAccountInfo selectHPAccountById(@Param("userId")Long userId);
 
-    List<HPPayment> selectHPPaymentById(@Param("hpAccountId")Long hpAccountId);
+    List<HPPayment> selectHPPaymentById(@Param("hpId")Long hpId);
 }

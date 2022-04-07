@@ -1,5 +1,6 @@
 package com.example.hiringagency.service.impl;
 
+import com.example.hiringagency.DAO.HPMapper;
 import com.example.hiringagency.DAO.StaffMapper;
 import com.example.hiringagency.domain.entity.*;
 import com.example.hiringagency.domain.model.BillingAccountInfo;
@@ -24,6 +25,8 @@ public class StaffServiceImpl implements StaffService {
 
     @Autowired
     private StaffMapper staffMapper;
+    @Autowired
+    private HPMapper hpMapper;
 
     @Override
     public void setAd(JobAdvertisements jobAdvertisements) {
@@ -262,10 +265,28 @@ public class StaffServiceImpl implements StaffService {
         double paidAmount = staffMapper.selectPaidById(billingId);
         double sum = sum(paidAmount, amount);
         sum = (double) Math.round(sum * 100) / 100;
+        Date date = new Date();
         if (sum >= 0){
             staffMapper.pay(sum, billingId);
-            Date date = new Date();
             staffMapper.addCTPayment(amount, date, billingId);
+
+            Billing billing = staffMapper.selectBillingById(billingId);
+            List<ServiceEntries> seList = hpMapper.selectServiceEntries(billing.getCareRequestId());
+            boolean canUpdate = true;
+            if(billing.getAmountYetToPay().equals(billing.getPaidAmount())){
+                for (ServiceEntries ses : seList){
+                    if ((ses.getDate().compareTo(date) > 0) || (ses.getStatus() == 1)) {
+                        canUpdate = false;
+                        break;
+                    }
+                }
+            } else {
+                canUpdate = false;
+            }
+            if (canUpdate){
+                hpMapper.terminate(billing.getCareRequestId());
+            }
+
             return true;
         } else {
             return false;
@@ -310,7 +331,7 @@ public class StaffServiceImpl implements StaffService {
         List<ServiceEntries> seList = staffMapper.selectServiceEntries(careRequestId);
         Date date = new Date();
         for (ServiceEntries se : seList) {
-            if (se.getDate().compareTo(date)>0){
+            if (se.getDate().compareTo(date) > 0){
                 staffMapper.withdraw(se.getServiceEntryId());
             }
         }
@@ -325,7 +346,7 @@ public class StaffServiceImpl implements StaffService {
     public Boolean softDeleteHP(@Param("hpId") Long hpId){
         boolean canDelete = false;
         HPAccount hpa = staffMapper.selectHPAccountById(hpId);
-        if (hpa.getAmountYetToPay() == hpa.getAmountPaid()){
+        if (hpa.getAmountYetToPay().equals(hpa.getAmountPaid())){
             canDelete = true;
             long userId = hpId;
             staffMapper.softDeleteUser(userId);
@@ -343,7 +364,7 @@ public class StaffServiceImpl implements StaffService {
         if (sum >= 0){
             staffMapper.payHP(sum, hpId);
             Date date = new Date();
-            staffMapper.addHPPayment(amount, date, hpa.getHpAccountId());
+            staffMapper.addHPPayment(amount, date, hpId);
             return true;
         } else {
             return false;

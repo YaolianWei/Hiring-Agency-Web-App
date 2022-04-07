@@ -77,13 +77,15 @@ public class HPController {
         return ret;
     }
 
+    // HP view his/her salary
     @GetMapping("/viewAccount")
     public HPAccountInfo selectHPAccountById(@Param("userId")Long userId){
         return hpService.selectHPAccountById(userId);
     }
 
+    // HP and staff view payment records
     @GetMapping("/viewHPPayment")
-    public List<HPPayment> selectHPPaymentById(@Param("hpAccountId")Long hpAccountId){
-        return hpService.selectHPPaymentById(hpAccountId);
+    public List<HPPayment> selectHPPaymentById(@Param("hpId")Long hpId){
+        return hpService.selectHPPaymentById(hpId);
     }
 }

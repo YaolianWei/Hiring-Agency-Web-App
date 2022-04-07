@@ -40,7 +40,7 @@ public interface HPMapper {
 
     void updateSalary(@Param("userId")Long userId, @Param("salary")double salary);
 
-    List<HPPayment> selectHPPaymentById(@Param("hpAccountId")Long hpAccountId);
+    List<HPPayment> selectHPPaymentById(@Param("hpId")Long hpId);
 
     void terminate(@Param("careRequestId") Long careRequestId);
 

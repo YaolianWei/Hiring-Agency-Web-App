@@ -83,7 +83,7 @@
     <select id="selectHPPaymentById" resultType="com.example.hiringagency.domain.entity.HPPayment">
         select *
         from HPPayment
-        where hpAccountId = #{hpAccountId}
+        where hpId = #{hpId}
     </select>
 
     <update id="terminate" parameterType="com.example.hiringagency.domain.entity.CareRequests">

@@ -146,6 +146,10 @@ public class CTServiceImpl implements CTService {
     public boolean withdraw(@Param("careRequestId") Long careRequestId){
         boolean canWithdraw = false;
         Billing billing = ctMapper.selectBillingByRequest(careRequestId);
+        if (billing == null){
+            ctMapper.withdraw(careRequestId);
+            return canWithdraw = true;
+        }
         if (billing.getAmountYetToPay().equals(billing.getPaidAmount())){
             canWithdraw = true;
             ctMapper.withdraw(careRequestId);

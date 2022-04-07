@@ -96,21 +96,23 @@ public class CTController {
         return ctService.selectCompleteEntriesByRequest(careRequestId);
     }
 
-    @GetMapping("/withdrawRequest")
+    // care taker withdraw the service
+    @GetMapping("/withdraw")
     public Map<String,String> withdraw(@Param("careRequestId") Long careRequestId){
         Map<String, String> ret = new HashMap<>();
         boolean canWithdraw = ctService.withdraw(careRequestId);
         if (canWithdraw){
             ret.put("code", "200");
-            ret.put("msg", "Add request success.");
+            ret.put("msg", "Withdraw request success.");
             return ret;
         } else {
             ret.put("code", "201");
-            ret.put("msg", "Add request failure.");
+            ret.put("msg", "Withdraw request failure.");
             return ret;
         }
     }
 
+    // care taker and staff  viw payment records
     @GetMapping("/viewPayment")
     public List<CTPayment> selectCTPaymentById(@Param("billingId")Long billingId){
         return ctService.selectCTPaymentById(billingId);
