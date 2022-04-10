@@ -269,7 +269,10 @@ public class StaffServiceImpl implements StaffService {
         if (sum >= 0){
             staffMapper.pay(sum, billingId);
             staffMapper.addCTPayment(amount, date, billingId);
-
+            double amountYetToPay = staffMapper.selectCostById(billingId);
+            amount = 0 - amount;
+            amountYetToPay = sum(amountYetToPay, amount);
+            staffMapper.updateCost(billingId, amountYetToPay);
             Billing billing = staffMapper.selectBillingById(billingId);
             List<ServiceEntries> seList = hpMapper.selectServiceEntries(billing.getCareRequestId());
             boolean canUpdate = true;
@@ -346,7 +349,7 @@ public class StaffServiceImpl implements StaffService {
     public Boolean softDeleteHP(@Param("hpId") Long hpId){
         boolean canDelete = false;
         HPAccount hpa = staffMapper.selectHPAccountById(hpId);
-        if (hpa.getAmountYetToPay().equals(hpa.getAmountPaid())){
+        if (hpa.getAmountYetToPay() == 0){
             canDelete = true;
             long userId = hpId;
             staffMapper.softDeleteUser(userId);
@@ -365,6 +368,10 @@ public class StaffServiceImpl implements StaffService {
             staffMapper.payHP(sum, hpId);
             Date date = new Date();
             staffMapper.addHPPayment(amount, date, hpId);
+            double amountYetToPay = hpa.getAmountYetToPay();
+            amount = 0 - amount;
+            amountYetToPay = sum(amountYetToPay, amount);
+            staffMapper.updateSalary(hpId, amountYetToPay);
             return true;
         } else {
             return false;

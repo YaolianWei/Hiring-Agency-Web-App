@@ -98,4 +98,10 @@ public interface StaffMapper {
     List<HPAccountInfo> selectHPAccount();
 
     Billing selectBillingById(@Param("billingId")Long billingId);
+
+    void updateCost(@Param("billingId")Long billingId, @Param("amountYetToPay")double amountYetToPay);
+
+    double selectCostById(@Param("billingId")Long billingId);
+
+    void updateSalary(@Param("hpId")Long hpId, @Param("amountYetToPay")double amountYetToPay);
 }

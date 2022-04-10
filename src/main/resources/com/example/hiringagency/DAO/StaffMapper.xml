@@ -147,6 +147,7 @@
     <select id="selectBilling" resultType="com.example.hiringagency.domain.model.BillingAccountInfo">
         select U.FirstName "ctfirstName", U.LastName "ctlastName", CR.FirstName "patientFirstName", CR.LastName "patientLastName", B.hourlyRate, B.paidAmount, B.amountYetToPay, B.BillingID, B.ServiceID
         from Billing B left join Users U on U.UserID = B.CareTakerID left join CareRequests CR on CR.CareRequestID = B.CareRequestID
+        where CR.Status = 0
     </select>
 
     <update id="pay" parameterType="com.example.hiringagency.domain.entity.Billing">
@@ -235,4 +236,22 @@
         from Billing
         where billingId = #{billingId}
     </select>
+
+    <update id="updateCost" parameterType="com.example.hiringagency.domain.entity.Billing">
+        update Billing
+        set amountYetToPay = #{amountYetToPay}
+        where billingId = #{billingId}
+    </update>
+
+    <select id="selectCostById" resultType="java.lang.Double">
+        select amountYetToPay
+        from Billing
+        where billingId = #{billingId}
+    </select>
+
+    <update id="updateSalary" parameterType="com.example.hiringagency.domain.entity.HPAccount">
+        update HPAccount
+        set amountYetToPay = #{amountYetToPay}
+        where hpId = #{hpId}
+    </update>
 </mapper>

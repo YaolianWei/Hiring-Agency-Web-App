@@ -54,7 +54,7 @@
     <select id="selectBilling" resultType="com.example.hiringagency.domain.model.BillingAccountInfo">
         select CR.FirstName "patientFirstName", CR.LastName "patientLastName", B.hourlyRate, B.paidAmount, B.amountYetToPay, B.BillingID, B.ServiceID, B.CareRequestID
         from Billing B left join CareRequests CR on CR.CareRequestID = B.CareRequestID
-        where B.careTakerId = #{careTakerId}
+        where B.careTakerId = #{careTakerId} and CR.Status = 0
     </select>
 
     <update id="pay" parameterType="com.example.hiringagency.domain.entity.Billing">

@@ -148,9 +148,9 @@ public class CTServiceImpl implements CTService {
         Billing billing = ctMapper.selectBillingByRequest(careRequestId);
         if (billing == null){
             ctMapper.withdraw(careRequestId);
-            return canWithdraw = true;
+            return true;
         }
-        if (billing.getAmountYetToPay().equals(billing.getPaidAmount())){
+        if (billing.getAmountYetToPay() == 0){
             canWithdraw = true;
             ctMapper.withdraw(careRequestId);
         }
