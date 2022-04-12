@@ -17,6 +17,8 @@ public interface UserService {
 
     boolean IsBlocked(@Param("username") String username);
 
+    boolean IsDeleted(@Param("username") String username);
+
     boolean FirstLogin(@Param("username") String username);
 
     List<SecurityQuestionBank> questionBankList();

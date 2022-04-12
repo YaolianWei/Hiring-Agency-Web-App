@@ -45,6 +45,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean IsDeleted(@Param("username") String username){
+        return userMapper.selectIsDeletedByName(username);
+    }
+
+    @Override
     public boolean FirstLogin(@Param("username") String username){
         return userMapper.selectFirstLoginByName(username);
     }

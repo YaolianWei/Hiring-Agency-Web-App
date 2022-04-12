@@ -39,7 +39,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public void deleteAd(@Param("jobAdvertisementId") long jobAdvertisementId) {
+    public void deleteAd(@Param("jobAdvertisementId") Long jobAdvertisementId) {
         staffMapper.deleteAd(jobAdvertisementId);
     }
 
@@ -251,7 +251,11 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public void addBilling(Billing billing){
-        billing.setServiceId(staffMapper.selectMaxServiceId()+1);
+        if (staffMapper.selectMaxServiceId() == null){
+            billing.setServiceId(1000L);
+        } else {
+            billing.setServiceId(staffMapper.selectMaxServiceId() + 1);
+        }
         staffMapper.addBilling(billing);
     }
 
@@ -276,7 +280,7 @@ public class StaffServiceImpl implements StaffService {
             Billing billing = staffMapper.selectBillingById(billingId);
             List<ServiceEntries> seList = hpMapper.selectServiceEntries(billing.getCareRequestId());
             boolean canUpdate = true;
-            if(billing.getAmountYetToPay().equals(billing.getPaidAmount())){
+            if(billing.getAmountYetToPay() == 0){
                 for (ServiceEntries ses : seList){
                     if ((ses.getDate().compareTo(date) > 0) || (ses.getStatus() == 1)) {
                         canUpdate = false;

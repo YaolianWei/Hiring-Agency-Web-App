@@ -32,6 +32,12 @@
         where username = #{username}
     </select>
 
+    <select id="selectIsDeletedByName" resultType="boolean" >
+        select isDeleted
+        from Users
+        where username = #{username}
+    </select>
+
     <select id="selectFirstLoginByName" resultType="boolean" >
         select FirstLogin
         from Users

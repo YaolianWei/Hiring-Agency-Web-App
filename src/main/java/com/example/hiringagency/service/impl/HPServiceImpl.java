@@ -79,7 +79,7 @@ public class HPServiceImpl implements HPService {
         Billing billing = hpMapper.selectBillingByRequest(se.getCareRequestId());
         List<ServiceEntries> seList = hpMapper.selectServiceEntries(se.getCareRequestId());
         boolean canUpdate = true;
-        if(billing.getAmountYetToPay().equals(billing.getPaidAmount())){
+        if(billing.getAmountYetToPay() == 0){
             Date date = new Date();
             for (ServiceEntries ses : seList){
                 if ((ses.getDate().compareTo(date) > 0) || (ses.getStatus() == 1)) {

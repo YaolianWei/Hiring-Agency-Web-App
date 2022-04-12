@@ -44,7 +44,7 @@ public class StaffController {
 
     // delete advertisement
     @GetMapping("/deleteAd")
-    public Map<String, String> deleteAd(@Param("jobAdvertisementId") long jobAdvertisementId){
+    public Map<String, String> deleteAd(@Param("jobAdvertisementId") Long jobAdvertisementId){
         Map<String, String> ret = new HashMap<>();
         staffService.deleteAd(jobAdvertisementId);
         ret.put("code", "200");

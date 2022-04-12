@@ -16,7 +16,7 @@ public interface StaffService {
 
     List<JobAdvertisements> viewAllAds();
 
-    void deleteAd(@Param("jobAdvertisementId") long AdvertisementId);
+    void deleteAd(@Param("jobAdvertisementId") Long AdvertisementId);
 
     void addHPAccount(String firstName, String lastName, String username, String password, String postalAddress, Long phoneNumber, String email, Double hourlyRate);
 

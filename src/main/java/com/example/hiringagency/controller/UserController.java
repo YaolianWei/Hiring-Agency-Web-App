@@ -31,23 +31,29 @@ public class UserController {
         Map<String, String> ret = new HashMap<>();
         Users user = userService.login(map.get("username"), map.get("password"));
         if(user != null){
-            boolean isBlocked = userService.IsBlocked(map.get("username"));
-            if(!isBlocked){
-                boolean hasFirst = userService.FirstLogin(map.get("username"));
-                if(!hasFirst){
+            boolean isDeleted = userService.IsDeleted(map.get("username"));
+            if(!isDeleted){
+                boolean isBlocked = userService.IsBlocked(map.get("username"));
+                if(!isBlocked){
+                    boolean hasFirst = userService.FirstLogin(map.get("username"));
+                    if(!hasFirst){
+                        ret.put("code", "200");
+                        ret.put("isFirst", "true");
+                        return ret;
+                    }
                     ret.put("code", "200");
-                    ret.put("isFirst", "true");
+                    ret.put("isFirst", "false");
+                    return ret;
+                } else {
+                    ret.put("code", "402");
+                    ret.put("msg", "You account has been blocked, please contact admin.");
                     return ret;
                 }
-                ret.put("code", "200");
-                ret.put("isFirst", "false");
-                return ret;
             } else {
-                ret.put("code", "402");
-                ret.put("msg", "You account has been blocked, please contact admin.");
+                ret.put("code", "401");
+                ret.put("msg", "You account has been deleted.");
                 return ret;
             }
-
         }
         ret.put("code", "400");
         ret.put("msg", "Please enter correct username and password.");

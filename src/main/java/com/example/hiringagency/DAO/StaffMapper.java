@@ -20,7 +20,7 @@ public interface StaffMapper {
 
     List<JobAdvertisements> selectAllAds();
 
-    void deleteAd(@Param("jobAdvertisementId") long jobAdvertisementId);
+    void deleteAd(@Param("jobAdvertisementId") Long jobAdvertisementId);
 
     void addHPAccount(String firstName, String lastName, String username, String password, String postalAddress, Long phoneNumber, String email, Double hourlyRate);
 

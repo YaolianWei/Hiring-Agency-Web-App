@@ -23,6 +23,8 @@ public interface UserMapper {
 
     Boolean selectIsBlockedByName(@Param("username") String username);
 
+    Boolean selectIsDeletedByName(@Param("username") String username);
+
     Boolean selectFirstLoginByName(@Param("username")String username);
 
     List<SecurityQuestionBank> selectAllQuestions();
