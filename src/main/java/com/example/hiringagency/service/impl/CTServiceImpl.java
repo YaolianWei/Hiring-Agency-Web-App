@@ -84,8 +84,10 @@ public class CTServiceImpl implements CTService {
         for (String weekday : weekDay) {
             LocalDate date;
             if (weekday.equals("0")) {
+//                date = LocalDate.of(2022, 4, 9).with(TemporalAdjusters.next(DayOfWeek.of(7)));
                 date = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.of(7)));
             }else {
+//                date = LocalDate.of(2022, 4, 9).with(TemporalAdjusters.next(DayOfWeek.of(Integer.parseInt(weekday))));
                 date = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.of(Integer.parseInt(weekday))));
             }
             localDates.add(date);

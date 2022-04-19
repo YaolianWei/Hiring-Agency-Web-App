@@ -43,7 +43,7 @@ public class UtilitiesImpl implements Utilities {
             int number = random.nextInt(52);
             stringBuffer.append(str1.charAt(number));
         }
-        int num = random.nextInt(10);
+        int num = random.nextInt(9);
         stringBuffer.append(str2.charAt(num));
         return stringBuffer.toString();
     }
