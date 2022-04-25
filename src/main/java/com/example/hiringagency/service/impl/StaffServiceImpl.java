@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class StaffServiceImpl implements StaffService {
@@ -113,60 +110,122 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public List<HealthcareJobApplication> assignHPList(@Param("careRequestId") Long careRequestId, @Param("serviceEntryId") Long serviceEntryId){
         CareRequests cr = staffMapper.selectRequestById(careRequestId);
-        Date date = staffMapper.selectEntriesById(serviceEntryId).getDate();
+        ServiceEntries serviceEntries = staffMapper.selectEntriesById(serviceEntryId);
+        Date date = serviceEntries.getDate();
         List<HealthcareJobApplication> hpList;
         if(cr.getGenderSpecific() != null){
             hpList = staffMapper.selectHPbyRequest(cr.getServiceType(), cr.getGenderSpecific());
         } else {
             hpList = staffMapper.selectHPbyType(cr.getServiceType());
         }
+        List<HealthcareJobApplication> hpList1 = new ArrayList<>();
         if(hpList.size() > 0){
             for (HealthcareJobApplication hja : hpList) {
                 int hpAge = getAge(hja.getDateOfBirth());
                 if(hpList.size() > 0){
                     if (cr.getLowerAgeLimit() != null) {
-                        if (hpAge < cr.getLowerAgeLimit()) {
-                            hpList.remove(hja);
+                        if (hpAge >= cr.getLowerAgeLimit()) {
+                            if(cr.getUpperAgeLimit() != null){
+                                if (hpAge <= cr.getUpperAgeLimit()){
+                                    hpList1.add(hja);
+                                }
+                            } else {
+                                hpList1.add(hja);
+                            }
+                        }
+                    } else {
+                        if(cr.getUpperAgeLimit() != null){
+                            if (hpAge <= cr.getUpperAgeLimit()){
+                                hpList1.add(hja);
+                            }
+                        } else {
+                            hpList1.add(hja);
                         }
                     }
-                }
-                if(hpList.size() > 0){
-                    if(cr.getUpperAgeLimit() != null){
-                        if (hpAge > cr.getUpperAgeLimit()){
-                            hpList.remove(hja);
-                        }
-                    }
-                }
-                if( hpList.size() == 0 ){
-                    return hpList;
                 }
             }
+            if( hpList1.size() == 0 ){
+                return hpList1;
+            }
         }
-        if(hpList.size() > 0){
-            for (HealthcareJobApplication hja : hpList) {
+
+        List<HealthcareJobApplication> hpList2 = new ArrayList<>();
+        if(hpList1.size() > 0){
+            for (HealthcareJobApplication hja : hpList1) {
                 List<ServiceEntries> seList = staffMapper.selectEntriesByHp(hja.getUserId());
-                for (ServiceEntries se : seList) {
-                    if (Objects.equals(se.getDate(), date)) {
-                        if (DateUtil.overlapped(
-                                DateUtil.buildSlot(cr.getStartTime(), cr.getEndTime()),
-                                DateUtil.buildSlot(se.getStartTime(), se.getEndTime())
-                        )) {
-                            hpList.remove(hja);
+                if (seList.size() == 0){
+                    hpList2.add(hja);
+                } else {
+                    boolean notOverlap = true;
+                    for (ServiceEntries se : seList) {
+                        if (Objects.equals(se.getDate(), date)) {
+                            if (DateUtil.overlapped(
+                                    DateUtil.buildSlot(serviceEntries.getStartTime(), serviceEntries.getEndTime()),
+                                    DateUtil.buildSlot(se.getStartTime(), se.getEndTime())
+                            )) {
+                                notOverlap = false;
+                                break;
+                            }
                         }
-                        if( hpList.size() == 0 ){
-                            return hpList;
-                        }
+                    }
+                    if(notOverlap){
+                        hpList2.add(hja);
                     }
                 }
             }
         }
+//        if(hpList.size() > 0){
+//            for (HealthcareJobApplication hja : hpList) {
+//                int hpAge = getAge(hja.getDateOfBirth());
+//                if(hpList.size() > 0){
+//                    if (cr.getLowerAgeLimit() != null) {
+//                        if (hpAge < cr.getLowerAgeLimit()) {
+//                            hpList.remove(hja);
+//                        }
+//                    }
+//                }
+//                if(hpList.size() > 0){
+//                    if(cr.getUpperAgeLimit() != null){
+//                        if (hpAge > cr.getUpperAgeLimit()){
+//                            hpList.remove(hja);
+//                        }
+//                    }
+//                }
+//                if( hpList.size() == 0 ){
+//                    return hpList;
+//                }
+//            }
+//        }
+
+//        if(hpList.size() > 0){
+//            for (HealthcareJobApplication hja : hpList) {
+//                List<ServiceEntries> seList = staffMapper.selectEntriesByHp(hja.getUserId());
+//                if ( seList.size() == 0 ){
+//                    break;
+//                }
+//                for (ServiceEntries se : seList) {
+//                    if (Objects.equals(se.getDate(), date)) {
+//                        if (DateUtil.overlapped(
+//                                DateUtil.buildSlot(cr.getStartTime(), cr.getEndTime()),
+//                                DateUtil.buildSlot(se.getStartTime(), se.getEndTime())
+//                        )) {
+//                            hpList.remove(hja);
+//                            break;
+//                        }
+//                        if( hpList.size() == 0 ){
+//                            return hpList;
+//                        }
+//                    }
+//                }
+//            }
+//        }
         int patientAge = getAge(cr.getDateOfBirth());
-        if(hpList.size() > 0){
+        if(hpList2.size() > 0){
             if (patientAge > 59 && cr.getServiceType() == 3){
-                hpList.removeIf(hja -> hja.getDegree() < 3);
+                hpList2.removeIf(hja -> hja.getDegree() < 3);
             }
         }
-        return hpList;
+        return hpList2;
     }
 
     public int getAge(Date birthDay){

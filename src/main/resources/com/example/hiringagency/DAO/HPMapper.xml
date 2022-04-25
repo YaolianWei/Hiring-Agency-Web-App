@@ -12,13 +12,13 @@
     <select id="selectAllHPs" resultType="com.example.hiringagency.domain.entity.HealthcareJobApplication">
         select *
         from HealthcareJobApplication hja left join JobAdvertisements ja on hja.jobAdvertisementId = ja.jobAdvertisementId
-        where hja.degree >= ja.educationRequirement and hja.active = 1
+        where hja.active = 1
     </select>
 
     <select id="selectHPByJobId" resultType="com.example.hiringagency.domain.entity.HealthcareJobApplication">
         select *
         from HealthcareJobApplication hja left join JobAdvertisements ja on hja.jobAdvertisementId = ja.jobAdvertisementId
-        where hja.degree >= ja.educationRequirement and hja.active = 1 and hja.jobAdvertisementId = #{jobAdvertisementId}
+        where hja.active = 1 and hja.jobAdvertisementId = #{jobAdvertisementId}
     </select>
 
     <select id="selectAllSsn" resultType="com.example.hiringagency.domain.entity.HealthcareJobApplication">
